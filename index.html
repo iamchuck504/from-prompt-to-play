@@ -154,6 +154,22 @@ section[data-slide]{scroll-margin-top:64px}
 .hint{font-size:14px;color:var(--night-muted);margin:0}
 .range{display:inline-flex;align-items:center;gap:10px;font-family:var(--pixel);font-size:9px;min-height:44px;padding:0 12px;border:2px solid var(--night-line);background:var(--night-2)}
 .range input{width:120px;accent-color:var(--gold)}
+/* level 3 mixer: one channel strip per bus, vertical fader + live meter */
+.mixer{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.strip{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 6px;border:2px solid var(--night-line);background:var(--night-2);min-width:0}
+.strip-master{border-color:var(--night-muted)}
+.strip-name{font-family:var(--pixel);font-size:8px;color:var(--c);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.strip-body{display:flex;align-items:stretch;justify-content:center;gap:8px;height:130px}
+.strip-meter{position:relative;width:10px;background:var(--night);border:1px solid var(--night-line);overflow:hidden}
+.strip-meter i{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--c)}
+.fader{writing-mode:vertical-lr;direction:rtl;width:28px;height:100%;margin:0;accent-color:var(--c);cursor:pointer}
+.strip output{font-family:var(--pixel);font-size:8px;color:var(--white)}
+.strip .tog{padding:4px 8px;min-height:36px;justify-content:center;gap:0}
+.strip .tog::before{font-size:8px}
+.strip-foot{font-family:var(--pixel);font-size:8px;color:var(--night-muted);min-height:36px;display:flex;align-items:center}
+.big-side .strip-body{height:180px}
+.nm-short{display:none}
+@media (max-width:420px){.mixer{gap:4px}.strip{padding:8px 2px}.strip-name{font-size:7px}.nm-full{display:none}.nm-short{display:inline}}
 .states{display:flex;flex-wrap:wrap;gap:6px;align-items:center;list-style:none;margin:0;padding:0}
 .states li{font-family:var(--pixel);font-size:9px;padding:8px 10px;border:2px solid var(--night-line);color:var(--night-muted)}
 .states li.arrow{border:0;padding:0 2px;color:var(--night-line)}
@@ -316,14 +332,14 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <nav class="levelselect" aria-label="Level select">
       <div class="px">LEVEL SELECT · 51 MIN</div>
       <a href="#prologue"><span class="n">00</span><span class="t">Prologue: It Moves. Is It a Game?</span><span class="m">3M</span></a>
-      <a href="#frame"><span class="n">01</span><span class="t">The Frame</span><span class="m">5M</span></a>
-      <a href="#juice"><span class="n">02</span><span class="t">Juice</span><span class="m">9M</span></a>
+      <a href="#frame"><span class="n">01</span><span class="t">Start, Pause &amp; Game Over</span><span class="m">5M</span></a>
+      <a href="#juice"><span class="n">02</span><span class="t">Hit Effects</span><span class="m">9M</span></a>
       <a href="#audio"><span class="n">03</span><span class="t">Sound &amp; Music</span><span class="m">6M</span></a>
       <a href="#enemies"><span class="n">04</span><span class="t">Fair Enemies</span><span class="m">6M</span></a>
-      <a href="#progress"><span class="n">05</span><span class="t">Progress</span><span class="m">7M</span></a>
-      <a href="#boss"><span class="n">06</span><span class="t">Boss Fight: Debugging</span><span class="m">6M</span></a>
+      <a href="#progress"><span class="n">05</span><span class="t">Difficulty &amp; High Score</span><span class="m">7M</span></a>
+      <a href="#boss"><span class="n">06</span><span class="t">Fixing Bugs</span><span class="m">6M</span></a>
       <a href="#before-after"><span class="n">07</span><span class="t">Before &amp; After</span><span class="m">3M</span></a>
-      <a href="#cheat-codes"><span class="n" style="color:#FFD84D">08</span><span class="t" style="color:#FFD84D">Questions &amp; Cheat Codes</span><span class="m">6M</span></a>
+      <a href="#cheat-codes"><span class="n" style="color:#FFD84D">08</span><span class="t" style="color:#FFD84D">Questions &amp; Prompts</span><span class="m">6M</span></a>
     </nav>
   </div>
   <div class="ground" aria-hidden="true"></div>
@@ -361,7 +377,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   <div class="lv-head"><div class="wrap">
     <div>
       <div class="eyebrow"><span>LEVEL 1 OF 8</span><span>5 MIN</span></div>
-      <h2>The Frame</h2>
+      <h2>Start, Pause &amp; Game Over</h2>
       <p>Every game needs a beginning, a pause and an ending.</p>
     </div>
     <div class="keyterm"><span class="px">KEY TERM</span><b>Game states</b><small>The different screens your game can be on: title, playing, paused, game over.</small></div>
@@ -403,10 +419,10 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   <div class="lv-head"><div class="wrap">
     <div>
       <div class="eyebrow"><span>LEVEL 2 OF 8</span><span>9 MIN</span></div>
-      <h2>Juice</h2>
+      <h2>Hit Effects</h2>
       <p>Small effects that make every action feel good.</p>
     </div>
-    <div class="keyterm"><span class="px">KEY TERM</span><b>Game feel</b><small>How good it feels to press a button and watch the game react.</small></div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Juice</b><small>Game-dev slang for the extra effects that make every hit feel good: shake, flash, sparks and sound.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
@@ -494,17 +510,39 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       </div>
       <canvas class="screen" id="cvAudio" tabindex="0" aria-label="Sound demo. In the menu use the arrow keys and Enter, or click an option. In the stage and boss scenes press Space or click to jump. Esc goes back to the menu."></canvas>
       <ul class="states" id="layerChips" aria-label="Music layers playing"></ul>
-      <div class="controls" id="audioTogs">
-        <button class="tog" type="button" data-k="music">MUSIC</button>
-        <button class="tog" type="button" data-k="sfx">SFX</button>
-        <button class="tog" type="button" data-k="amb">AMBIENCE</button>
-        <button class="tog" type="button" data-k="duck">DUCKING</button>
+      <div class="mixer" id="audioTogs" role="group" aria-label="Mixer">
+        <div class="strip" style="--c:var(--lav)">
+          <span class="strip-name">MUSIC</span>
+          <div class="strip-body"><span class="strip-meter" data-m="music"><i></i></span><input type="range" class="fader" id="volMusic" min="0" max="1" step="0.05" value="0.8" aria-label="Music volume"></div>
+          <output for="volMusic">80%</output>
+          <button class="tog" type="button" data-k="music" aria-label="Music on or off"></button>
+        </div>
+        <div class="strip" style="--c:var(--gold)">
+          <span class="strip-name">SFX</span>
+          <div class="strip-body"><span class="strip-meter" data-m="sfx"><i></i></span><input type="range" class="fader" id="volSfx" min="0" max="1" step="0.05" value="0.8" aria-label="Sound effects volume"></div>
+          <output for="volSfx">80%</output>
+          <button class="tog" type="button" data-k="sfx" aria-label="Sound effects on or off"></button>
+        </div>
+        <div class="strip" style="--c:var(--mint)">
+          <span class="strip-name"><span class="nm-full">AMBIENCE</span><span class="nm-short">AMB</span></span>
+          <div class="strip-body"><span class="strip-meter" data-m="amb"><i></i></span><input type="range" class="fader" id="volAmb" min="0" max="1" step="0.05" value="0.8" aria-label="Ambience volume"></div>
+          <output for="volAmb">80%</output>
+          <button class="tog" type="button" data-k="amb" aria-label="Ambience on or off"></button>
+        </div>
+        <div class="strip" style="--c:var(--coral)">
+          <span class="strip-name">DUCKING</span>
+          <div class="strip-body"><span class="strip-meter" data-m="duck"><i></i></span><input type="range" class="fader" id="volDuck" min="0" max="1" step="0.05" value="0.75" aria-label="Ducking depth: how much the music drops on a hit"></div>
+          <output for="volDuck">-75%</output>
+          <button class="tog" type="button" data-k="duck" aria-label="Ducking on or off"></button>
+        </div>
+        <div class="strip strip-master" style="--c:var(--white)">
+          <span class="strip-name">MASTER</span>
+          <div class="strip-body"><span class="strip-meter" data-m="master"><i></i></span><input type="range" class="fader" id="volMaster" min="0" max="1" step="0.05" value="1" aria-label="Master volume"></div>
+          <output for="volMaster">100%</output>
+          <span class="strip-foot">ALL</span>
+        </div>
       </div>
-      <div class="controls">
-        <label class="range" for="volMusic">MUSIC VOL <input type="range" id="volMusic" min="0" max="1" step="0.05" value="0.8"></label>
-        <label class="range" for="volSfx">SFX VOL <input type="range" id="volSfx" min="0" max="1" step="0.05" value="0.8"></label>
-      </div>
-      <p class="hint">Turn the room's sound up. Everything starts silent: turn on music, then SFX (sound effects), then ambience. In STAGE, jump to grab coins and listen for each sound. Switch to BOSS to hear the music change, then jump over the shots: with ducking on, the music drops so you clearly hear the hit.</p>
+      <p class="hint">Turn the room's sound up. Everything starts silent: turn on music, then SFX (sound effects), then ambience. Each channel has its own fader and a live meter; MASTER sets the volume of all of them. In STAGE, jump to grab coins and listen for each sound. Switch to BOSS to hear the music change, then jump over the shots: with ducking on, the music drops so you clearly hear the hit. The DUCKING fader sets how far it drops.</p>
     </div>
   </div>
 </section>
@@ -564,7 +602,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   <div class="lv-head"><div class="wrap">
     <div>
       <div class="eyebrow"><span>LEVEL 5 OF 8</span><span>7 MIN</span></div>
-      <h2>Progress</h2>
+      <h2>Difficulty &amp; High Score</h2>
       <p>A reason to keep playing, and a reason to come back.</p>
     </div>
     <div class="keyterm"><span class="px">KEY TERM</span><b>Difficulty curve</b><small>How quickly the game gets harder as you play.</small></div>
@@ -610,14 +648,14 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   <div class="lv-head"><div class="wrap">
     <div>
       <div class="eyebrow"><span>LEVEL 6 OF 8</span><span>6 MIN</span></div>
-      <h2>Boss Fight</h2>
+      <h2>Fixing Bugs</h2>
       <p>When you add all of this, something will break. Here is how to fix it.</p>
     </div>
     <div class="keyterm"><span class="px">KEY TERM</span><b>Debugging</b><small>Finding out why something is broken, then fixing it.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
-      <div><div class="label">BOSS STRATEGY</div><h3>The AI can only fix what it can see.</h3></div>
+      <div><div class="label">THE METHOD</div><h3>The AI can only fix what it can see.</h3></div>
       <ul class="concepts">
         <li><b>1. Describe the bug</b><span>Say what you did, what you expected, and what happened instead.</span></li>
         <li><b>2. Bring evidence</b><span>Press F12, open the Console tab and copy any red error text. A screenshot helps too.</span></li>
@@ -677,8 +715,8 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <canvas class="screen" id="cvBA" tabindex="0" aria-label="Before and after demo. Use the arrow keys or A and D to move, or drag on touch screens."></canvas>
       </div>
       <ul class="checklist" id="baList">
-        <li><span class="px"></span><span><a href="#frame">The frame</a>: title, pause, game over and quick restart</span></li>
-        <li><span class="px"></span><span><a href="#juice">Juice</a>: shake, flash, particles and sound when you get hit</span></li>
+        <li><span class="px"></span><span><a href="#frame">Game screens</a>: title, pause, game over and quick restart</span></li>
+        <li><span class="px"></span><span><a href="#juice">Hit effects</a>: shake, flash, particles and sound when you get hit</span></li>
         <li><span class="px"></span><span><a href="#audio">Music</a>: a menu theme on the title screen and stage music while you play</span></li>
         <li><span class="px"></span><span><a href="#enemies">Telegraphs</a>: every block warns you before it falls</span></li>
         <li><span class="px"></span><span><a href="#progress">Waves</a>: the speed ramps up, with calm moments between</span></li>
@@ -693,16 +731,16 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   <div class="wrap">
     <div>
       <div class="px" style="font-size:11px;color:#FFD84D">LEVEL 8 OF 8 · 6 MIN</div>
-      <h2>Questions &amp; Cheat Codes</h2>
+      <h2>Questions &amp; Prompts</h2>
       <p class="lede">Ask anything about today's levels or about your own game. Every prompt from today is here, ready to copy.</p>
     </div>
     <ul class="code-grid">
-      <li><div class="prompt-head"><span class="px">01 · THE FRAME</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and starts again with one button. Don't change how the game plays.</p></li>
-      <li><div class="prompt-head"><span class="px">02 · JUICE</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a tiny freeze, a small screen shake, a white flash on the enemy and a burst of sparks. Put the strength of each effect in one settings list so I can adjust them.</p></li>
+      <li><div class="prompt-head"><span class="px">01 · START, PAUSE &amp; GAME OVER</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and starts again with one button. Don't change how the game plays.</p></li>
+      <li><div class="prompt-head"><span class="px">02 · HIT EFFECTS</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a tiny freeze, a small screen shake, a white flash on the enemy and a burst of sparks. Put the strength of each effect in one settings list so I can adjust them.</p></li>
       <li><div class="prompt-head"><span class="px">03 · SOUND &amp; MUSIC</span><button class="copy" type="button" data-copy="c7">COPY</button></div><p class="ptext" id="c7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p></li>
       <li><div class="prompt-head"><span class="px">04 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy three modes: walk around, chase the player when they get close, then attack. Before each attack, add a half-second warning where it flashes and makes a sound, and after attacking, a short break where the player can hit it.</p></li>
-      <li><div class="prompt-head"><span class="px">05 · PROGRESS</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds make the enemies a little faster, with a short calm break between waves. Show the score on screen and save the best score in the browser (localStorage) so it is still there after reloading the page.</p></li>
-      <li><div class="prompt-head"><span class="px">06 · BOSS FIGHT</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First, explain what is most likely causing this bug and how we can check. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
+      <li><div class="prompt-head"><span class="px">05 · DIFFICULTY &amp; HIGH SCORE</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds make the enemies a little faster, with a short calm break between waves. Show the score on screen and save the best score in the browser (localStorage) so it is still there after reloading the page.</p></li>
+      <li><div class="prompt-head"><span class="px">06 · FIXING BUGS</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First, explain what is most likely causing this bug and how we can check. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
       <li><div class="prompt-head"><span class="px">BONUS · TUNING</span><button class="copy" type="button" data-copy="c6">COPY</button></div><p class="ptext" id="c6">Move every number that controls how the game feels (speeds, timings, effect strengths) into one settings list at the top of the file, with a short note on each, so I can adjust the game without digging through the code.</p></li>
     </ul>
     <div class="quest"><span class="px">SIDE QUEST</span><p><b>Pick one level and add it to your game tonight.</b> Then share your before and after.</p></div>
@@ -1215,19 +1253,24 @@ function noiseHit(dest,ftype,freq,t,dur,vol){
   s.buffer=noiseBuf();f.type=ftype;f.frequency.value=freq;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
   s.connect(f);f.connect(g);g.connect(dest);s.start(t,Math.random()*0.5);s.stop(t+dur+0.05);
 }
-var Mix={ready:false,musicVol:0.8,sfxVol:0.8,
+var Mix={ready:false,musicVol:0.8,sfxVol:0.8,ambVol:0.8,duckDepth:0.75,masterVol:1,
   build:function(){
     if(this.ready||!AC)return;
-    function an(){var a=AC.createAnalyser();a.fftSize=64;a.smoothingTimeConstant=0.7;a.connect(master);return a;}
+    // every bus meter feeds out (the level 3 MASTER fader); out stays at 1 in the other levels
+    this.out=AC.createGain();this.out.connect(master);
+    var out=this.out;function an(){var a=AC.createAnalyser();a.fftSize=64;a.smoothingTimeConstant=0.7;a.connect(out);return a;}
     this.musicAn=an();this.musicOut=AC.createGain();this.musicOut.gain.value=0;this.musicOut.connect(this.musicAn);
     this.duck=AC.createGain();this.duck.connect(this.musicOut);
     this.sfxAn=an();this.sfx=AC.createGain();this.sfx.gain.value=this.sfxVol;this.sfx.connect(this.sfxAn);
     this.ambAn=an();this.amb=AC.createGain();this.amb.gain.value=0;this.amb.connect(this.ambAn);
     var src=AC.createBufferSource();src.buffer=noiseBuf();src.loop=true;
     this.ambF=AC.createBiquadFilter();this.ambF.type='lowpass';this.ambF.frequency.value=500;src.connect(this.ambF);this.ambF.connect(this.amb);src.start();
+    this.outAn=AC.createAnalyser();this.outAn.fftSize=64;this.out.connect(this.outAn);
     this.ready=true;
   },
-  duckNow:function(){var t=AC.currentTime,g=this.duck.gain;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(0.25,t+0.03);g.linearRampToValueAtTime(0.25,t+0.35);g.linearRampToValueAtTime(1,t+0.9);}
+  duckNow:function(){var t=AC.currentTime,g=this.duck.gain,lo=1-this.duckDepth;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(lo,t+0.03);g.linearRampToValueAtTime(lo,t+0.35);g.linearRampToValueAtTime(1,t+0.9);},
+  // set directly: a gradual ramp on an idle bus may never apply in Chromium
+  setNow:function(param,v){param.cancelScheduledValues(AC.currentTime);param.setValueAtTime(v,AC.currentTime);param.value=v;}
 };
 var MAJ=[0,4,7,12],MIN=[0,3,7,12];
 var SONGS={
@@ -1258,8 +1301,9 @@ var Music={name:null,next:null,step:0,song:null,vol:-1,
   tick:function(){
     if(!AC||AC.state!=='running'){this.next=null;this.name=null;return;}
     Mix.build();
-    var want=null,amb=null,i,d,now=AC.currentTime;
-    for(i=0;i<demos.length;i++){d=demos[i];if(!d.visible)continue;if(d.musicWant&&!want)want=d.musicWant();if(d.ambWant&&!amb)amb=d.ambWant();}
+    var want=null,amb=null,mv=1,i,d,now=AC.currentTime;
+    for(i=0;i<demos.length;i++){d=demos[i];if(!d.visible)continue;if(d.musicWant&&!want)want=d.musicWant();if(d.ambWant&&!amb)amb=d.ambWant();if(d.mixer)mv=Mix.masterVol;}
+    if(Math.abs(Mix.out.gain.value-mv)>0.001)Mix.setNow(Mix.out.gain,mv);
     if(document.hidden){want=null;amb=null;}
     Mix.amb.gain.setTargetAtTime(amb?amb.gain:0,now,0.3);
     if(amb)Mix.ambF.frequency.setTargetAtTime(amb.freq,now,0.3);
@@ -1293,7 +1337,8 @@ Sound.prototype.layers=function(){
 Sound.prototype.musicWant=function(){return this.fx.music?{name:this.scene,layers:this.layers(),vol:Mix.musicVol}:null;};
 Sound.prototype.ambWant=function(){
   if(!this.fx.amb)return null;var w=1+0.35*Math.sin(this.t*0.6);
-  return this.scene==='boss'?{gain:0.45,freq:150}:this.scene==='stage'?{gain:0.14,freq:650*w}:{gain:0.07,freq:420*w};
+  var v=Mix.ambVol/0.8;
+  return this.scene==='boss'?{gain:0.45*v,freq:150}:this.scene==='stage'?{gain:0.14*v,freq:650*w}:{gain:0.07*v,freq:420*w};
 };
 Sound.prototype.sfx=function(kind){
   if(!this.fx.sfx||!AC||AC.state!=='running')return;Mix.build();
@@ -1458,9 +1503,31 @@ var sceneBtns=$$('#audio [data-scene]'),chipBox=$('#layerChips'),chipKey='';
 var sd=new Sound($('#cvAudio'),afx,function(s){sceneBtns.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-scene')===s));});});
 register(sd);wireToggles($('#audioTogs'),afx);
 sceneBtns.forEach(function(b){b.addEventListener('click',function(){sd.setScene(b.getAttribute('data-scene'));});});
-$('#volMusic').addEventListener('input',function(e){Mix.musicVol=parseFloat(e.target.value);});
-// set directly: a gradual ramp on the idle SFX bus may never apply in Chromium, leaving effects at full volume
-$('#volSfx').addEventListener('input',function(e){Mix.sfxVol=parseFloat(e.target.value);if(Mix.ready){var g=Mix.sfx.gain;g.cancelScheduledValues(AC.currentTime);g.setValueAtTime(Mix.sfxVol,AC.currentTime);g.value=Mix.sfxVol;}});
+sd.mixer=true;
+// mixer faders: each one shows its value under it
+function fader(id,set,fmt){
+  var el=$('#'+id),out=el.closest('.strip').querySelector('output');
+  function apply(){var v=parseFloat(el.value);set(v);out.textContent=fmt?fmt(v):Math.round(v*100)+'%';}
+  el.addEventListener('input',apply);el.addEventListener('change',apply);
+}
+fader('volMusic',function(v){Mix.musicVol=v;});
+fader('volSfx',function(v){Mix.sfxVol=v;if(Mix.ready)Mix.setNow(Mix.sfx.gain,v);});
+fader('volAmb',function(v){Mix.ambVol=v;});
+fader('volDuck',function(v){Mix.duckDepth=v;},function(v){return '-'+Math.round(v*100)+'%';});
+fader('volMaster',function(v){Mix.masterVol=v;});
+// strip meters: bus level in dB (-48..0); the ducking meter shows how far the music is pulled down
+var meterEls={};$$('#audioTogs .strip-meter').forEach(function(m){meterEls[m.getAttribute('data-m')]=m.firstElementChild;});
+// each read sees ~1 ms of audio, so bars jump up instantly and fall back slowly, like a real meter
+var meterBuf=new Float32Array(64),meterLv={},meterT=0;
+function busLevel(an){if(!an)return 0;an.getFloatTimeDomainData(meterBuf);var p=0;for(var i=0;i<meterBuf.length;i++)p=Math.max(p,Math.abs(meterBuf[i]));return p<1e-4?0:clamp(1+20*Math.log10(p)/48,0,1);}
+(function meters(now){
+  requestAnimationFrame(meters);
+  var dt=Math.min(0.1,(now-meterT)/1000||0);meterT=now;
+  if(!sd.visible)return;
+  var r=Mix.ready;
+  var lv={music:r?busLevel(Mix.musicAn):0,sfx:r?busLevel(Mix.sfxAn):0,amb:r?busLevel(Mix.ambAn):0,duck:r&&afx.duck?1-Mix.duck.gain.value:0,master:r?busLevel(Mix.outAn):0};
+  for(var k in meterEls){var v=k==='duck'?lv[k]:Math.max(lv[k],(meterLv[k]||0)-dt*1.2);meterLv[k]=v;meterEls[k].style.height=(v*100).toFixed(1)+'%';}
+})(0);
 // chips show the song's layers; lit ones are playing right now
 setInterval(function(){
   if(!sd.visible)return;
@@ -1582,7 +1649,7 @@ $$('.copy[data-copy]').forEach(function(btn){
 
 // one section at a time: the URL hash picks the section, the rest are hidden
 var slides=$$('section[data-slide]'),navLinks=$$('.lvnav a'),lvnav=$('.lvnav');
-var NAMES={start:'Start',prologue:'Prologue',frame:'The Frame',juice:'Juice',audio:'Sound & Music',enemies:'Fair Enemies',progress:'Progress',boss:'Boss Fight','before-after':'Before & After','cheat-codes':'Cheat Codes'};
+var NAMES={start:'Start',prologue:'Prologue',frame:'Start, Pause & Game Over',juice:'Hit Effects',audio:'Sound & Music',enemies:'Fair Enemies',progress:'Difficulty & High Score',boss:'Fixing Bugs','before-after':'Before & After','cheat-codes':'Questions & Prompts'};
 var cur=0,pgPrev=$('#pgPrev'),pgNext=$('#pgNext'),pgCount=$('#pgCount');
 function indexOfId(id){for(var i=0;i<slides.length;i++)if(slides[i].id===id)return i;return -1;}
 function pagerLink(a,s){a.style.visibility=s?'visible':'hidden';if(s){a.href='#'+s.id;a.querySelector('b').textContent=NAMES[s.id]||s.id;}}
