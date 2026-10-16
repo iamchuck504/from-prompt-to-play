@@ -551,9 +551,10 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <div class="controls" id="enemyTogs">
         <button class="tog" type="button" data-k="telegraph">TELEGRAPH</button>
         <button class="tog" type="button" data-k="recovery">RECOVERY WINDOW</button>
+        <button class="tog" type="button" data-k="sound">SOUND</button>
         <button class="dbtn" type="button" id="resetEnemy">RESET SCORE</button>
       </div>
-      <p class="hint">Walk close to the guard. With both switches off, it attacks with no warning and you can never hit back. Turn on the telegraph to see attacks coming, and the recovery window to fight back: click the guard (or press Space next to it) while it is dizzy.</p>
+      <p class="hint">Walk close to the guard. With both switches off, it attacks with no warning and you can never hit back. Turn on the telegraph to see attacks coming, and the recovery window to fight back: click the guard (or press Space next to it) while it is dizzy. Sound is on, using what you learned in Level 3: listen for the guard spotting you, attacking and getting dizzy. Use the SOUND switch to mute it.</p>
     </div>
   </div>
 </section>
@@ -595,10 +596,11 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <div class="controls" id="progTogs">
         <button class="tog" type="button" data-k="waves">DIFFICULTY WAVES</button>
         <button class="tog" type="button" data-k="save">SAVE HIGH SCORE</button>
+        <button class="tog" type="button" data-k="sound">SOUND</button>
         <button class="dbtn" type="button" id="resetProg">RESET DEMO</button>
       </div>
       <p class="status" id="stProg">WAVE <b>1</b></p>
-      <p class="hint">Here each wave lasts only 10 seconds, so you can watch the curve during the talk. With waves off, the speed never changes. Turn on "save high score", set a best score, then reload the page: it is still there.</p>
+      <p class="hint">Here each wave lasts only 10 seconds, so you can watch the curve during the talk. With waves off, the speed never changes. Turn on "save high score", set a best score, then reload the page: it is still there. Sound is on here too; use the SOUND switch to mute it.</p>
     </div>
   </div>
 </section>
@@ -768,7 +770,12 @@ var SFX={
   start:function(){[523,659,784].forEach(function(f,i){tone('square',f,0,0.09,0.05,i*0.07);});},
   warn:function(){tone('square',880,0,0.04,0.025);},
   windup:function(){tone('square',260,900,0.55,0.05);},
-  counter:function(){tone('triangle',520,1300,0.16,0.09);}
+  counter:function(){tone('triangle',520,1300,0.16,0.09);},
+  alert:function(){tone('square',880,0,0.05,0.05);tone('square',1175,0,0.08,0.05,0.07);},
+  dash:function(){tone('sawtooth',260,70,0.18,0.06);},
+  dizzy:function(){tone('triangle',700,350,0.25,0.05);tone('triangle',600,300,0.25,0.04,0.25);},
+  over:function(){[392,330,262,196].forEach(function(f,i){tone('square',f,0,0.14,0.05,i*0.12);});},
+  best:function(){[523,659,784,1047,1319].forEach(function(f,i){tone('square',f,0,0.1,0.05,0.5+i*0.07);});}
 };
 
 /* ---------- particles ---------- */
@@ -817,7 +824,7 @@ function register(d){demos.push(d);d.cv.__demo=d;if(io)io.observe(d.cv);else d.v
 /* ---------- Dodge: levels 1, 4 and 6 ---------- */
 function Dodge(cv,id,opts,onChange){
   this.cv=cv;this.id=id;this.W=640;this.H=400;this.c=setup(cv,640,400);
-  this.o={frame:false,juice:false,telegraph:false,waves:false,save:false,score:false,art:true};
+  this.o={frame:false,juice:false,telegraph:false,waves:false,save:false,score:false,art:true,sound:false};
   for(var k in opts)this.o[k]=opts[k];
   this.onChange=onChange||function(){};
   this.left=false;this.right=false;this.px=null;this.down=false;this.memBest=0;
@@ -834,7 +841,13 @@ Dodge.prototype.newRun=function(){
 };
 Dodge.prototype.reset=function(){this.newRun();this.setState(this.o.frame?'title':'play');};
 Dodge.prototype.setState=function(s){this.state=s;this.onChange(this);};
-Dodge.prototype.start=function(){this.newRun();this.setState('play');if(this.o.juice)SFX.start();if(this.o.waves)this.banner={text:'WAVE 1',t:1.2};};
+// sound plays with juice on (Before & After) or with its own switch (Level 5)
+Dodge.prototype.snd=function(){return this.o.juice||this.o.sound;};
+Dodge.prototype.musicWant=function(){
+  if(!this.snd()||this.state==='over'||this.state==='frozen')return null;
+  return this.state==='play'?{name:'stage',layers:SONGS.stage.layers,vol:0.6}:{name:'menu',layers:SONGS.menu.layers,vol:0.6};
+};
+Dodge.prototype.start=function(){this.newRun();this.setState('play');if(this.snd())SFX.start();if(this.o.waves)this.banner={text:'WAVE 1',t:1.2};};
 Dodge.prototype.diff=function(){if(!this.o.waves)return {speed:250,interval:0.5};var k=Math.pow(1.2,this.wave-1);return {speed:Math.min(620,210*k),interval:Math.max(0.17,0.6/k)};};
 Dodge.prototype.bind=function(){
   var self=this,cv=this.cv;
@@ -860,16 +873,17 @@ Dodge.prototype.bind=function(){
   function up(){self.down=false;self.px=null;}
   cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
 };
-Dodge.prototype.spawn=function(vy){var s=rand(24,46),x=rand(s/2,this.W-s/2);if(this.o.telegraph){this.warns.push({x:x,s:s,t:0.6,vy:vy});if(this.o.juice&&Math.random()<0.5)SFX.warn();}else this.blocks.push({x:x,y:-s,s:s,vy:vy});};
+Dodge.prototype.spawn=function(vy){var s=rand(24,46),x=rand(s/2,this.W-s/2);if(this.o.telegraph){this.warns.push({x:x,s:s,t:0.6,vy:vy});if(this.snd()&&Math.random()<0.5)SFX.warn();}else this.blocks.push({x:x,y:-s,s:s,vy:vy});};
 Dodge.prototype.hit=function(){
   var P=this.p;
   if(this.o.juice){this.stop=0.2;this.dying=true;this.shake=reduceMotion?5:14;P.flash=0.3;burst(this.parts,P.x,this.ground-P.h/2,40,[C.coral,C.gold,C.white],420,120);SFX.hurt();}
-  else this.finish();
+  else{if(this.o.sound)SFX.hurt();this.finish();}
 };
 Dodge.prototype.finish=function(){
   this.dying=false;var sc=Math.floor(this.score);
   if(this.o.frame||this.o.save){var b=this.bestValue();this.newBest=sc>b&&sc>0;if(this.newBest)this.setBest(sc);}
   this.setState(this.o.frame?'over':'frozen');
+  if(this.snd()&&this.o.frame){SFX.over();if(this.newBest)SFX.best();}
 };
 Dodge.prototype.update=function(dt){
   var o=this.o,P=this.p,g=this.ground,i;
@@ -885,7 +899,7 @@ Dodge.prototype.update=function(dt){
   P.x=clamp(P.x+P.vx*dt,P.w/2,this.W-P.w/2);
   if(o.juice){var s=Math.min(0.3,Math.abs(P.vx)/380*0.3);P.sx=1+s;P.sy=1-s*0.6;}else{P.sx=1;P.sy=1;}
   if(o.waves){
-    if(this.calm>0){this.calm-=dt;if(this.calm<=0){this.wave++;this.waveT=0;this.banner={text:'WAVE '+this.wave,t:1.2};if(o.juice)SFX.start();this.onChange(this);}}
+    if(this.calm>0){this.calm-=dt;if(this.calm<=0){this.wave++;this.waveT=0;this.banner={text:'WAVE '+this.wave,t:1.2};if(this.snd())SFX.start();this.onChange(this);}}
     else{this.waveT+=dt;if(this.waveT>=10){this.calm=2.5;this.banner={text:'BREATHE',t:1.4};}}
   }
   var D=this.diff(),calm=o.waves&&this.calm>0;
@@ -1039,7 +1053,10 @@ function Guard(cv,fx,onState){
   this.e={x:380,y:110,s:40,wi:1,state:'PATROL',timer:0,dx:0,dy:0,fl:0,kbx:0,kby:0,stun:0};
   this.bind();this.set('PATROL');
 }
-Guard.prototype.set=function(s,t){this.e.state=s;this.e.timer=t||0;this.onState(s);};
+Guard.prototype.musicWant=function(){return this.fx.sound?{name:'boss',layers:['BASS','DRUMS'],vol:0.45}:null;};
+Guard.prototype.set=function(s,t){
+  if(this.fx.sound){if(s==='CHASE'&&this.e.state==='PATROL')SFX.alert();else if(s==='ATTACK')SFX.dash();else if(s==='RECOVER'&&this.fx.recovery)SFX.dizzy();}
+  this.e.state=s;this.e.timer=t||0;this.onState(s);};
 Guard.prototype.bind=function(){
   var self=this,cv=this.cv;
   var map={ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',D:'r',ArrowUp:'u',w:'u',W:'u',ArrowDown:'dn',s:'dn',S:'dn'};
@@ -1058,7 +1075,7 @@ Guard.prototype.bind=function(){
 Guard.prototype.tryCounter=function(clicked){
   var E=this.e,P=this.pl,near=Math.hypot(E.x-P.x,E.y-P.y)<80;
   if(E.state==='RECOVER'&&this.fx.recovery&&(clicked||near)){
-    this.counters++;E.fl=0.15;burst(this.parts,E.x,E.y,30,[C.gold,C.white,C.mint],380,0);this.shake=reduceMotion?3:8;SFX.counter();
+    this.counters++;E.fl=0.15;burst(this.parts,E.x,E.y,30,[C.gold,C.white,C.mint],380,0);this.shake=reduceMotion?3:8;if(this.fx.sound)SFX.counter();
     var a=Math.atan2(E.y-P.y,E.x-P.x);E.kbx=Math.cos(a)*420;E.kby=Math.sin(a)*420;E.stun=1;this.set('PATROL');
   }
 };
@@ -1080,7 +1097,7 @@ Guard.prototype.update=function(dt){
     if(dist<170)this.set('CHASE');
   }else if(E.state==='CHASE'){
     if(dist>0){E.x+=dx/dist*130*dt;E.y+=dy/dist*130*dt;}
-    if(dist<85){this.set('WIND-UP',f.telegraph?0.6:0.1);if(f.telegraph)SFX.windup();}
+    if(dist<85){this.set('WIND-UP',f.telegraph?0.6:0.1);if(f.telegraph&&f.sound)SFX.windup();}
     else if(dist>280)this.set('PATROL');
   }else if(E.state==='WIND-UP'){
     E.timer-=dt;
@@ -1089,7 +1106,7 @@ Guard.prototype.update=function(dt){
     E.timer-=dt;E.x+=E.dx*620*dt;E.y+=E.dy*620*dt;
     var ndx=P.x-E.x,ndy=P.y-E.y,nd=Math.hypot(ndx,ndy);
     if(nd<P.r+E.s/2-4&&P.inv<=0){
-      this.hits++;P.flash=0.5;P.inv=0.9;this.shake=reduceMotion?3:10;burst(this.parts,P.x,P.y,22,[C.coral,C.white],300,0);SFX.hurt();
+      this.hits++;P.flash=0.5;P.inv=0.9;this.shake=reduceMotion?3:10;burst(this.parts,P.x,P.y,22,[C.coral,C.white],300,0);if(f.sound)SFX.hurt();
       var k=nd||1;P.x=clamp(P.x+ndx/k*44,P.r,this.W-P.r);P.y=clamp(P.y+ndy/k*44,P.r+36,this.H-P.r);
     }
     if(E.timer<=0)this.set('RECOVER',f.recovery?1.0:0.12);
@@ -1447,7 +1464,7 @@ setInterval(function(){
 },120);
 
 // Level 4
-var efx={telegraph:false,recovery:false};
+var efx={telegraph:false,recovery:false,sound:true};
 var chips=$$('#enemies .states li[data-s]');
 var gd=new Guard($('#cvEnemy'),efx,function(s){chips.forEach(function(li){li.classList.toggle('on',li.getAttribute('data-s')===s);});});
 register(gd);wireToggles($('#enemyTogs'),efx);
@@ -1455,7 +1472,7 @@ $('#resetEnemy').addEventListener('click',function(){gd.hits=0;gd.counters=0;});
 
 // Level 5
 var stProg=$('#stProg');
-var gProg=new Dodge($('#cvProgress'),'progress',{frame:true,telegraph:true,score:true,waves:true,save:true},function(g){
+var gProg=new Dodge($('#cvProgress'),'progress',{frame:true,telegraph:true,score:true,waves:true,save:true,sound:true},function(g){
   stProg.innerHTML='';var t=g.o.waves?'WAVE ':'WAVES OFF · FLAT SPEED';stProg.appendChild(document.createTextNode(t));
   if(g.o.waves){var b=document.createElement('b');b.textContent=String(g.wave);stProg.appendChild(b);}
   stProg.appendChild(document.createTextNode(g.o.save?' · BEST SAVED IN THIS BROWSER':' · BEST FORGOTTEN ON RELOAD'));
@@ -1493,11 +1510,6 @@ $('#tryReset').addEventListener('click',function(){tries=0;renderTries();});
 // Level 7
 var baItems=$$('#baList li');
 var gBA=new Dodge($('#cvBA'),'ba',{art:false},function(){});
-// game mode gets music too: menu theme on title/pause, stage music while playing, silence on game over
-gBA.musicWant=function(){
-  if(!gBA.o.juice||gBA.state==='over')return null;
-  return gBA.state==='play'?{name:'stage',layers:SONGS.stage.layers,vol:0.7}:{name:'menu',layers:SONGS.menu.layers,vol:0.7};
-};
 register(gBA);
 function setMode(game){
   ['frame','juice','telegraph','waves','save','score','art'].forEach(function(k){gBA.o[k]=game;});
