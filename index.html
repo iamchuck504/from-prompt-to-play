@@ -216,11 +216,26 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;justify-content:spac
 .pbar[hidden]{display:none}
 .pbar button{font-family:var(--pixel);font-size:10px;min-height:44px;min-width:44px;padding:0 12px;background:var(--gold);color:var(--ink);border:0;cursor:pointer}
 .pbar button.exit{background:transparent;color:var(--gold);border:2px solid var(--gold)}
-html.present section[data-slide]{min-height:calc(100svh - 64px)}
+/* fill: the visible section stretches to the screen; JS sets min-height and a zoom that grows it on big screens */
+section[data-slide]{display:flex;flex-direction:column}
+section[data-slide]>.wrap{width:100%;box-sizing:border-box}
+.hero,.prologue,.ba,.codes{justify-content:center}
+.lv-body{flex:1;align-content:center}
+/* wide screens: levels use a wider design, lesson flows into two columns next to the demo */
+html.wide .lv-head .wrap,html.wide .lv-body{max-width:1680px}
+html.wide .lv-body{grid-template-columns:minmax(0,2fr) minmax(0,1.2fr)}
+html.wide .lesson{display:block;columns:2;column-gap:28px}
+html.wide .lesson>*{break-inside:avoid;margin:0 0 22px}
+html.wide .lesson>.prompt{margin:4px 4px 26px}
+html.wide #boss .lv-body{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
+html.wide #boss .lesson{columns:1}
+html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+/* header, pager and footer line up with the zoomed content (JS sets --chrome-w) */
+.top .wrap,.pager-band .wrap,footer .wrap{max-width:var(--chrome-w,1180px)}
 
 /* pager: one section per screen, prev / next between them */
-.pager-band{background:var(--indigo-deep);border-top:4px solid var(--gold)}
-.pager{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding-block:16px}
+.pager-band{background:var(--indigo-deep);border-top:4px solid var(--gold);position:sticky;bottom:0;z-index:20}
+.pager{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding-block:8px}
 .pg{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--white);min-height:44px;justify-content:center;min-width:0}
 .pg .px{font-size:9px;color:var(--gold)}
 .pg b{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.1;overflow-wrap:anywhere}
@@ -635,7 +650,9 @@ var $=function(s,r){return (r||document).querySelector(s);};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 function rand(a,b){return a+Math.random()*(b-a);}
-var DPR=Math.min(2,window.devicePixelRatio||1);
+// sections are designed at FIT_W wide and zoom up to FIT_MAX on big screens; canvases get extra pixels so they stay sharp
+var FIT_W=1212,FIT_MAX=2.2;
+var DPR=Math.min(3,(window.devicePixelRatio||1)*clamp(document.documentElement.clientWidth/FIT_W,1,FIT_MAX));
 var C={ink:'#1D1B33',night:'#14122B',night2:'#221F45',line:'#4A4766',lav:'#9FA0FF',lavSoft:'#C9C9FF',gold:'#FFD84D',coral:'#FF6B7D',coralDeep:'#B4234F',mint:'#8FE36B',grass:'#5BC236',dirt:'#8A5A2B',white:'#FFFFFF',orange:'#FFB347',rust:'#9A330A',muted:'#9A98B8'};
 var PIX="'Press Start 2P', 'Courier New', monospace";
 var reduceMotion=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -1105,10 +1122,24 @@ function show(i){
   pagerLink(pgPrev,slides[i-1]);pagerLink(pgNext,slides[i+1]);
   pgCount.textContent=(i+1)+' / '+slides.length;
   document.title=(i?NAMES[id]+' · ':'')+'From Prompt to Play';
+  fit();
   window.scrollTo(0,0);
+}
+// fill the space between header and pager; grow to fit width or height, whichever runs out first, never shrink
+var topBar=$('.top'),pagerBand=$('.pager-band'),foot=$('footer');
+function fit(){
+  var s=slides[cur],cw=document.documentElement.clientWidth,wide=cw>=1500;s.style.zoom='';s.style.minHeight='';
+  document.documentElement.classList.toggle('wide',wide);
+  var designW=(wide&&s.querySelector('.lv-body'))?1712:FIT_W;
+  var avail=window.innerHeight-topBar.offsetHeight-pagerBand.offsetHeight-foot.offsetHeight;
+  // on wide screens a level may shrink a little (to 85%) so it fits without scrolling
+  var k=clamp(Math.min(cw/designW,avail/s.offsetHeight),wide?0.85:1,FIT_MAX);
+  s.style.zoom=String(k);s.style.minHeight=(avail/k)+'px';
+  document.documentElement.style.setProperty('--chrome-w',Math.round((designW-32)*k)+'px');
 }
 function route(){var i=indexOfId(location.hash.slice(1));show(i<0?0:i);}
 window.addEventListener('hashchange',route);
+var fitT=0;window.addEventListener('resize',function(){clearTimeout(fitT);fitT=setTimeout(fit,100);});
 route();
 var presenting=false,pbar=$('#pbar'),pbtn=$('#presentBtn');
 function go(d){var i=clamp(cur+d,0,slides.length-1);if(i!==cur)location.hash=slides[i].id;}
@@ -1131,7 +1162,7 @@ document.addEventListener('keydown',function(e){
   else if(e.key==='Escape'){setPresent(false);}
 });
 
-if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){demos.forEach(function(d){d.draw();});});}
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){fit();demos.forEach(function(d){d.draw();});});}
 requestAnimationFrame(loop);
 })();
 </script>
