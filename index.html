@@ -1,0 +1,1107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>From Prompt to Play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=JetBrains+Mono:wght@500;700&family=Nunito:wght@500;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* Layout: full-width colored bands like game "worlds"; one 1180px column inside; each level = lesson column + a live demo console */
+:root{
+  --ink:#1D1B33; --paper:#FFFDF7; --white:#FFFFFF;
+  --indigo:#2E2C8F; --indigo-deep:#15145A; --indigo-mid:#1F1D6B; --lav:#9FA0FF; --lav-soft:#E4E4FF;
+  --night:#14122B; --night-2:#221F45; --night-line:#4A4766; --night-muted:#A9A7C6; --night-text:#D9D8EE;
+  --gold:#FFD84D; --gold-ink:#6B4A00; --gold-soft:#FFF3C4; --mint:#8FE36B; --coral:#FF6B7D;
+  --grass:#5BC236; --dirt:#8A5A2B;
+  --lv:#2E2C8F; --lv-edge:#FFD84D; --lv-text:#E4E4FF; --lv-soft:#ECEBFF; --lv-strong:#2E2C8F;
+  --display:'Baloo 2','Trebuchet MS',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --pixel:'Press Start 2P','Courier New',monospace;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme: light;
+}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--indigo-deep)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.paper :focus-visible{outline-color:var(--indigo)}
+h1,h2,h3{text-wrap:balance}
+.px{font-family:var(--pixel);letter-spacing:1px;line-height:1.7}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--indigo-deep);color:var(--white);border-bottom:4px solid var(--gold)}
+.top-in{display:flex;align-items:center;gap:14px;padding-block:6px}
+.brand{font-family:var(--pixel);font-size:10px;letter-spacing:1px;color:var(--gold);text-decoration:none;flex:none;line-height:1.6}
+.lvnav{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;padding-block:4px}
+.lvnav::-webkit-scrollbar{display:none}
+.lvnav a{font-family:var(--pixel);font-size:10px;color:var(--lav-soft);text-decoration:none;border:2px solid var(--indigo);padding:0 10px;flex:none;min-height:40px;display:flex;align-items:center}
+.lvnav a:hover{border-color:var(--lav)}
+.lvnav a[aria-current="true"]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.present-btn{flex:none;font-family:var(--pixel);font-size:9px;min-height:40px;padding:0 12px;background:var(--gold);color:var(--ink);border:0;cursor:pointer;box-shadow:3px 3px 0 var(--indigo)}
+.present-btn[aria-pressed="true"]{background:var(--coral);color:var(--ink)}
+@media (max-width:620px){.brand{display:none}}
+
+section[data-slide]{scroll-margin-top:64px}
+
+/* hero */
+.hero{background:var(--indigo);color:var(--white);position:relative;overflow:hidden}
+.hero .wrap{padding-block:56px 92px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:start;position:relative}
+.hero .eyebrow{font-family:var(--pixel);font-size:11px;letter-spacing:1px;color:var(--gold);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hearts{display:flex;gap:6px}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(54px,9vw,104px);line-height:.92;margin:22px 0 10px}
+.hero .sub{font-family:var(--display);font-weight:600;font-size:clamp(22px,3vw,32px);color:var(--gold);line-height:1.15;margin:0 0 16px}
+.hero .lede{font-size:19px;color:var(--lav-soft);max-width:54ch;margin:0 0 26px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.cta{font-family:var(--pixel);font-size:13px;background:var(--gold);color:var(--ink);padding:16px 18px;text-decoration:none;box-shadow:5px 5px 0 var(--indigo-deep);display:inline-flex;align-items:center;min-height:44px}
+.cleared{font-family:var(--pixel);font-size:9px;color:#C9C9FF;border:2px solid var(--lav);padding:12px 14px;display:inline-flex;gap:10px;align-items:center}
+.levelselect{background:var(--indigo-mid);border:4px solid var(--white);outline:4px solid var(--indigo-deep);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:2px}
+.levelselect .px{font-size:12px;color:var(--gold);margin-bottom:8px}
+.levelselect a{display:flex;gap:14px;align-items:center;color:var(--white);text-decoration:none;padding:6px 4px;font-weight:800;font-size:18px;min-height:40px}
+.levelselect a .n{font-family:var(--pixel);font-size:10px;color:var(--lav);width:30px;flex:none}
+.levelselect a .t{flex:1;min-width:0}
+.levelselect a .m{font-family:var(--pixel);font-size:8px;color:#C9C9FF;flex:none}
+.levelselect a:hover .t,.levelselect a:hover .n{color:var(--gold)}
+.star{position:absolute;background:var(--gold)}
+.ground{position:absolute;left:0;right:0;bottom:0;height:28px}
+.ground::before,.ground::after{content:"";position:absolute;left:0;right:0;height:14px}
+.ground::before{top:0;background:var(--grass)}
+.ground::after{bottom:0;background:var(--dirt)}
+@media (max-width:920px){.hero .wrap{grid-template-columns:minmax(0,1fr)}}
+
+/* prologue */
+.night{background:var(--night);color:var(--white)}
+.prologue .wrap{padding-block:56px}
+.cut{font-family:var(--pixel);font-size:10px;color:var(--lav);display:flex;justify-content:space-between;margin-bottom:28px}
+.pro-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:40px}
+.pro-grid h2{font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,60px);line-height:1;margin:10px 0 14px}
+.pro-grid p{color:var(--night-text);margin:0 0 18px;max-width:46ch}
+.vs{display:flex;flex-direction:column;gap:10px}
+.vs div{border-radius:12px;padding:12px 16px}
+.vs .a{border:2px solid var(--night-line);color:var(--night-text)}
+.vs .b{background:var(--gold);color:var(--ink);box-shadow:5px 5px 0 #6E6DD6}
+.vs .px{font-size:9px;display:block}
+.ingredients{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;list-style:none;margin:0;padding:0}
+.ingredients li{background:var(--night-2);border:2px solid #6E6DD6;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.ingredients b{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.1}
+.ingredients span{color:var(--night-text);font-size:16px}
+.ingredients a{font-family:var(--pixel);font-size:9px;color:var(--lav);text-decoration:none;margin-top:auto}
+.ingredients a:hover{color:var(--gold)}
+.howto{margin-top:18px;border:2px dashed #FF8A4C;border-radius:12px;padding:14px 18px;color:var(--night-text);font-size:16px}
+.howto .px{font-size:9px;color:#FF8A4C;display:block;margin-bottom:4px}
+@media (max-width:820px){.pro-grid{grid-template-columns:minmax(0,1fr)}.ingredients{grid-template-columns:minmax(0,1fr)}}
+
+/* levels */
+.lv-frame{--lv:#2E2C8F;--lv-edge:#FFD84D;--lv-text:#E4E4FF;--lv-soft:#ECEBFF;--lv-strong:#2E2C8F}
+.lv-juice{--lv:#9A330A;--lv-edge:#FFB347;--lv-text:#FFE1CF;--lv-soft:#FDEBE1;--lv-strong:#B83A08}
+.lv-enemies{--lv:#7A1F3D;--lv-edge:#FF6B7D;--lv-text:#FFDCE6;--lv-soft:#FBE4EC;--lv-strong:#A51F48}
+.lv-progress{--lv:#245F18;--lv-edge:#8FE36B;--lv-text:#DDF5D2;--lv-soft:#E6F5DF;--lv-strong:#2A6E1C}
+.lv-boss{--lv:#3B1C5A;--lv-edge:#C9A2FF;--lv-text:#E9DCF7;--lv-soft:#F0E6FA;--lv-strong:#5B2A86}
+.lv-head{background:var(--lv);color:var(--white);border-bottom:6px solid var(--lv-edge)}
+.lv-head .wrap{padding-block:44px 34px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px 32px}
+.lv-head .eyebrow{font-family:var(--pixel);font-size:11px;letter-spacing:1px;color:var(--gold);display:flex;gap:14px;flex-wrap:wrap}
+.lv-head .eyebrow span:last-child{color:var(--lv-text)}
+.lv-head h2{font-family:var(--display);font-weight:800;font-size:clamp(42px,6vw,66px);line-height:1;margin:10px 0 6px}
+.lv-head p{margin:0;font-size:19px;color:var(--lv-text);max-width:46ch}
+.keyterm{border:2px solid var(--gold);padding:12px 16px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.keyterm .px{font-size:9px;color:var(--gold)}
+.keyterm b{font-size:20px}
+.lv-body{padding-block:40px 60px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:40px;align-items:start}
+@media (max-width:960px){.lv-body{grid-template-columns:minmax(0,1fr)}}
+.lesson{display:flex;flex-direction:column;gap:22px;min-width:0}
+.label{font-family:var(--pixel);font-size:10px;letter-spacing:1px;color:var(--lv-strong);line-height:1.7}
+.lesson h3{font-family:var(--display);font-weight:800;font-size:32px;line-height:1.05;margin:4px 0 0}
+.concepts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;list-style:none;margin:0;padding:0}
+.concepts li{background:var(--lv-soft);border:2px solid var(--lv-strong);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.concepts b{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.15}
+.concepts span{font-size:15px;line-height:1.42}
+.why{background:var(--gold-soft);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+.why .px{font-size:9px;color:var(--gold-ink)}
+.why p{margin:0;font-size:17px}
+.prompt{background:var(--ink);color:var(--white);border:4px solid var(--white);outline:4px solid var(--ink);border-radius:6px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;margin:4px}
+.prompt-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.prompt-head .px{font-size:10px;color:var(--gold)}
+.ptext{font-family:var(--mono);font-size:15px;line-height:1.55;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.copy{font-family:var(--pixel);font-size:9px;min-height:40px;padding:0 12px;background:var(--gold);color:var(--ink);border:0;cursor:pointer}
+.copy:active{transform:translateY(1px)}
+.refs{display:flex;flex-direction:column;gap:8px}
+.refs ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.refs li{font-size:15px;line-height:1.35}
+.refs a{font-weight:800;color:var(--lv-strong)}
+.refs small{display:block;color:#5D5A78;font-size:13px}
+
+/* demo console */
+.demo{background:var(--night);color:var(--night-text);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--lv-strong);min-width:0}
+.demo-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.demo-top .px{font-size:9px;color:var(--gold)}
+.demo-top .px.dim{color:var(--night-muted)}
+.screen{display:block;width:100%;height:auto;aspect-ratio:16/10;max-width:100%;border-radius:6px;background:var(--night);touch-action:none;cursor:crosshair}
+.screen.chart{aspect-ratio:640/150;cursor:default;touch-action:auto}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+.tog,.dbtn{display:inline-flex;align-items:center;gap:10px;font-family:var(--pixel);font-size:9px;line-height:1.5;min-height:44px;padding:6px 12px;border:2px solid var(--night-line);background:var(--night-2);color:var(--night-text);cursor:pointer;text-align:left}
+.tog::before{content:"OFF";font-size:8px;padding:3px 5px;background:var(--night-line);color:var(--white);flex:none}
+.tog[aria-pressed="true"]{border-color:var(--gold);color:var(--white)}
+.tog[aria-pressed="true"]::before{content:"ON";background:var(--mint);color:var(--ink)}
+.dbtn:hover,.tog:hover{border-color:var(--lav)}
+.status{font-family:var(--pixel);font-size:9px;line-height:1.8;color:var(--lav-soft);margin:0}
+.status b{color:var(--gold);font-weight:400}
+.hint{font-size:14px;color:var(--night-muted);margin:0}
+.range{display:inline-flex;align-items:center;gap:10px;font-family:var(--pixel);font-size:9px;min-height:44px;padding:0 12px;border:2px solid var(--night-line);background:var(--night-2)}
+.range input{width:120px;accent-color:var(--gold)}
+.states{display:flex;flex-wrap:wrap;gap:6px;align-items:center;list-style:none;margin:0;padding:0}
+.states li{font-family:var(--pixel);font-size:9px;padding:8px 10px;border:2px solid var(--night-line);color:var(--night-muted)}
+.states li.arrow{border:0;padding:0 2px;color:var(--night-line)}
+.states li.on{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+
+/* boss form */
+.bug{display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:var(--pixel);font-size:9px;color:var(--lav-soft);line-height:1.6}
+.field label i{font-style:normal;color:var(--night-muted)}
+.field input,.field textarea{font-family:var(--body);font-size:16px;color:var(--white);background:var(--night-2);border:2px solid var(--night-line);border-radius:6px;padding:10px 12px;width:100%;box-sizing:border-box}
+.field textarea{min-height:64px;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--gold);outline:none}
+.example{font-family:var(--pixel);font-size:8px;background:var(--gold);color:var(--ink);padding:3px 6px}
+.out{background:var(--ink);border:2px solid var(--gold);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.out .ptext{font-size:14px;color:var(--white)}
+.tries{display:flex;flex-wrap:wrap;align-items:center;gap:12px;border-top:2px dashed var(--night-line);padding-top:12px}
+.tries .count{font-family:var(--pixel);font-size:20px;color:var(--gold);min-width:2ch;font-variant-numeric:tabular-nums}
+.tries p{margin:0;flex:1 1 220px;font-size:15px;color:var(--night-text)}
+.tries p.warn{color:var(--coral)}
+
+/* before and after */
+.ba .wrap{padding-block:56px 64px;display:flex;flex-direction:column;gap:24px}
+.ba-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px}
+.ba-head .px{font-size:11px;color:var(--gold)}
+.ba-head h2{font-family:var(--display);font-weight:800;font-size:clamp(42px,6vw,64px);line-height:1;margin:8px 0 6px}
+.ba-head p{margin:0;color:var(--night-text);max-width:52ch}
+.case{border:2px solid #6E6DD6;padding:12px 16px;display:flex;flex-direction:column;gap:4px}
+.case .px{font-size:9px;color:var(--lav)}
+.case a{font-weight:800;font-size:18px;color:var(--gold);text-decoration:none}
+.case a:hover{text-decoration:underline}
+.ba-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:960px){.ba-grid{grid-template-columns:minmax(0,1fr)}}
+.seg{display:flex;gap:0;border:2px solid var(--gold);align-self:flex-start}
+.seg button{font-family:var(--pixel);font-size:11px;min-height:48px;padding:0 18px;background:transparent;color:var(--gold);border:0;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+.checklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.checklist li{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--night-line);border-radius:10px;padding:12px 14px;color:var(--night-muted);font-size:16px}
+.checklist li .px{font-size:9px;flex:none;margin-top:3px}
+.checklist li .px::before{content:"\00D7"}
+.checklist li.on{border-color:var(--mint);color:var(--white)}
+.checklist li.on .px{color:var(--mint)}
+.checklist li.on .px::before{content:"OK"}
+.checklist li a{color:inherit;font-weight:800}
+
+/* cheat codes */
+.codes{background:var(--indigo);color:var(--white);position:relative}
+.codes .wrap{padding-block:56px 96px;display:flex;flex-direction:column;gap:26px}
+.codes h2{font-family:var(--display);font-weight:800;font-size:clamp(42px,6vw,64px);line-height:1;margin:8px 0 6px}
+.codes .lede{margin:0;color:var(--lav-soft);max-width:56ch}
+.code-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+@media (max-width:820px){.code-grid{grid-template-columns:minmax(0,1fr)}}
+.code-grid li{background:var(--ink);border:4px solid var(--white);outline:4px solid var(--indigo-deep);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;margin:4px}
+.code-grid .prompt-head .px{font-size:9px;color:var(--lav)}
+.quest{background:var(--gold);color:var(--ink);border-radius:12px;padding:18px 20px;box-shadow:5px 5px 0 var(--indigo-deep);display:flex;flex-direction:column;gap:4px;max-width:720px}
+.quest .px{font-size:10px;color:var(--gold-ink)}
+.quest p{margin:0;font-size:18px}
+footer{background:var(--dirt);color:#FFF1DE}
+footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:14px}
+
+/* presenter bar */
+.pbar{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;gap:8px;background:var(--indigo-deep);border:3px solid var(--gold);padding:8px}
+.pbar[hidden]{display:none}
+.pbar button{font-family:var(--pixel);font-size:10px;min-height:44px;min-width:44px;padding:0 12px;background:var(--gold);color:var(--ink);border:0;cursor:pointer}
+.pbar button.exit{background:transparent;color:var(--gold);border:2px solid var(--gold)}
+html.present{scroll-snap-type:y proximity}
+html.present section[data-slide]{min-height:calc(100svh - 64px);scroll-snap-align:start}
+
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#start">FROM PROMPT TO PLAY</a>
+    <nav class="lvnav" aria-label="Levels">
+      <a href="#start">START</a>
+      <a href="#prologue">00</a>
+      <a href="#frame">01</a>
+      <a href="#juice">02</a>
+      <a href="#enemies">03</a>
+      <a href="#progress">04</a>
+      <a href="#boss">05</a>
+      <a href="#before-after">06</a>
+      <a href="#cheat-codes">07</a>
+    </nav>
+    <button id="presentBtn" class="present-btn" type="button" aria-pressed="false">PRESENT</button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="start" data-slide>
+  <span class="star" style="left:52%;top:40px;width:6px;height:6px" aria-hidden="true"></span>
+  <span class="star" style="left:44%;top:300px;width:4px;height:4px;background:#FFFFFF" aria-hidden="true"></span>
+  <span class="star" style="left:7%;top:84%;width:6px;height:6px" aria-hidden="true"></span>
+  <span class="star" style="left:95%;top:30px;width:4px;height:4px;background:#9FA0FF" aria-hidden="true"></span>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">
+        <span>AUDIENCE GUIDE · PART 2</span>
+        <span class="hearts" aria-hidden="true">
+          <svg width="21" height="18" viewBox="0 0 7 6"><path fill="#FF6B7D" d="M1 0h2v1H1zM4 0h2v1H4zM0 1h7v2H0zM1 3h5v1H1zM2 4h3v1H2zM3 5h1v1H3z"></path></svg>
+          <svg width="21" height="18" viewBox="0 0 7 6"><path fill="#FF6B7D" d="M1 0h2v1H1zM4 0h2v1H4zM0 1h7v2H0zM1 3h5v1H1zM2 4h3v1H2zM3 5h1v1H3z"></path></svg>
+          <svg width="21" height="18" viewBox="0 0 7 6"><path fill="#FF6B7D" d="M1 0h2v1H1zM4 0h2v1H4zM0 1h7v2H0zM1 3h5v1H1zM2 4h3v1H2zM3 5h1v1H3z"></path></svg>
+        </span>
+      </div>
+      <h1>From Prompt to Play</h1>
+      <p class="sub">How to make your game feel like a game.</p>
+      <p class="lede">Your prototype works. Now we make it fun. Every level teaches one concept, shows it running in a live demo you can switch on and off, and gives you a prompt to paste into your own game.</p>
+      <div class="hero-actions">
+        <a class="cta" href="#prologue">▶ CONTINUE</a>
+        <span class="cleared"><svg width="16" height="14" viewBox="0 0 8 7" aria-hidden="true"><path fill="#8FE36B" d="M7 0h1v2H7zM6 2h1v1H6zM5 3h1v1H5zM4 4h1v1H4zM3 5h1v1H3zM2 4h1v1H2zM1 3h1v1H1zM0 2h1v1H0z"></path></svg>PART 1 CLEARED</span>
+      </div>
+    </div>
+    <nav class="levelselect" aria-label="Level select">
+      <div class="px">LEVEL SELECT · 45 MIN</div>
+      <a href="#prologue"><span class="n">00</span><span class="t">Prologue: It Moves. Is It a Game?</span><span class="m">3M</span></a>
+      <a href="#frame"><span class="n">01</span><span class="t">The Frame</span><span class="m">5M</span></a>
+      <a href="#juice"><span class="n">02</span><span class="t">Juice</span><span class="m">9M</span></a>
+      <a href="#enemies"><span class="n">03</span><span class="t">Fair Enemies</span><span class="m">6M</span></a>
+      <a href="#progress"><span class="n">04</span><span class="t">Progress</span><span class="m">7M</span></a>
+      <a href="#boss"><span class="n">05</span><span class="t">Boss Fight: Debugging</span><span class="m">6M</span></a>
+      <a href="#before-after"><span class="n">06</span><span class="t">Before &amp; After</span><span class="m">3M</span></a>
+      <a href="#cheat-codes"><span class="n" style="color:#FFD84D">07</span><span class="t" style="color:#FFD84D">Questions &amp; Cheat Codes</span><span class="m">6M</span></a>
+    </nav>
+  </div>
+  <div class="ground" aria-hidden="true"></div>
+</section>
+
+<section class="night prologue" id="prologue" data-slide>
+  <div class="wrap">
+    <div class="cut" aria-hidden="true"><span>CUTSCENE</span><span>PROLOGUE</span></div>
+    <div class="pro-grid">
+      <div>
+        <div class="px" style="font-size:11px;color:#FFD84D">PROLOGUE</div>
+        <h2>It Moves. Is It a Game?</h2>
+        <p>AI gets you a working prototype fast. What makes people want to keep playing is a different set of skills, and you can learn them.</p>
+        <div class="vs">
+          <div class="a"><span class="px">PROTOTYPE</span>A square that moves when you press a key.</div>
+          <div class="b"><span class="px" style="color:#6B4A00">GAME</span><b>Something you want to play again.</b></div>
+        </div>
+      </div>
+      <div>
+        <div class="px" style="font-size:11px;color:#FFD84D;margin-bottom:14px">THE FOUR INGREDIENTS</div>
+        <ul class="ingredients">
+          <li><b>Feedback</b><span>Every action gets an answer you can see and hear.</span><a href="#juice">LEVEL 02 ▶</a></li>
+          <li><b>Challenge</b><span>Something pushes back, and beating it takes skill.</span><a href="#enemies">LEVEL 03 ▶</a></li>
+          <li><b>Progress</b><span>You are getting better and moving toward something.</span><a href="#progress">LEVEL 04 ▶</a></li>
+          <li><b>Ritual</b><span>A clear start, a clear end, and one button to try again.</span><a href="#frame">LEVEL 01 ▶</a></li>
+        </ul>
+        <div class="howto"><span class="px">HOW TO USE THIS PAGE</span>Every demo starts in its "before" state. Click a demo to give it the keyboard, then switch effects on one at a time and feel the difference.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 1 -->
+<section class="lv-frame" id="frame" data-slide>
+  <div class="lv-head"><div class="wrap">
+    <div>
+      <div class="eyebrow"><span>LEVEL 1 OF 7</span><span>5 MIN</span></div>
+      <h2>The Frame</h2>
+      <p>Every game needs a beginning, a pause and an end.</p>
+    </div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Game states</b></div>
+  </div></div>
+  <div class="wrap lv-body paper">
+    <div class="lesson">
+      <div><div class="label">SCREEN FLOW</div><h3>Wrap your gameplay in a frame.</h3></div>
+      <ul class="concepts">
+        <li><b>Title screen</b><span>Sets the mood and lets the player get ready before anything can hurt them.</span></li>
+        <li><b>Pause</b><span>Real life interrupts. Freeze everything, including timers and spawns.</span></li>
+        <li><b>Game over</b><span>Losing needs a moment and a result, not a frozen screen.</span></li>
+        <li><b>One-button restart</b><span>The faster they can try again, the more they keep playing.</span></li>
+      </ul>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>The game always knows which state it is in, so a clear start and end turns a toy into a session.</p></div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p1">COPY PROMPT</button></div>
+        <p class="ptext" id="p1">Add game states: a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and restarts with one button. Keep the gameplay exactly as it is.</p>
+      </div>
+      <div class="refs"><div class="label">REFERENCES</div><ul>
+        <li><a href="https://gameprogrammingpatterns.com/state.html">Game Programming Patterns: State</a><small>gameprogrammingpatterns.com</small></li>
+        <li><a href="https://gameprogrammingpatterns.com/game-loop.html">Game Programming Patterns: Game Loop</a><small>gameprogrammingpatterns.com</small></li>
+      </ul></div>
+    </div>
+    <div class="demo">
+      <div class="demo-top"><span class="px">LIVE DEMO · DODGE</span><span class="px dim">ARROWS / A D · DRAG · P</span></div>
+      <canvas class="screen" id="cvFrame" tabindex="0" aria-label="Dodge demo. Use the arrow keys or A and D to move, or drag on touch screens. Space starts, P pauses, R retries."></canvas>
+      <div class="controls">
+        <button class="tog" type="button" data-k="frame" id="togFrame">THE FRAME</button>
+        <button class="dbtn" type="button" id="resetFrame">RESET DEMO</button>
+      </div>
+      <p class="status">CURRENT STATE: <b id="stFrame">NONE</b></p>
+      <p class="hint">With the frame off, the game starts the moment it loads and simply stops when you get hit. Turn it on to get a title screen, pause (P or Esc) and a game over screen with a one-button retry.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 2 -->
+<section class="lv-juice" id="juice" data-slide>
+  <div class="lv-head"><div class="wrap">
+    <div>
+      <div class="eyebrow"><span>LEVEL 2 OF 7</span><span>9 MIN</span></div>
+      <h2>Juice</h2>
+      <p>Feedback you can see and hear.</p>
+    </div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Game feel</b></div>
+  </div></div>
+  <div class="wrap lv-body paper">
+    <div class="lesson">
+      <div><div class="label">POWER-UPS</div><h3>Same rules. Way more satisfying.</h3></div>
+      <ul class="concepts">
+        <li><b>Screen shake</b><span>A short, small shake makes hits and explosions feel heavy.</span></li>
+        <li><b>Hit pause</b><span>Freeze for a few frames on impact so the hit lands.</span></li>
+        <li><b>Particles</b><span>Sparks, dust and debris confirm what just happened.</span></li>
+        <li><b>Hit flash</b><span>Whatever gets hit blinks white for a moment.</span></li>
+        <li><b>Squash &amp; stretch</b><span>Things stretch when they jump and squash when they land.</span></li>
+        <li><b>A sound for everything</b><span>Jump, hit, pickup, hurt. Sound is half of game feel.</span></li>
+      </ul>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Nothing about the rules changes, but every action now answers back, so the player feels it. Too much hides what is happening, so add one effect at a time.</p></div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p2">COPY PROMPT</button></div>
+        <p class="ptext" id="p2">When the player hits an enemy, add a short hit pause, a small screen shake, a white flash on the enemy and a burst of particles. Put the strength of each effect in one settings object so I can tune them.</p>
+      </div>
+      <div class="refs"><div class="label">REFERENCES</div><ul>
+        <li><b>Juice it or Lose it</b><small>Martin Jonasson &amp; Petri Purho, GDC talk (search it on YouTube)</small></li>
+        <li><b>The Art of Screenshake</b><small>Jan Willem Nijman, Vlambeer (search it on YouTube)</small></li>
+        <li><a href="https://sfxr.me/">jsfxr: free retro sound effects</a><small>sfxr.me</small></li>
+        <li><a href="https://freesound.org/">Freesound</a><small>freesound.org · check each sound's license</small></li>
+      </ul></div>
+    </div>
+    <div class="demo">
+      <div class="demo-top"><span class="px">LIVE DEMO · HIT THE BLOCKS</span><span class="px dim">CLICK · SPACE · ENTER</span></div>
+      <canvas class="screen" id="cvJuice" tabindex="0" aria-label="Juice demo. Click or tap a block to hit it, click empty space or press Space to jump, press Enter to hit a random block."></canvas>
+      <div class="controls" id="juiceTogs">
+        <button class="tog" type="button" data-k="shake">SCREEN SHAKE</button>
+        <button class="tog" type="button" data-k="hitpause">HIT PAUSE</button>
+        <button class="tog" type="button" data-k="particles">PARTICLES</button>
+        <button class="tog" type="button" data-k="flash">HIT FLASH</button>
+        <button class="tog" type="button" data-k="squash">SQUASH &amp; STRETCH</button>
+        <button class="tog" type="button" data-k="sound">SOUND</button>
+      </div>
+      <div class="controls">
+        <button class="dbtn" type="button" id="juiceAll">ALL ON</button>
+        <button class="dbtn" type="button" id="juiceNone">ALL OFF</button>
+        <label class="range" for="juiceI">STRENGTH <input type="range" id="juiceI" min="0.4" max="2" step="0.1" value="1"></label>
+      </div>
+      <p class="hint">Hit the blocks with everything off first. Then switch on one effect at a time. Sound starts after your first click.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 3 -->
+<section class="lv-enemies" id="enemies" data-slide>
+  <div class="lv-head"><div class="wrap">
+    <div>
+      <div class="eyebrow"><span>LEVEL 3 OF 7</span><span>6 MIN</span></div>
+      <h2>Fair Enemies</h2>
+      <p>Losing should feel like your fault, not the game's.</p>
+    </div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Telegraphing</b></div>
+  </div></div>
+  <div class="wrap lv-body paper">
+    <div class="lesson">
+      <div><div class="label">ENEMY AI</div><h3>Give every enemy a readable brain.</h3></div>
+      <ul class="concepts">
+        <li><b>State machine</b><span>One state at a time: patrol, chase, wind-up, attack, recover.</span></li>
+        <li><b>Patterns</b><span>Patrol, chase, flee. Players can only beat what they can learn.</span></li>
+        <li><b>Telegraph</b><span>A wind-up before every attack: a flash, a sound or a pose.</span></li>
+        <li><b>Recovery window</b><span>After attacking, a short moment where it can be hit back.</span></li>
+      </ul>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Players accept losing when they could see it coming. A warning turns a cheap hit into a lesson.</p></div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p3">COPY PROMPT</button></div>
+        <p class="ptext" id="p3">Give the enemy a state machine: patrol, chase when the player is close, then attack. Before each attack add a half-second wind-up where it flashes and plays a sound, and after it a short pause where it can be hit.</p>
+      </div>
+      <div class="refs"><div class="label">REFERENCES</div><ul>
+        <li><a href="https://gameprogrammingpatterns.com/state.html">Game Programming Patterns: State</a><small>gameprogrammingpatterns.com</small></li>
+        <li><a href="https://www.youtube.com/@GMTK">Game Maker's Toolkit</a><small>youtube.com/@GMTK</small></li>
+      </ul></div>
+    </div>
+    <div class="demo">
+      <div class="demo-top"><span class="px">LIVE DEMO · THE GUARD</span><span class="px dim">MOUSE / WASD · CLICK · SPACE</span></div>
+      <ol class="states" aria-label="Enemy state machine">
+        <li data-s="PATROL">PATROL</li><li class="arrow" aria-hidden="true">▶</li>
+        <li data-s="CHASE">CHASE</li><li class="arrow" aria-hidden="true">▶</li>
+        <li data-s="WIND-UP">WIND-UP</li><li class="arrow" aria-hidden="true">▶</li>
+        <li data-s="ATTACK">ATTACK</li><li class="arrow" aria-hidden="true">▶</li>
+        <li data-s="RECOVER">RECOVER</li>
+      </ol>
+      <canvas class="screen" id="cvEnemy" tabindex="0" aria-label="Enemy demo. Move with the mouse, touch or WASD. Click the guard or press Space next to it while it recovers to counter-hit."></canvas>
+      <div class="controls" id="enemyTogs">
+        <button class="tog" type="button" data-k="telegraph">TELEGRAPH</button>
+        <button class="tog" type="button" data-k="recovery">RECOVERY WINDOW</button>
+        <button class="dbtn" type="button" id="resetEnemy">RESET SCORE</button>
+      </div>
+      <p class="hint">Walk close to the guard. With both off it strikes with no warning and you can never hit back. Turn on the telegraph to see the attack coming, and the recovery window to punish it: click the guard (or press Space next to it) while it is dizzy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 4 -->
+<section class="lv-progress" id="progress" data-slide>
+  <div class="lv-head"><div class="wrap">
+    <div>
+      <div class="eyebrow"><span>LEVEL 4 OF 7</span><span>7 MIN</span></div>
+      <h2>Progress</h2>
+      <p>A reason to keep going, and a reason to come back.</p>
+    </div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Difficulty curve</b></div>
+  </div></div>
+  <div class="wrap lv-body paper">
+    <div class="lesson">
+      <div><div class="label">EXPERIENCE POINTS</div><h3>Let players feel themselves getting better.</h3></div>
+      <ul class="concepts">
+        <li><b>Teach without text</b><span>Introduce each mechanic somewhere safe before it really matters.</span></li>
+        <li><b>Ramp, then breathe</b><span>Raise the challenge in waves with calm moments between them.</span></li>
+        <li><b>Score and rewards</b><span>Reward skill, not just time. Numbers going up feel good.</span></li>
+        <li><b>Save the high score</b><span>A best score that survives a reload is a reason to come back.</span></li>
+      </ul>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Too easy gets boring, too hard gets frustrating. Waves keep players in the zone between the two, and the calm moments let them notice they are improving.</p></div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p4">COPY PROMPT</button></div>
+        <p class="ptext" id="p4">Make the game harder in waves: every 30 seconds raise enemy speed a little, with a short calm moment between waves. Show the score on screen and save the high score with localStorage so it is still there after a reload.</p>
+      </div>
+      <div class="refs"><div class="label">REFERENCES</div><ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">MDN: localStorage</a><small>developer.mozilla.org</small></li>
+        <li><a href="https://www.youtube.com/@GMTK">Game Maker's Toolkit</a><small>youtube.com/@GMTK</small></li>
+        <li><b>Case study: Super Mario Bros. World 1-1</b><small>The classic example of teaching without text</small></li>
+      </ul></div>
+    </div>
+    <div class="demo">
+      <div class="demo-top"><span class="px">LIVE DEMO · DODGE IN WAVES</span><span class="px dim">ARROWS / A D · DRAG · P</span></div>
+      <canvas class="screen" id="cvProgress" tabindex="0" aria-label="Dodge demo with difficulty waves. Use the arrow keys or A and D to move, or drag on touch screens. Space starts, P pauses, R retries."></canvas>
+      <canvas class="screen chart" id="cvChart" aria-label="Chart of enemy speed over the current run, with calm moments shaded."></canvas>
+      <div class="controls" id="progTogs">
+        <button class="tog" type="button" data-k="waves">DIFFICULTY WAVES</button>
+        <button class="tog" type="button" data-k="save">SAVE HIGH SCORE</button>
+        <button class="dbtn" type="button" id="resetProg">RESET DEMO</button>
+      </div>
+      <p class="status" id="stProg">WAVE <b>1</b></p>
+      <p class="hint">Waves here last 10 seconds so you can watch the curve during the talk. With waves off, the speed is flat forever. Turn on "save high score", set a best, then reload the page: it is still there.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 5 -->
+<section class="lv-boss" id="boss" data-slide>
+  <div class="lv-head"><div class="wrap">
+    <div>
+      <div class="eyebrow"><span>LEVEL 5 OF 7</span><span>6 MIN</span></div>
+      <h2>Boss Fight</h2>
+      <p>When you add all of this, something will break. Here is how to win.</p>
+    </div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Debugging</b></div>
+  </div></div>
+  <div class="wrap lv-body paper">
+    <div class="lesson">
+      <div><div class="label">BOSS STRATEGY</div><h3>The AI can only fix what it can see.</h3></div>
+      <ul class="concepts">
+        <li><b>1. Describe the bug</b><span>What you did, what you expected, and what happened instead.</span></li>
+        <li><b>2. Bring evidence</b><span>Open the console (F12) and paste the red errors. Add a screenshot.</span></li>
+        <li><b>3. Shrink the problem</b><span>One change at a time. Find the last version that worked.</span></li>
+        <li><b>4. Know when to retreat</b><span>Two or three failed fixes? Go back to your save and ask differently.</span></li>
+      </ul>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Asking for a diagnosis first stops the AI from guessing and piling new bugs on top of the old one.</p></div>
+      <div class="refs"><div class="label">REFERENCES</div><ul>
+        <li><a href="https://developer.chrome.com/docs/devtools/console">Chrome DevTools: Console</a><small>developer.chrome.com</small></li>
+        <li><a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">Git: About version control</a><small>git-scm.com/book</small></li>
+      </ul></div>
+    </div>
+    <div class="demo">
+      <div class="demo-top"><span class="px">BUG REPORT BUILDER</span><span class="example">EXAMPLE FILLED IN</span></div>
+      <form class="bug" id="bugForm" autocomplete="off">
+        <div class="field"><label for="bugDid">WHAT I DID</label><input id="bugDid" value="Pressed Space to jump right after landing"></div>
+        <div class="field"><label for="bugExpected">WHAT I EXPECTED</label><input id="bugExpected" value="The character jumps again"></div>
+        <div class="field"><label for="bugHappened">WHAT HAPPENED INSTEAD</label><input id="bugHappened" value="About half the time nothing happens"></div>
+        <div class="field"><label for="bugConsole">CONSOLE ERROR <i>(OPTIONAL)</i></label><textarea id="bugConsole" placeholder="Paste the red text from the console (F12)"></textarea></div>
+        <div class="field"><label for="bugLast">LAST VERSION THAT WORKED <i>(OPTIONAL)</i></label><input id="bugLast" value="Before I added squash and stretch to the landing"></div>
+      </form>
+      <div class="out">
+        <div class="prompt-head"><span class="px" style="font-size:10px;color:#FFD84D">YOUR PROMPT</span><button class="copy" type="button" data-copy="bugOut">COPY PROMPT</button></div>
+        <p class="ptext" id="bugOut"></p>
+      </div>
+      <div class="tries">
+        <span class="px" style="font-size:9px;color:#E4E4FF">FIX ATTEMPTS</span>
+        <span class="count" id="tryCount">0</span>
+        <button class="dbtn" type="button" id="tryAdd">+1 ATTEMPT</button>
+        <button class="dbtn" type="button" id="tryReset">RESET</button>
+        <p id="tryMsg" aria-live="polite">Count each fix the AI tries for this bug.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 6 -->
+<section class="night ba" id="before-after" data-slide>
+  <div class="wrap">
+    <div class="ba-head">
+      <div>
+        <div class="px">LEVEL 6 OF 7 · 3 MIN</div>
+        <h2>Before &amp; After</h2>
+        <p>Same game, same idea underneath. Flip the switch and everything from the last five levels turns on at once.</p>
+      </div>
+      <div class="case"><span class="px">CASE STUDY</span><a href="https://www.secondformrequiem.com">Second Form: Requiem</a></div>
+    </div>
+    <div class="ba-grid">
+      <div class="demo" style="box-shadow:6px 6px 0 #6E6DD6;border-color:#4A4766">
+        <div class="demo-top">
+          <div class="seg" role="group" aria-label="Version">
+            <button type="button" id="modeProto" aria-pressed="true">PROTOTYPE</button>
+            <button type="button" id="modeGame" aria-pressed="false">GAME</button>
+          </div>
+          <span class="px dim">ARROWS / A D · DRAG · P</span>
+        </div>
+        <canvas class="screen" id="cvBA" tabindex="0" aria-label="Before and after demo. Use the arrow keys or A and D to move, or drag on touch screens."></canvas>
+      </div>
+      <ul class="checklist" id="baList">
+        <li><span class="px"></span><span><a href="#frame">The frame</a>: title, pause, game over and quick restart</span></li>
+        <li><span class="px"></span><span><a href="#juice">Juice</a>: shake, flash, particles and sound when you get hit</span></li>
+        <li><span class="px"></span><span><a href="#enemies">Telegraphs</a>: every block warns you before it falls</span></li>
+        <li><span class="px"></span><span><a href="#progress">Waves</a>: the speed ramps up, with calm moments between</span></li>
+        <li><span class="px"></span><span><a href="#progress">Score</a> on screen and a saved high score</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 7 -->
+<section class="codes" id="cheat-codes" data-slide>
+  <div class="wrap">
+    <div>
+      <div class="px" style="font-size:11px;color:#FFD84D">LEVEL 7 OF 7 · 6 MIN</div>
+      <h2>Questions &amp; Cheat Codes</h2>
+      <p class="lede">Ask anything about today's levels, or about your own game. Every prompt from the session is here, ready to copy.</p>
+    </div>
+    <ul class="code-grid">
+      <li><div class="prompt-head"><span class="px">01 · THE FRAME</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add game states: a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and restarts with one button. Keep the gameplay exactly as it is.</p></li>
+      <li><div class="prompt-head"><span class="px">02 · JUICE</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a short hit pause, a small screen shake, a white flash on the enemy and a burst of particles. Put the strength of each effect in one settings object so I can tune them.</p></li>
+      <li><div class="prompt-head"><span class="px">03 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy a state machine: patrol, chase when the player is close, then attack. Before each attack add a half-second wind-up where it flashes and plays a sound, and after it a short pause where it can be hit.</p></li>
+      <li><div class="prompt-head"><span class="px">04 · PROGRESS</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds raise enemy speed a little, with a short calm moment between waves. Show the score on screen and save the high score with localStorage so it is still there after a reload.</p></li>
+      <li><div class="prompt-head"><span class="px">05 · BOSS FIGHT</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First explain what is most likely causing this bug and how we can confirm it. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
+      <li><div class="prompt-head"><span class="px">BONUS · TUNING</span><button class="copy" type="button" data-copy="c6">COPY</button></div><p class="ptext" id="c6">Move every number that controls how the game feels (speeds, timings, effect strengths) into one settings object at the top of the file, with a short comment on each, so I can tune the game without digging through the code.</p></li>
+    </ul>
+    <div class="quest"><span class="px">SIDE QUEST</span><p><b>Pick one level and add it to your game tonight.</b> Then share your before and after.</p></div>
+  </div>
+  <div class="ground" aria-hidden="true"></div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>From Prompt to Play · Part 2 of How AI Has Disrupted Game Development</span><span>Every demo on this page runs in your browser.</span></div></footer>
+
+<div class="pbar" id="pbar" hidden>
+  <button type="button" id="pPrev" aria-label="Previous section">◀</button>
+  <button type="button" id="pNext" aria-label="Next section">▶</button>
+  <button type="button" class="exit" id="pExit">EXIT</button>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s);};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function rand(a,b){return a+Math.random()*(b-a);}
+var DPR=Math.min(2,window.devicePixelRatio||1);
+var C={ink:'#1D1B33',night:'#14122B',night2:'#221F45',line:'#4A4766',lav:'#9FA0FF',lavSoft:'#C9C9FF',gold:'#FFD84D',coral:'#FF6B7D',coralDeep:'#B4234F',mint:'#8FE36B',grass:'#5BC236',dirt:'#8A5A2B',white:'#FFFFFF',orange:'#FFB347',rust:'#9A330A',muted:'#9A98B8'};
+var PIX="'Press Start 2P', 'Courier New', monospace";
+var reduceMotion=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+function setup(cv,w,h){cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);var c=cv.getContext('2d');c.setTransform(DPR,0,0,DPR,0,0);return c;}
+function local(cv,e,w,h){var r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)/r.width*w,y:(e.clientY-r.top)/r.height*h};}
+var store={get:function(k){try{return window.localStorage.getItem(k);}catch(e){return null;}},set:function(k,v){try{window.localStorage.setItem(k,v);return true;}catch(e){return false;}}};
+
+/* ---------- sound ---------- */
+var AC=null,master=null;
+function wakeAudio(){
+  if(!AC){try{var A=window.AudioContext||window.webkitAudioContext;if(!A)return;AC=new A();master=AC.createGain();master.gain.value=0.5;master.connect(AC.destination);}catch(e){AC=null;return;}}
+  if(AC.state==='suspended'){try{AC.resume();}catch(e){}}
+}
+window.addEventListener('pointerdown',wakeAudio,{passive:true});
+window.addEventListener('keydown',wakeAudio);
+function tone(type,f1,f2,dur,vol,delay){
+  if(!AC||AC.state!=='running')return;
+  var t=AC.currentTime+(delay||0),o=AC.createOscillator(),g=AC.createGain();
+  o.type=type;o.frequency.setValueAtTime(f1,t);if(f2)o.frequency.exponentialRampToValueAtTime(Math.max(30,f2),t+dur);
+  g.gain.setValueAtTime(vol||0.08,t);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.03);
+}
+var SFX={
+  hit:function(){tone('square',420,140,0.09,0.07);},
+  boom:function(){tone('sawtooth',220,40,0.32,0.09);tone('square',110,30,0.25,0.05,0.02);},
+  jump:function(){tone('square',300,620,0.12,0.05);},
+  land:function(){tone('triangle',140,60,0.08,0.07);},
+  hurt:function(){tone('sawtooth',480,70,0.35,0.08);},
+  start:function(){[523,659,784].forEach(function(f,i){tone('square',f,0,0.09,0.05,i*0.07);});},
+  warn:function(){tone('square',880,0,0.04,0.025);},
+  windup:function(){tone('square',260,900,0.55,0.05);},
+  counter:function(){tone('triangle',520,1300,0.16,0.09);}
+};
+
+/* ---------- particles ---------- */
+function burst(arr,x,y,n,colors,spd,up){for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,s=rand(spd*0.3,spd);arr.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-(up||0),life:rand(0.35,0.8),size:rand(2,5),color:colors[i%colors.length]});}}
+function stepParts(arr,dt,g){for(var i=arr.length-1;i>=0;i--){var p=arr[i];p.life-=dt;if(p.life<=0){arr.splice(i,1);continue;}p.vy+=g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=0.98;}}
+function drawParts(c,arr){for(var i=0;i<arr.length;i++){var p=arr[i];c.globalAlpha=clamp(p.life/0.5,0,1);c.fillStyle=p.color;c.fillRect(p.x-p.size/2,p.y-p.size/2,p.size,p.size);}c.globalAlpha=1;}
+function shakeBy(c,s){if(s>0)c.translate(rand(-s,s),rand(-s,s));}
+
+/* ---------- loop: only demos on screen run ---------- */
+var demos=[],last=performance.now();
+function loop(t){var dt=Math.min(0.05,Math.max(0,(t-last)/1000));last=t;for(var i=0;i<demos.length;i++){var d=demos[i];if(d.visible){d.update(dt);d.draw();}}requestAnimationFrame(loop);}
+var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){var d=e.target.__demo;if(d)d.visible=e.isIntersecting;});},{threshold:0.05}):null;
+function register(d){demos.push(d);d.cv.__demo=d;if(io)io.observe(d.cv);else d.visible=true;d.draw();}
+
+/* ---------- Dodge: levels 1, 4 and 6 ---------- */
+function Dodge(cv,id,opts,onChange){
+  this.cv=cv;this.id=id;this.W=640;this.H=400;this.c=setup(cv,640,400);
+  this.o={frame:false,juice:false,telegraph:false,waves:false,save:false,score:false};
+  for(var k in opts)this.o[k]=opts[k];
+  this.onChange=onChange||function(){};
+  this.left=false;this.right=false;this.px=null;this.down=false;this.memBest=0;
+  this.stars=[];for(var i=0;i<40;i++)this.stars.push({x:Math.random()*640,y:Math.random()*330,s:Math.random()<0.2?3:2});
+  this.bind();this.reset();
+}
+Dodge.prototype.ground=378;
+Dodge.prototype.bestValue=function(){if(this.o.save){var v=parseInt(store.get('fptp-best-'+this.id)||'0',10);return isNaN(v)?0:v;}return this.memBest;};
+Dodge.prototype.setBest=function(v){if(this.o.save)store.set('fptp-best-'+this.id,String(v));else this.memBest=v;};
+Dodge.prototype.newRun=function(){
+  this.p={x:320,w:30,h:30,vx:0,sx:1,sy:1,flash:0};this.blocks=[];this.warns=[];this.parts=[];
+  this.shake=0;this.stop=0;this.dying=false;this.t=0;this.score=0;this.spawnT=0.5;this.wave=1;this.waveT=0;this.calm=0;
+  this.hist=[];this.histT=0;this.banner=null;this.newBest=false;this.blink=0;
+};
+Dodge.prototype.reset=function(){this.newRun();this.setState(this.o.frame?'title':'play');};
+Dodge.prototype.setState=function(s){this.state=s;this.onChange(this);};
+Dodge.prototype.start=function(){this.newRun();this.setState('play');if(this.o.juice)SFX.start();if(this.o.waves)this.banner={text:'WAVE 1',t:1.2};};
+Dodge.prototype.diff=function(){if(!this.o.waves)return {speed:250,interval:0.5};var k=Math.pow(1.2,this.wave-1);return {speed:Math.min(620,210*k),interval:Math.max(0.17,0.6/k)};};
+Dodge.prototype.bind=function(){
+  var self=this,cv=this.cv;
+  function isL(k){return k==='ArrowLeft'||k==='a'||k==='A';}
+  function isR(k){return k==='ArrowRight'||k==='d'||k==='D';}
+  cv.addEventListener('keydown',function(e){
+    var k=e.key;
+    if(isL(k)){self.left=true;e.preventDefault();}
+    else if(isR(k)){self.right=true;e.preventDefault();}
+    else if(k===' '||k==='Enter'){e.preventDefault();if(self.state==='title'||self.state==='over')self.start();else if(self.state==='paused')self.setState('play');}
+    else if(k==='r'||k==='R'){if(self.state==='over')self.start();}
+    else if(k==='p'||k==='P'||k==='Escape'){if(self.o.frame){if(self.state==='play'){self.setState('paused');e.preventDefault();}else if(self.state==='paused'){self.setState('play');e.preventDefault();}}}
+  });
+  cv.addEventListener('keyup',function(e){if(isL(e.key))self.left=false;if(isR(e.key))self.right=false;});
+  cv.addEventListener('blur',function(){self.left=self.right=false;if(self.o.frame&&self.state==='play')self.setState('paused');});
+  cv.addEventListener('pointerdown',function(e){
+    try{cv.focus({preventScroll:true});}catch(_){cv.focus();}
+    if(self.state==='title'||self.state==='over'){self.start();return;}
+    if(self.state==='paused'){self.setState('play');return;}
+    self.down=true;self.px=local(cv,e,self.W,self.H).x;try{cv.setPointerCapture(e.pointerId);}catch(_){}
+  });
+  cv.addEventListener('pointermove',function(e){if(self.down)self.px=local(cv,e,self.W,self.H).x;});
+  function up(){self.down=false;self.px=null;}
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+};
+Dodge.prototype.spawn=function(vy){var s=rand(24,46),x=rand(s/2,this.W-s/2);if(this.o.telegraph){this.warns.push({x:x,s:s,t:0.6,vy:vy});if(this.o.juice&&Math.random()<0.5)SFX.warn();}else this.blocks.push({x:x,y:-s,s:s,vy:vy});};
+Dodge.prototype.hit=function(){
+  var P=this.p;
+  if(this.o.juice){this.stop=0.2;this.dying=true;this.shake=reduceMotion?5:14;P.flash=0.3;burst(this.parts,P.x,this.ground-P.h/2,40,[C.coral,C.gold,C.white],420,120);SFX.hurt();}
+  else this.finish();
+};
+Dodge.prototype.finish=function(){
+  this.dying=false;var sc=Math.floor(this.score);
+  if(this.o.frame||this.o.save){var b=this.bestValue();this.newBest=sc>b&&sc>0;if(this.newBest)this.setBest(sc);}
+  this.setState(this.o.frame?'over':'frozen');
+};
+Dodge.prototype.update=function(dt){
+  var o=this.o,P=this.p,g=this.ground,i;
+  this.blink+=dt;if(this.banner){this.banner.t-=dt;if(this.banner.t<=0)this.banner=null;}
+  this.shake=Math.max(0,this.shake-dt*40);if(P.flash>0)P.flash-=dt;
+  if(this.stop>0){this.stop-=dt;if(this.stop<=0&&this.dying)this.finish();return;}
+  stepParts(this.parts,dt,700);
+  if(this.state!=='play')return;
+  this.t+=dt;
+  var dir=(this.right?1:0)-(this.left?1:0);
+  if(this.px!==null){var d=this.px-P.x;dir=Math.abs(d)<8?0:(d>0?1:-1);}
+  P.vx+=(dir*380-P.vx)*Math.min(1,dt*(o.juice?12:60));
+  P.x=clamp(P.x+P.vx*dt,P.w/2,this.W-P.w/2);
+  if(o.juice){var s=Math.min(0.3,Math.abs(P.vx)/380*0.3);P.sx=1+s;P.sy=1-s*0.6;}else{P.sx=1;P.sy=1;}
+  if(o.waves){
+    if(this.calm>0){this.calm-=dt;if(this.calm<=0){this.wave++;this.waveT=0;this.banner={text:'WAVE '+this.wave,t:1.2};if(o.juice)SFX.start();this.onChange(this);}}
+    else{this.waveT+=dt;if(this.waveT>=10){this.calm=2.5;this.banner={text:'BREATHE',t:1.4};}}
+  }
+  var D=this.diff(),calm=o.waves&&this.calm>0;
+  if(!calm){this.spawnT-=dt;if(this.spawnT<=0){this.spawnT=D.interval*rand(0.7,1.3);this.spawn(D.speed);}}
+  for(i=this.warns.length-1;i>=0;i--){var w=this.warns[i];w.t-=dt;if(w.t<=0){this.blocks.push({x:w.x,y:-w.s,s:w.s,vy:w.vy});this.warns.splice(i,1);}}
+  var x1=P.x-P.w/2+4,x2=P.x+P.w/2-4,y1=g-P.h+4;
+  for(i=this.blocks.length-1;i>=0;i--){
+    var b=this.blocks[i];b.y+=b.vy*dt;
+    if(b.y+b.s>=y1&&b.y<=g&&b.x+b.s/2>x1&&b.x-b.s/2<x2){this.hit();return;}
+    if(b.y+b.s>=g){if(o.juice){burst(this.parts,b.x,g,6,[C.lavSoft,C.lav],120,80);this.shake=Math.max(this.shake,1.5);}this.blocks.splice(i,1);}
+  }
+  this.score+=dt*10;
+  this.histT-=dt;if(this.histT<=0){this.histT=0.2;this.hist.push({t:this.t,v:calm?0:D.speed});if(this.hist.length>900)this.hist.shift();}
+};
+Dodge.prototype.overlay=function(title,lines,blinkLast){
+  var c=this.c,W=this.W,self=this;
+  c.fillStyle='rgba(20,18,43,0.8)';c.fillRect(0,0,W,this.H);
+  c.textAlign='center';c.textBaseline='middle';c.fillStyle=C.gold;c.font='24px '+PIX;c.fillText(title,W/2,150);
+  c.font='11px '+PIX;
+  lines.forEach(function(l,i){var isLast=i===lines.length-1;if(blinkLast&&isLast&&!reduceMotion&&Math.floor(self.blink*2)%2===1)return;c.fillStyle=l==='NEW BEST!'?C.mint:C.white;c.fillText(l,W/2,204+i*28);});
+};
+Dodge.prototype.draw=function(){
+  var c=this.c,W=this.W,H=this.H,o=this.o,g=this.ground,P=this.p,i;
+  c.save();shakeBy(c,this.shake);
+  c.fillStyle=C.night;c.fillRect(-20,-20,W+40,H+40);
+  c.fillStyle='#2A2750';for(i=0;i<this.stars.length;i++){var st=this.stars[i];c.fillRect(st.x,st.y,st.s,st.s);}
+  c.fillStyle=C.grass;c.fillRect(-20,g,W+40,8);c.fillStyle=C.dirt;c.fillRect(-20,g+8,W+40,H-g+20);
+  for(i=0;i<this.warns.length;i++){
+    var w=this.warns[i];c.fillStyle='rgba(255,216,77,0.10)';c.fillRect(w.x-w.s/2,0,w.s,g);
+    if(Math.floor(w.t*12)%2===0){c.fillStyle=C.gold;c.beginPath();c.moveTo(w.x,10);c.lineTo(w.x+12,32);c.lineTo(w.x-12,32);c.closePath();c.fill();c.fillStyle=C.ink;c.fillRect(w.x-1.5,17,3,8);c.fillRect(w.x-1.5,27,3,3);}
+  }
+  for(i=0;i<this.blocks.length;i++){var b=this.blocks[i];c.fillStyle=C.coral;c.fillRect(b.x-b.s/2,b.y,b.s,b.s);c.fillStyle=C.coralDeep;c.fillRect(b.x-b.s/2,b.y+b.s-5,b.s,5);}
+  var pw=P.w*P.sx,ph=P.h*P.sy,lean=o.juice?clamp(P.vx/380,-1,1)*0.12:0;
+  c.save();c.translate(P.x,g);c.rotate(lean);
+  c.fillStyle=(P.flash>0&&Math.floor(P.flash*30)%2===0)?C.white:C.mint;c.fillRect(-pw/2,-ph,pw,ph);
+  var ex=P.vx>20?3:(P.vx<-20?-3:0);c.fillStyle=C.ink;c.fillRect(-7+ex,-ph+9,4,6);c.fillRect(3+ex,-ph+9,4,6);
+  c.restore();
+  drawParts(c,this.parts);
+  c.restore();
+  c.font='12px '+PIX;c.textBaseline='top';
+  if(o.frame||o.score){c.fillStyle=C.white;c.textAlign='left';c.fillText('SCORE '+Math.floor(this.score),14,14);}
+  if(o.frame||o.save){c.fillStyle=C.gold;c.textAlign='right';c.fillText('BEST '+this.bestValue(),W-14,14);}
+  if(o.waves&&this.state==='play'){c.fillStyle=C.lavSoft;c.textAlign='left';c.fillText('WAVE '+this.wave,14,34);}
+  if(this.banner&&this.state==='play'){c.textAlign='center';c.font='22px '+PIX;c.fillStyle=C.gold;c.fillText(this.banner.text,W/2,150);}
+  if(this.state==='title')this.overlay('DODGE THE BLOCKS',['ARROWS, A D OR DRAG TO MOVE','PRESS SPACE OR TAP TO START'],true);
+  else if(this.state==='paused')this.overlay('PAUSED',['PRESS P OR TAP TO RESUME'],false);
+  else if(this.state==='over'){var lines=['SCORE '+Math.floor(this.score)];if(this.newBest)lines.push('NEW BEST!');lines.push('PRESS R OR TAP TO RETRY');this.overlay('GAME OVER',lines,true);}
+};
+
+/* ---------- Juice: level 2 ---------- */
+function Juice(cv,fx){
+  this.cv=cv;this.W=640;this.H=400;this.c=setup(cv,640,400);this.fx=fx;
+  this.parts=[];this.texts=[];this.shake=0;this.stop=0;this.hits=0;this.floor=340;
+  var xs=[220,315,410,505,585];this.targets=xs.map(function(x,i){return {x:x,by:120+(i%2)*80,y:120,ph:i*1.3,hp:3,sq:0,fl:0,dead:0,s:52};});
+  this.hero={x:90,y:0,vy:0,ground:true,sx:1,sy:1};this.bind();
+}
+Juice.prototype.bind=function(){
+  var self=this,cv=this.cv;
+  cv.addEventListener('pointerdown',function(e){
+    try{cv.focus({preventScroll:true});}catch(_){cv.focus();}
+    var p=local(cv,e,self.W,self.H),hit=null;
+    self.targets.forEach(function(t){if(!t.dead&&Math.abs(p.x-t.x)<t.s/2+10&&Math.abs(p.y-t.y)<t.s/2+10)hit=t;});
+    if(hit)self.hitT(hit);else self.jump();
+  });
+  cv.addEventListener('keydown',function(e){if(e.key===' '){e.preventDefault();self.jump();}else if(e.key==='Enter'){e.preventDefault();self.hitRandom();}});
+};
+Juice.prototype.hitRandom=function(){var live=this.targets.filter(function(t){return !t.dead;});if(live.length)this.hitT(live[Math.floor(Math.random()*live.length)]);};
+Juice.prototype.jump=function(){var h=this.hero,f=this.fx;if(!h.ground)return;h.vy=-640;h.ground=false;if(f.squash){h.sx=0.7;h.sy=1.35;}if(f.sound)SFX.jump();if(f.particles)burst(this.parts,h.x,this.floor,8,[C.lavSoft,C.white],140,60);};
+Juice.prototype.hitT=function(t){
+  var f=this.fx,I=f.intensity,kill;t.hp--;this.hits++;kill=t.hp<=0;
+  if(f.flash)t.fl=0.1;if(f.squash)t.sq=1;
+  if(f.particles){burst(this.parts,t.x,t.y,kill?40:12,kill?[C.gold,C.orange,C.coral,C.white]:[C.white,C.gold],kill?420:260,60);this.texts.push({x:t.x,y:t.y-34,v:kill?'BOOM':'-1',life:0.7});}
+  if(f.shake)this.shake=Math.max(this.shake,(kill?13:5)*I*(reduceMotion?0.4:1));
+  if(f.hitpause)this.stop=Math.max(this.stop,(kill?0.12:0.05)*I);
+  if(f.sound){if(kill)SFX.boom();else SFX.hit();}
+  if(kill)t.dead=1.1;
+};
+Juice.prototype.update=function(dt){
+  var f=this.fx,h=this.hero,i;
+  this.shake=Math.max(0,this.shake-dt*45);
+  this.targets.forEach(function(t){if(t.fl>0)t.fl-=dt;t.sq=Math.max(0,t.sq-dt*6);});
+  if(this.stop>0){this.stop-=dt;return;}
+  stepParts(this.parts,dt,700);
+  for(i=this.texts.length-1;i>=0;i--){var x=this.texts[i];x.life-=dt;x.y-=40*dt;if(x.life<=0)this.texts.splice(i,1);}
+  this.targets.forEach(function(t){t.ph+=dt*2;t.y=t.by+Math.sin(t.ph)*10;if(t.dead>0){t.dead-=dt;if(t.dead<=0){t.dead=0;t.hp=3;if(f.squash)t.sq=1;}}});
+  if(!h.ground){
+    h.vy+=1800*dt;h.y+=h.vy*dt;
+    if(h.y>=0){h.y=0;h.vy=0;h.ground=true;if(f.squash){h.sx=1.4;h.sy=0.62;}if(f.sound)SFX.land();if(f.particles)burst(this.parts,h.x,this.floor,10,[C.lavSoft,C.white],160,40);if(f.shake)this.shake=Math.max(this.shake,2*f.intensity);}
+    else if(f.squash){var s=clamp(Math.abs(h.vy)/640,0,1)*0.25;h.sx=1-s*0.5;h.sy=1+s;}
+  }
+  if(!f.squash){h.sx=1;h.sy=1;}
+  else if(h.ground){h.sx+=(1-h.sx)*Math.min(1,dt*12);h.sy+=(1-h.sy)*Math.min(1,dt*12);}
+};
+Juice.prototype.draw=function(){
+  var c=this.c,W=this.W,H=this.H,fl=this.floor,i;
+  c.save();shakeBy(c,this.shake);
+  c.fillStyle=C.night;c.fillRect(-20,-20,W+40,H+40);
+  c.fillStyle=C.grass;c.fillRect(-20,fl,W+40,8);c.fillStyle=C.dirt;c.fillRect(-20,fl+8,W+40,H);
+  this.targets.forEach(function(t){
+    if(t.dead)return;
+    var k=t.sq,wob=Math.sin(k*Math.PI),w=t.s*(1+0.35*k*wob),h=t.s*(1-0.3*k*wob);
+    c.fillStyle=t.fl>0?C.white:C.orange;c.fillRect(t.x-w/2,t.y-h/2,w,h);
+    if(t.fl<=0){c.fillStyle=C.rust;c.fillRect(t.x-w/2,t.y+h/2-7,w,7);c.fillStyle=C.ink;c.fillRect(t.x-10,t.y-8,5,7);c.fillRect(t.x+5,t.y-8,5,7);}
+    for(var j=0;j<3;j++){c.fillStyle=j<t.hp?C.gold:C.line;c.fillRect(t.x-14+j*10,t.y-h/2-12,7,5);}
+  });
+  var hh=this.hero,hw=34*hh.sx,hht=34*hh.sy,hy=fl+hh.y;
+  c.fillStyle=C.mint;c.fillRect(hh.x-hw/2,hy-hht,hw,hht);c.fillStyle=C.ink;c.fillRect(hh.x-8,hy-hht+10,4,6);c.fillRect(hh.x+4,hy-hht+10,4,6);
+  drawParts(c,this.parts);
+  c.font='14px '+PIX;c.textAlign='center';c.textBaseline='middle';
+  for(i=0;i<this.texts.length;i++){var x=this.texts[i];c.globalAlpha=clamp(x.life/0.4,0,1);c.fillStyle=x.v==='BOOM'?C.gold:C.white;c.fillText(x.v,x.x,x.y);}
+  c.globalAlpha=1;c.restore();
+  c.font='10px '+PIX;c.textAlign='left';c.textBaseline='top';c.fillStyle=C.lavSoft;
+  c.fillText('CLICK A BLOCK TO HIT IT',14,14);c.fillText('CLICK EMPTY SPACE TO JUMP',14,32);
+  c.textAlign='right';c.fillStyle=C.gold;c.font='12px '+PIX;c.fillText('HITS '+this.hits,W-14,14);
+};
+
+/* ---------- Enemy: level 3 ---------- */
+function Guard(cv,fx,onState){
+  this.cv=cv;this.W=640;this.H=400;this.c=setup(cv,640,400);this.fx=fx;this.onState=onState||function(){};
+  this.pl={x:110,y:310,r:14,flash:0,inv:0};this.target=null;this.keys={};this.parts=[];this.shake=0;this.hits=0;this.counters=0;this.t=0;
+  this.wp=[{x:380,y:110},{x:560,y:110},{x:560,y:300},{x:380,y:300}];
+  this.e={x:380,y:110,s:40,wi:1,state:'PATROL',timer:0,dx:0,dy:0,fl:0,kbx:0,kby:0,stun:0};
+  this.bind();this.set('PATROL');
+}
+Guard.prototype.set=function(s,t){this.e.state=s;this.e.timer=t||0;this.onState(s);};
+Guard.prototype.bind=function(){
+  var self=this,cv=this.cv;
+  var map={ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',D:'r',ArrowUp:'u',w:'u',W:'u',ArrowDown:'dn',s:'dn',S:'dn'};
+  cv.addEventListener('pointermove',function(e){if(e.pointerType==='mouse'||e.buttons)self.target=local(cv,e,self.W,self.H);});
+  cv.addEventListener('pointerleave',function(){self.target=null;});
+  cv.addEventListener('pointerdown',function(e){
+    try{cv.focus({preventScroll:true});}catch(_){cv.focus();}
+    var p=local(cv,e,self.W,self.H),E=self.e;
+    if(Math.abs(p.x-E.x)<E.s/2+12&&Math.abs(p.y-E.y)<E.s/2+12)self.tryCounter(true);else self.target=p;
+  });
+  cv.addEventListener('pointerup',function(e){if(e.pointerType!=='mouse')self.target=null;});
+  cv.addEventListener('keydown',function(e){if(map[e.key]){self.keys[map[e.key]]=true;e.preventDefault();}else if(e.key===' '){e.preventDefault();self.tryCounter(false);}});
+  cv.addEventListener('keyup',function(e){if(map[e.key])self.keys[map[e.key]]=false;});
+  cv.addEventListener('blur',function(){self.keys={};});
+};
+Guard.prototype.tryCounter=function(clicked){
+  var E=this.e,P=this.pl,near=Math.hypot(E.x-P.x,E.y-P.y)<80;
+  if(E.state==='RECOVER'&&this.fx.recovery&&(clicked||near)){
+    this.counters++;E.fl=0.15;burst(this.parts,E.x,E.y,30,[C.gold,C.white,C.mint],380,0);this.shake=reduceMotion?3:8;SFX.counter();
+    var a=Math.atan2(E.y-P.y,E.x-P.x);E.kbx=Math.cos(a)*420;E.kby=Math.sin(a)*420;E.stun=1;this.set('PATROL');
+  }
+};
+Guard.prototype.update=function(dt){
+  var P=this.pl,E=this.e,f=this.fx;
+  this.t+=dt;this.shake=Math.max(0,this.shake-dt*40);stepParts(this.parts,dt,0);
+  if(P.flash>0)P.flash-=dt;if(P.inv>0)P.inv-=dt;if(E.fl>0)E.fl-=dt;
+  var mx=(this.keys.r?1:0)-(this.keys.l?1:0),my=(this.keys.dn?1:0)-(this.keys.u?1:0);
+  if(mx||my){var l=Math.hypot(mx,my);P.x+=mx/l*230*dt;P.y+=my/l*230*dt;}
+  else if(this.target){var tx=this.target.x-P.x,ty=this.target.y-P.y,td=Math.hypot(tx,ty);if(td>4){var st=Math.min(td,230*dt);P.x+=tx/td*st;P.y+=ty/td*st;}}
+  P.x=clamp(P.x,P.r,this.W-P.r);P.y=clamp(P.y,P.r+36,this.H-P.r);
+  E.x+=E.kbx*dt;E.y+=E.kby*dt;var damp=Math.pow(0.02,dt);E.kbx*=damp;E.kby*=damp;
+  E.x=clamp(E.x,E.s/2,this.W-E.s/2);E.y=clamp(E.y,E.s/2+36,this.H-E.s/2);
+  if(E.stun>0){E.stun-=dt;return;}
+  var dx=P.x-E.x,dy=P.y-E.y,dist=Math.hypot(dx,dy);
+  if(E.state==='PATROL'){
+    var w=this.wp[E.wi],wx=w.x-E.x,wy=w.y-E.y,wd=Math.hypot(wx,wy);
+    if(wd<4)E.wi=(E.wi+1)%this.wp.length;else{E.x+=wx/wd*90*dt;E.y+=wy/wd*90*dt;}
+    if(dist<170)this.set('CHASE');
+  }else if(E.state==='CHASE'){
+    if(dist>0){E.x+=dx/dist*130*dt;E.y+=dy/dist*130*dt;}
+    if(dist<85){this.set('WIND-UP',f.telegraph?0.6:0.1);if(f.telegraph)SFX.windup();}
+    else if(dist>280)this.set('PATROL');
+  }else if(E.state==='WIND-UP'){
+    E.timer-=dt;
+    if(E.timer<=0){var l2=dist||1;E.dx=dx/l2;E.dy=dy/l2;this.set('ATTACK',0.22);}
+  }else if(E.state==='ATTACK'){
+    E.timer-=dt;E.x+=E.dx*620*dt;E.y+=E.dy*620*dt;
+    var ndx=P.x-E.x,ndy=P.y-E.y,nd=Math.hypot(ndx,ndy);
+    if(nd<P.r+E.s/2-4&&P.inv<=0){
+      this.hits++;P.flash=0.5;P.inv=0.9;this.shake=reduceMotion?3:10;burst(this.parts,P.x,P.y,22,[C.coral,C.white],300,0);SFX.hurt();
+      var k=nd||1;P.x=clamp(P.x+ndx/k*44,P.r,this.W-P.r);P.y=clamp(P.y+ndy/k*44,P.r+36,this.H-P.r);
+    }
+    if(E.timer<=0)this.set('RECOVER',f.recovery?1.0:0.12);
+  }else if(E.state==='RECOVER'){
+    E.timer-=dt;if(E.timer<=0)this.set(dist<170?'CHASE':'PATROL');
+  }
+};
+Guard.prototype.draw=function(){
+  var c=this.c,W=this.W,H=this.H,E=this.e,P=this.pl,f=this.fx,x,y;
+  c.save();shakeBy(c,this.shake);
+  c.fillStyle='#1A1733';c.fillRect(-20,-20,W+40,H+40);
+  c.strokeStyle='#2A2750';c.lineWidth=1;
+  for(x=0;x<=W;x+=40){c.beginPath();c.moveTo(x+0.5,0);c.lineTo(x+0.5,H);c.stroke();}
+  for(y=0;y<=H;y+=40){c.beginPath();c.moveTo(0,y+0.5);c.lineTo(W,y+0.5);c.stroke();}
+  c.setLineDash([6,6]);c.strokeStyle=C.line;c.beginPath();
+  this.wp.forEach(function(w,i){if(i)c.lineTo(w.x,w.y);else c.moveTo(w.x,w.y);});c.closePath();c.stroke();c.setLineDash([]);
+  if(E.state==='PATROL'||E.state==='CHASE'){c.strokeStyle='rgba(255,107,125,0.28)';c.beginPath();c.arc(E.x,E.y,170,0,Math.PI*2);c.stroke();}
+  var ex=E.x,ey=E.y,col=C.coral,s=E.s;
+  var tele=E.state==='WIND-UP'&&f.telegraph;
+  if(tele){
+    var kk=1-E.timer/0.6;ex+=rand(-3,3)*kk;ey+=rand(-3,3)*kk;col=Math.floor(this.t*16)%2?C.white:C.coral;
+    c.strokeStyle='rgba(255,216,77,0.75)';c.lineWidth=3;c.setLineDash([8,6]);c.beginPath();c.moveTo(E.x,E.y);c.lineTo(P.x,P.y);c.stroke();c.setLineDash([]);c.lineWidth=1;
+    c.fillStyle=C.gold;c.fillRect(E.x-4,E.y-s/2-36,8,16);c.fillRect(E.x-4,E.y-s/2-16,8,6);
+  }
+  var dizzy=E.state==='RECOVER'&&f.recovery;
+  if(dizzy)col=C.muted;
+  if(E.fl>0)col=C.white;
+  c.fillStyle=col;c.fillRect(ex-s/2,ey-s/2,s,s);
+  if(dizzy){
+    c.fillStyle=C.ink;c.fillRect(ex-12,ey-7,8,3);c.fillRect(ex+4,ey-7,8,3);
+    for(var i=0;i<3;i++){var a=this.t*5+i*2.1;c.fillStyle=C.gold;c.fillRect(ex+Math.cos(a)*24-3,ey-s/2-10+Math.sin(a)*6-3,6,6);}
+    c.fillStyle=C.white;c.font='10px '+PIX;c.textAlign='center';c.textBaseline='bottom';c.fillText('HIT ME!',ex,ey-s/2-22);
+  }else{
+    var ang=Math.atan2(P.y-E.y,P.x-E.x),ox=Math.cos(ang)*4,oy=Math.sin(ang)*4;
+    c.fillStyle=C.ink;c.fillRect(ex-12+ox,ey-8+oy,7,8);c.fillRect(ex+5+ox,ey-8+oy,7,8);
+  }
+  if(!(P.inv>0&&Math.floor(P.inv*20)%2===1)){
+    c.fillStyle=P.flash>0?C.white:C.mint;c.beginPath();c.arc(P.x,P.y,P.r,0,Math.PI*2);c.fill();
+    c.fillStyle=C.ink;c.fillRect(P.x-6,P.y-5,3,5);c.fillRect(P.x+3,P.y-5,3,5);
+  }
+  drawParts(c,this.parts);
+  c.restore();
+  c.fillStyle='rgba(20,18,43,0.85)';c.fillRect(0,0,W,32);
+  c.font='10px '+PIX;c.textBaseline='middle';c.textAlign='left';c.fillStyle=C.lavSoft;c.fillText('STATE: '+E.state,14,17);
+  c.textAlign='right';c.fillStyle=C.gold;c.fillText('HITS TAKEN '+this.hits+'   COUNTERS '+this.counters,W-14,17);
+};
+
+/* ---------- chart for level 4 ---------- */
+function Chart(cv,game){this.cv=cv;this.g=game;this.c=setup(cv,640,150);}
+Chart.prototype.update=function(){};
+Chart.prototype.draw=function(){
+  var c=this.c,W=640,H=150,L=52,R=W-16,T=28,B=H-28,h=this.g.hist,maxT=Math.max(30,this.g.t),maxV=650;
+  c.fillStyle=C.night2;c.fillRect(0,0,W,H);
+  c.strokeStyle=C.line;c.lineWidth=1;c.beginPath();c.moveTo(L,T);c.lineTo(L,B);c.lineTo(R,B);c.stroke();
+  c.font='9px '+PIX;c.fillStyle=C.lavSoft;c.textBaseline='top';c.textAlign='left';c.fillText('ENEMY SPEED THIS RUN',L,8);
+  c.fillText('0S',L,B+10);c.textAlign='right';c.fillText(Math.round(maxT)+'S',R,B+10);
+  var X=function(t){return L+(t/maxT)*(R-L);},Y=function(v){return B-(v/maxV)*(B-T);};
+  c.textBaseline='middle';c.fillText('0',L-8,B);c.fillText('600',L-8,Y(600));
+  c.strokeStyle='rgba(159,160,255,0.18)';c.beginPath();c.moveTo(L,Y(600)+0.5);c.lineTo(R,Y(600)+0.5);c.stroke();
+  if(h.length<2){c.textAlign='center';c.fillStyle=C.muted;c.fillText('PLAY A RUN TO DRAW THE CURVE',(L+R)/2,(T+B)/2);return;}
+  var step=(R-L)/maxT*0.2;c.fillStyle='rgba(143,227,107,0.22)';
+  for(var i=0;i<h.length;i++){if(h[i].v===0)c.fillRect(X(h[i].t)-step/2,T,step+1,B-T);}
+  c.strokeStyle=C.gold;c.lineWidth=2.5;c.beginPath();
+  for(i=0;i<h.length;i++){var px=X(h[i].t),py=Y(h[i].v);if(i)c.lineTo(px,py);else c.moveTo(px,py);}
+  c.stroke();var lp=h[h.length-1];c.fillStyle=C.gold;c.fillRect(X(lp.t)-4,Y(lp.v)-4,8,8);
+};
+
+/* ---------- wiring ---------- */
+function wireToggles(root,obj,after){
+  $$('.tog[data-k]',root).forEach(function(b){
+    var k=b.getAttribute('data-k');b.setAttribute('aria-pressed',String(!!obj[k]));
+    b.addEventListener('click',function(){obj[k]=!obj[k];b.setAttribute('aria-pressed',String(obj[k]));if(after)after(k,obj[k]);});
+  });
+}
+function syncToggles(root,obj){$$('.tog[data-k]',root).forEach(function(b){b.setAttribute('aria-pressed',String(!!obj[b.getAttribute('data-k')]));});}
+var STATE_NAMES={title:'TITLE SCREEN',play:'PLAYING',paused:'PAUSED',over:'GAME OVER',frozen:'NONE. THE GAME JUST STOPPED'};
+
+// Level 1
+var stFrame=$('#stFrame');
+var gFrame=new Dodge($('#cvFrame'),'frame',{},function(g){stFrame.textContent=(!g.o.frame&&g.state==='play')?'NONE. IT STARTED INSTANTLY':STATE_NAMES[g.state];});
+register(gFrame);
+wireToggles($('#frame'),gFrame.o,function(){gFrame.reset();});
+$('#resetFrame').addEventListener('click',function(){gFrame.reset();});
+
+// Level 2
+var fx={shake:false,hitpause:false,particles:false,flash:false,squash:false,sound:false,intensity:1};
+var jd=new Juice($('#cvJuice'),fx);register(jd);
+var juiceTogs=$('#juiceTogs');wireToggles(juiceTogs,fx);
+$('#juiceAll').addEventListener('click',function(){['shake','hitpause','particles','flash','squash','sound'].forEach(function(k){fx[k]=true;});syncToggles(juiceTogs,fx);});
+$('#juiceNone').addEventListener('click',function(){['shake','hitpause','particles','flash','squash','sound'].forEach(function(k){fx[k]=false;});syncToggles(juiceTogs,fx);});
+$('#juiceI').addEventListener('input',function(e){fx.intensity=parseFloat(e.target.value)||1;});
+
+// Level 3
+var efx={telegraph:false,recovery:false};
+var chips=$$('#enemies .states li[data-s]');
+var gd=new Guard($('#cvEnemy'),efx,function(s){chips.forEach(function(li){li.classList.toggle('on',li.getAttribute('data-s')===s);});});
+register(gd);wireToggles($('#enemyTogs'),efx);
+$('#resetEnemy').addEventListener('click',function(){gd.hits=0;gd.counters=0;});
+
+// Level 4
+var stProg=$('#stProg');
+var gProg=new Dodge($('#cvProgress'),'progress',{frame:true,telegraph:true,score:true,waves:true,save:true},function(g){
+  stProg.innerHTML='';var t=g.o.waves?'WAVE ':'WAVES OFF · FLAT SPEED';stProg.appendChild(document.createTextNode(t));
+  if(g.o.waves){var b=document.createElement('b');b.textContent=String(g.wave);stProg.appendChild(b);}
+  stProg.appendChild(document.createTextNode(g.o.save?' · BEST SAVED IN THIS BROWSER':' · BEST FORGOTTEN ON RELOAD'));
+});
+register(gProg);register(new Chart($('#cvChart'),gProg));
+wireToggles($('#progTogs'),gProg.o,function(){gProg.reset();});
+$('#resetProg').addEventListener('click',function(){gProg.reset();});
+
+// Level 5
+var bugFields=['bugDid','bugExpected','bugHappened','bugConsole','bugLast'];
+function buildBug(){
+  var v={};bugFields.forEach(function(id){v[id]=($('#'+id).value||'').trim();});
+  var lines=["Don't change any code yet. First explain what is most likely causing this bug and how we can confirm it.",''];
+  lines.push('What I did: '+(v.bugDid||'[...]'));
+  lines.push('What I expected: '+(v.bugExpected||'[...]'));
+  lines.push('What happened instead: '+(v.bugHappened||'[...]'));
+  if(v.bugConsole)lines.push('Console error:\n'+v.bugConsole);
+  if(v.bugLast)lines.push('Last version that worked: '+v.bugLast);
+  lines.push('','Once we agree on the cause, make the smallest change that fixes it and tell me exactly what you changed.');
+  $('#bugOut').textContent=lines.join('\n');
+}
+bugFields.forEach(function(id){$('#'+id).addEventListener('input',buildBug);});
+$('#bugForm').addEventListener('submit',function(e){e.preventDefault();});
+buildBug();
+var tries=0;
+function renderTries(){
+  $('#tryCount').textContent=String(tries);var m=$('#tryMsg');
+  if(tries>=3){m.textContent='Time to retreat. Go back to the last version that worked and describe the problem differently.';m.className='warn';}
+  else if(tries>0){m.textContent=(3-tries)+(3-tries===1?' more try':' more tries')+' before you retreat.';m.className='';}
+  else{m.textContent='Count each fix the AI tries for this bug.';m.className='';}
+}
+$('#tryAdd').addEventListener('click',function(){tries++;renderTries();});
+$('#tryReset').addEventListener('click',function(){tries=0;renderTries();});
+
+// Level 6
+var baItems=$$('#baList li');
+var gBA=new Dodge($('#cvBA'),'ba',{},function(){});
+register(gBA);
+function setMode(game){
+  ['frame','juice','telegraph','waves','save','score'].forEach(function(k){gBA.o[k]=game;});
+  $('#modeProto').setAttribute('aria-pressed',String(!game));$('#modeGame').setAttribute('aria-pressed',String(game));
+  baItems.forEach(function(li){li.classList.toggle('on',game);});gBA.reset();
+}
+$('#modeProto').addEventListener('click',function(){setMode(false);});
+$('#modeGame').addEventListener('click',function(){setMode(true);});
+
+// copy buttons
+$$('.copy[data-copy]').forEach(function(btn){
+  var label=btn.textContent;
+  btn.addEventListener('click',function(){
+    var el=document.getElementById(btn.getAttribute('data-copy'));if(!el)return;var text=el.textContent.trim();
+    function ok(){btn.textContent='COPIED';setTimeout(function(){btn.textContent=label;},1400);}
+    function fallback(){try{var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}btn.textContent='SELECTED · CTRL+C';setTimeout(function(){btn.textContent=label;},2200);}
+    try{navigator.clipboard.writeText(text).then(ok,fallback);}catch(e){fallback();}
+  });
+});
+
+// nav highlight + presenter mode
+var slides=$$('section[data-slide]'),navLinks=$$('.lvnav a');
+function currentIndex(){var y=window.scrollY+90,idx=0;slides.forEach(function(s,i){if(s.offsetTop<=y)idx=i;});return idx;}
+var ticking=false;
+function markNav(){ticking=false;var id=slides[currentIndex()].id;navLinks.forEach(function(a){a.setAttribute('aria-current',String(a.getAttribute('href')==='#'+id));});}
+window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(markNav);}},{passive:true});
+markNav();
+var presenting=false,pbar=$('#pbar'),pbtn=$('#presentBtn');
+function go(d){var i=clamp(currentIndex()+d,0,slides.length-1);slides[i].scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});}
+function setPresent(on){
+  presenting=on;document.documentElement.classList.toggle('present',on);pbtn.setAttribute('aria-pressed',String(on));pbar.hidden=!on;
+  try{
+    if(on&&document.documentElement.requestFullscreen&&!document.fullscreenElement){var p=document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(function(){});}
+    else if(!on&&document.fullscreenElement&&document.exitFullscreen){var q=document.exitFullscreen();if(q&&q.catch)q.catch(function(){});}
+  }catch(e){}
+}
+pbtn.addEventListener('click',function(){setPresent(!presenting);});
+$('#pExit').addEventListener('click',function(){setPresent(false);});
+$('#pPrev').addEventListener('click',function(){go(-1);});
+$('#pNext').addEventListener('click',function(){go(1);});
+document.addEventListener('keydown',function(e){
+  if(!presenting)return;var t=e.target,tag=t&&t.tagName;
+  if(tag==='CANVAS'||tag==='INPUT'||tag==='TEXTAREA')return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key==='n'||e.key==='N'){e.preventDefault();go(1);}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'||e.key==='p'||e.key==='P'){e.preventDefault();go(-1);}
+  else if(e.key==='Escape'){setPresent(false);}
+});
+
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){demos.forEach(function(d){d.draw();});});}
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
