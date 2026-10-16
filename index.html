@@ -97,6 +97,7 @@ section[data-slide]{scroll-margin-top:64px}
 /* levels */
 .lv-frame{--lv:#2E2C8F;--lv-edge:#FFD84D;--lv-text:#E4E4FF;--lv-soft:#ECEBFF;--lv-strong:#2E2C8F}
 .lv-juice{--lv:#9A330A;--lv-edge:#FFB347;--lv-text:#FFE1CF;--lv-soft:#FDEBE1;--lv-strong:#B83A08}
+.lv-audio{--lv:#0B4F5C;--lv-edge:#4FD6E8;--lv-text:#D2F3F7;--lv-soft:#DFF4F6;--lv-strong:#0A6574}
 .lv-enemies{--lv:#7A1F3D;--lv-edge:#FF6B7D;--lv-text:#FFDCE6;--lv-soft:#FBE4EC;--lv-strong:#A51F48}
 .lv-progress{--lv:#245F18;--lv-edge:#8FE36B;--lv-text:#DDF5D2;--lv-soft:#E6F5DF;--lv-strong:#2A6E1C}
 .lv-boss{--lv:#3B1C5A;--lv-edge:#C9A2FF;--lv-text:#E9DCF7;--lv-soft:#F0E6FA;--lv-strong:#5B2A86}
@@ -257,11 +258,12 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <a href="#prologue">00</a>
       <a href="#frame">01</a>
       <a href="#juice">02</a>
-      <a href="#enemies">03</a>
-      <a href="#progress">04</a>
-      <a href="#boss">05</a>
-      <a href="#before-after">06</a>
-      <a href="#cheat-codes">07</a>
+      <a href="#audio">03</a>
+      <a href="#enemies">04</a>
+      <a href="#progress">05</a>
+      <a href="#boss">06</a>
+      <a href="#before-after">07</a>
+      <a href="#cheat-codes">08</a>
     </nav>
     <button id="presentBtn" class="present-btn" type="button" aria-pressed="false">PRESENT</button>
   </div>
@@ -292,15 +294,16 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       </div>
     </div>
     <nav class="levelselect" aria-label="Level select">
-      <div class="px">LEVEL SELECT · 45 MIN</div>
+      <div class="px">LEVEL SELECT · 51 MIN</div>
       <a href="#prologue"><span class="n">00</span><span class="t">Prologue: It Moves. Is It a Game?</span><span class="m">3M</span></a>
       <a href="#frame"><span class="n">01</span><span class="t">The Frame</span><span class="m">5M</span></a>
       <a href="#juice"><span class="n">02</span><span class="t">Juice</span><span class="m">9M</span></a>
-      <a href="#enemies"><span class="n">03</span><span class="t">Fair Enemies</span><span class="m">6M</span></a>
-      <a href="#progress"><span class="n">04</span><span class="t">Progress</span><span class="m">7M</span></a>
-      <a href="#boss"><span class="n">05</span><span class="t">Boss Fight: Debugging</span><span class="m">6M</span></a>
-      <a href="#before-after"><span class="n">06</span><span class="t">Before &amp; After</span><span class="m">3M</span></a>
-      <a href="#cheat-codes"><span class="n" style="color:#FFD84D">07</span><span class="t" style="color:#FFD84D">Questions &amp; Cheat Codes</span><span class="m">6M</span></a>
+      <a href="#audio"><span class="n">03</span><span class="t">Sound &amp; Music</span><span class="m">6M</span></a>
+      <a href="#enemies"><span class="n">04</span><span class="t">Fair Enemies</span><span class="m">6M</span></a>
+      <a href="#progress"><span class="n">05</span><span class="t">Progress</span><span class="m">7M</span></a>
+      <a href="#boss"><span class="n">06</span><span class="t">Boss Fight: Debugging</span><span class="m">6M</span></a>
+      <a href="#before-after"><span class="n">07</span><span class="t">Before &amp; After</span><span class="m">3M</span></a>
+      <a href="#cheat-codes"><span class="n" style="color:#FFD84D">08</span><span class="t" style="color:#FFD84D">Questions &amp; Cheat Codes</span><span class="m">6M</span></a>
     </nav>
   </div>
   <div class="ground" aria-hidden="true"></div>
@@ -323,8 +326,8 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <div class="px" style="font-size:11px;color:#FFD84D;margin-bottom:14px">THE FOUR INGREDIENTS</div>
         <ul class="ingredients">
           <li><b>Feedback</b><span>Every action gets an answer you can see and hear.</span><a href="#juice">LEVEL 02 ▶</a></li>
-          <li><b>Challenge</b><span>Something pushes back, and beating it takes skill.</span><a href="#enemies">LEVEL 03 ▶</a></li>
-          <li><b>Progress</b><span>You are getting better and moving toward something.</span><a href="#progress">LEVEL 04 ▶</a></li>
+          <li><b>Challenge</b><span>Something pushes back, and beating it takes skill.</span><a href="#enemies">LEVEL 04 ▶</a></li>
+          <li><b>Progress</b><span>You are getting better and moving toward something.</span><a href="#progress">LEVEL 05 ▶</a></li>
           <li><b>Ritual</b><span>A clear start, a clear end, and one button to try again.</span><a href="#frame">LEVEL 01 ▶</a></li>
         </ul>
         <div class="howto"><span class="px">HOW TO USE THIS PAGE</span>Every demo starts in its "before" state. Click a demo to give it the keyboard, then switch effects on one at a time and feel the difference.</div>
@@ -337,7 +340,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 <section class="lv-frame" id="frame" data-slide>
   <div class="lv-head"><div class="wrap">
     <div>
-      <div class="eyebrow"><span>LEVEL 1 OF 7</span><span>5 MIN</span></div>
+      <div class="eyebrow"><span>LEVEL 1 OF 8</span><span>5 MIN</span></div>
       <h2>The Frame</h2>
       <p>Every game needs a beginning, a pause and an end.</p>
     </div>
@@ -379,7 +382,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 <section class="lv-juice" id="juice" data-slide>
   <div class="lv-head"><div class="wrap">
     <div>
-      <div class="eyebrow"><span>LEVEL 2 OF 7</span><span>9 MIN</span></div>
+      <div class="eyebrow"><span>LEVEL 2 OF 8</span><span>9 MIN</span></div>
       <h2>Juice</h2>
       <p>Feedback you can see and hear.</p>
     </div>
@@ -430,10 +433,71 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 </section>
 
 <!-- LEVEL 3 -->
+<section class="lv-audio" id="audio" data-slide>
+  <div class="lv-head"><div class="wrap">
+    <div>
+      <div class="eyebrow"><span>LEVEL 3 OF 8</span><span>6 MIN</span></div>
+      <h2>Sound &amp; Music</h2>
+      <p>Half of what players feel, they hear.</p>
+    </div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Soundscape</b></div>
+  </div></div>
+  <div class="wrap lv-body paper">
+    <div class="lesson">
+      <div><div class="label">SOUND TEST</div><h3>Close your eyes. Can you still tell what is happening?</h3></div>
+      <ul class="concepts">
+        <li><b>Music sets the mood</b><span>Menu music invites, stage music drives, boss music warns. Each place gets its own track.</span></li>
+        <li><b>A sound for every action</b><span>Jump, coin, hit, menu move. If the player did it, they should hear it.</span></li>
+        <li><b>Ambience</b><span>Wind, birds, a low rumble. Quiet background sound makes the world feel bigger than the screen.</span></li>
+        <li><b>Adaptive music</b><span>The music reacts to play: new layers join as the action heats up.</span></li>
+        <li><b>Mixing &amp; ducking</b><span>Music dips under important sounds, and players get separate music and SFX volume.</span></li>
+        <li><b>Variation</b><span>A tiny random pitch shift stops a sound you hear 100 times from getting annoying.</span></li>
+      </ul>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Players notice sound most when it is missing. Music tells them how to feel, sound effects confirm every action, and ambience makes the place feel real. All of it can be made in code, with no audio files.</p></div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p7">COPY PROMPT</button></div>
+        <p class="ptext" id="p7">Add audio with the Web Audio API: background music that changes between the menu, the stage and the boss, and a short sound effect for jumping, collecting and getting hit, with a small random pitch change so repeats never sound identical. Add separate music and SFX volume sliders plus a mute button, and lower the music for a moment when the player gets hit.</p>
+      </div>
+      <div class="refs"><div class="label">REFERENCES</div><ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">MDN: Web Audio API</a><small>developer.mozilla.org</small></li>
+        <li><a href="https://howlerjs.com/">howler.js: audio files made easy</a><small>howlerjs.com</small></li>
+        <li><a href="https://sfxr.me/">jsfxr: free retro sound effects</a><small>sfxr.me</small></li>
+        <li><a href="https://opengameart.org/">OpenGameArt: free music and sounds</a><small>opengameart.org · check each file's license</small></li>
+      </ul></div>
+    </div>
+    <div class="demo">
+      <div class="demo-top">
+        <div class="seg" role="group" aria-label="Scene">
+          <button type="button" data-scene="menu" aria-pressed="true">MENU</button>
+          <button type="button" data-scene="stage" aria-pressed="false">STAGE</button>
+          <button type="button" data-scene="boss" aria-pressed="false">BOSS</button>
+        </div>
+        <span class="px dim">SPACE · CLICK · ESC</span>
+      </div>
+      <canvas class="screen" id="cvAudio" tabindex="0" aria-label="Sound demo. In the menu use the arrow keys and Enter, or click an option. In the stage and boss scenes press Space or click to jump. Esc goes back to the menu."></canvas>
+      <ul class="states" id="layerChips" aria-label="Music layers playing"></ul>
+      <div class="controls" id="audioTogs">
+        <button class="tog" type="button" data-k="music">MUSIC</button>
+        <button class="tog" type="button" data-k="sfx">SFX</button>
+        <button class="tog" type="button" data-k="amb">AMBIENCE</button>
+        <button class="tog" type="button" data-k="adaptive">ADAPTIVE MUSIC</button>
+        <button class="tog" type="button" data-k="vary">PITCH VARIATION</button>
+        <button class="tog" type="button" data-k="duck">DUCKING</button>
+      </div>
+      <div class="controls">
+        <label class="range" for="volMusic">MUSIC VOL <input type="range" id="volMusic" min="0" max="1" step="0.05" value="0.8"></label>
+        <label class="range" for="volSfx">SFX VOL <input type="range" id="volSfx" min="0" max="1" step="0.05" value="0.8"></label>
+      </div>
+      <p class="hint">Turn the room's sound up. Everything starts silent: switch on music, then SFX, then ambience. In STAGE, jump for coins: with adaptive music on, each coin streak adds a layer. In BOSS, jump the shots: with ducking on, the music dips so the hit cuts through.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL 4 -->
 <section class="lv-enemies" id="enemies" data-slide>
   <div class="lv-head"><div class="wrap">
     <div>
-      <div class="eyebrow"><span>LEVEL 3 OF 7</span><span>6 MIN</span></div>
+      <div class="eyebrow"><span>LEVEL 4 OF 8</span><span>6 MIN</span></div>
       <h2>Fair Enemies</h2>
       <p>Losing should feel like your fault, not the game's.</p>
     </div>
@@ -478,11 +542,11 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   </div>
 </section>
 
-<!-- LEVEL 4 -->
+<!-- LEVEL 5 -->
 <section class="lv-progress" id="progress" data-slide>
   <div class="lv-head"><div class="wrap">
     <div>
-      <div class="eyebrow"><span>LEVEL 4 OF 7</span><span>7 MIN</span></div>
+      <div class="eyebrow"><span>LEVEL 5 OF 8</span><span>7 MIN</span></div>
       <h2>Progress</h2>
       <p>A reason to keep going, and a reason to come back.</p>
     </div>
@@ -523,11 +587,11 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   </div>
 </section>
 
-<!-- LEVEL 5 -->
+<!-- LEVEL 6 -->
 <section class="lv-boss" id="boss" data-slide>
   <div class="lv-head"><div class="wrap">
     <div>
-      <div class="eyebrow"><span>LEVEL 5 OF 7</span><span>6 MIN</span></div>
+      <div class="eyebrow"><span>LEVEL 6 OF 8</span><span>6 MIN</span></div>
       <h2>Boss Fight</h2>
       <p>When you add all of this, something will break. Here is how to win.</p>
     </div>
@@ -572,14 +636,14 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   </div>
 </section>
 
-<!-- LEVEL 6 -->
+<!-- LEVEL 7 -->
 <section class="night ba" id="before-after" data-slide>
   <div class="wrap">
     <div class="ba-head">
       <div>
-        <div class="px">LEVEL 6 OF 7 · 3 MIN</div>
+        <div class="px">LEVEL 7 OF 8 · 3 MIN</div>
         <h2>Before &amp; After</h2>
-        <p>Same game, same idea underneath. Flip the switch and everything from the last five levels turns on at once.</p>
+        <p>Same game, same idea underneath. Flip the switch and everything from the earlier levels turns on at once.</p>
       </div>
       <div class="case"><span class="px">CASE STUDY</span><a href="https://www.secondformrequiem.com">Second Form: Requiem</a></div>
     </div>
@@ -597,6 +661,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <ul class="checklist" id="baList">
         <li><span class="px"></span><span><a href="#frame">The frame</a>: title, pause, game over and quick restart</span></li>
         <li><span class="px"></span><span><a href="#juice">Juice</a>: shake, flash, particles and sound when you get hit</span></li>
+        <li><span class="px"></span><span><a href="#audio">Music</a>: a menu theme on the title screen and stage music while you play</span></li>
         <li><span class="px"></span><span><a href="#enemies">Telegraphs</a>: every block warns you before it falls</span></li>
         <li><span class="px"></span><span><a href="#progress">Waves</a>: the speed ramps up, with calm moments between</span></li>
         <li><span class="px"></span><span><a href="#progress">Score</a> on screen and a saved high score</span></li>
@@ -605,20 +670,21 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   </div>
 </section>
 
-<!-- LEVEL 7 -->
+<!-- LEVEL 8 -->
 <section class="codes" id="cheat-codes" data-slide>
   <div class="wrap">
     <div>
-      <div class="px" style="font-size:11px;color:#FFD84D">LEVEL 7 OF 7 · 6 MIN</div>
+      <div class="px" style="font-size:11px;color:#FFD84D">LEVEL 8 OF 8 · 6 MIN</div>
       <h2>Questions &amp; Cheat Codes</h2>
       <p class="lede">Ask anything about today's levels, or about your own game. Every prompt from the session is here, ready to copy.</p>
     </div>
     <ul class="code-grid">
       <li><div class="prompt-head"><span class="px">01 · THE FRAME</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add game states: a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and restarts with one button. Keep the gameplay exactly as it is.</p></li>
       <li><div class="prompt-head"><span class="px">02 · JUICE</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a short hit pause, a small screen shake, a white flash on the enemy and a burst of particles. Put the strength of each effect in one settings object so I can tune them.</p></li>
-      <li><div class="prompt-head"><span class="px">03 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy a state machine: patrol, chase when the player is close, then attack. Before each attack add a half-second wind-up where it flashes and plays a sound, and after it a short pause where it can be hit.</p></li>
-      <li><div class="prompt-head"><span class="px">04 · PROGRESS</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds raise enemy speed a little, with a short calm moment between waves. Show the score on screen and save the high score with localStorage so it is still there after a reload.</p></li>
-      <li><div class="prompt-head"><span class="px">05 · BOSS FIGHT</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First explain what is most likely causing this bug and how we can confirm it. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
+      <li><div class="prompt-head"><span class="px">03 · SOUND &amp; MUSIC</span><button class="copy" type="button" data-copy="c7">COPY</button></div><p class="ptext" id="c7">Add audio with the Web Audio API: background music that changes between the menu, the stage and the boss, and a short sound effect for jumping, collecting and getting hit, with a small random pitch change so repeats never sound identical. Add separate music and SFX volume sliders plus a mute button, and lower the music for a moment when the player gets hit.</p></li>
+      <li><div class="prompt-head"><span class="px">04 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy a state machine: patrol, chase when the player is close, then attack. Before each attack add a half-second wind-up where it flashes and plays a sound, and after it a short pause where it can be hit.</p></li>
+      <li><div class="prompt-head"><span class="px">05 · PROGRESS</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds raise enemy speed a little, with a short calm moment between waves. Show the score on screen and save the high score with localStorage so it is still there after a reload.</p></li>
+      <li><div class="prompt-head"><span class="px">06 · BOSS FIGHT</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First explain what is most likely causing this bug and how we can confirm it. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
       <li><div class="prompt-head"><span class="px">BONUS · TUNING</span><button class="copy" type="button" data-copy="c6">COPY</button></div><p class="ptext" id="c6">Move every number that controls how the game feels (speeds, timings, effect strengths) into one settings object at the top of the file, with a short comment on each, so I can tune the game without digging through the code.</p></li>
     </ul>
     <div class="quest"><span class="px">SIDE QUEST</span><p><b>Pick one level and add it to your game tonight.</b> Then share your before and after.</p></div>
@@ -1014,6 +1080,213 @@ Chart.prototype.draw=function(){
   c.stroke();var lp=h[h.length-1];c.fillStyle=C.gold;c.fillRect(X(lp.t)-4,Y(lp.v)-4,8,8);
 };
 
+/* ---------- music + ambience engine: levels 3 and 7 ---------- */
+// buses: music (song gain -> duck -> volume) / sfx / ambience, each with an analyser for the meters
+var NOISE=null;
+function noiseBuf(){if(!NOISE){var n=AC.sampleRate,b=AC.createBuffer(1,n,n),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1;NOISE=b;}return NOISE;}
+function mtof(m){return 440*Math.pow(2,(m-69)/12);}
+function voice(dest,type,f1,f2,t,dur,vol,attack){
+  var o=AC.createOscillator(),g=AC.createGain(),a=Math.min(attack||0.005,dur*0.5);
+  o.type=type;o.frequency.setValueAtTime(f1,t);if(f2)o.frequency.exponentialRampToValueAtTime(Math.max(30,f2),t+dur);
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+a);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g);g.connect(dest);o.start(t);o.stop(t+dur+0.05);
+}
+function noiseHit(dest,ftype,freq,t,dur,vol){
+  var s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();
+  s.buffer=noiseBuf();f.type=ftype;f.frequency.value=freq;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  s.connect(f);f.connect(g);g.connect(dest);s.start(t,Math.random()*0.5);s.stop(t+dur+0.05);
+}
+var Mix={ready:false,musicVol:0.8,sfxVol:0.8,
+  build:function(){
+    if(this.ready||!AC)return;
+    function an(){var a=AC.createAnalyser();a.fftSize=64;a.smoothingTimeConstant=0.7;a.connect(master);return a;}
+    this.musicAn=an();this.musicOut=AC.createGain();this.musicOut.gain.value=0;this.musicOut.connect(this.musicAn);
+    this.duck=AC.createGain();this.duck.connect(this.musicOut);
+    this.sfxAn=an();this.sfx=AC.createGain();this.sfx.gain.value=this.sfxVol;this.sfx.connect(this.sfxAn);
+    this.ambAn=an();this.amb=AC.createGain();this.amb.gain.value=0;this.amb.connect(this.ambAn);
+    var src=AC.createBufferSource();src.buffer=noiseBuf();src.loop=true;
+    this.ambF=AC.createBiquadFilter();this.ambF.type='lowpass';this.ambF.frequency.value=500;src.connect(this.ambF);this.ambF.connect(this.amb);src.start();
+    this.ready=true;
+  },
+  duckNow:function(){var t=AC.currentTime,g=this.duck.gain;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(0.25,t+0.03);g.linearRampToValueAtTime(0.25,t+0.35);g.linearRampToValueAtTime(1,t+0.9);}
+};
+var MAJ=[0,4,7,12],MIN=[0,3,7,12];
+var SONGS={
+  menu:{bpm:84,chords:[[57,MIN],[53,MAJ],[60,MAJ],[55,MAJ]],layers:['PAD','ARP']},
+  stage:{bpm:132,chords:[[60,MAJ],[57,MIN],[53,MAJ],[55,MAJ]],layers:['BASS','DRUMS','LEAD']},
+  boss:{bpm:152,chords:[[52,MIN],[48,MAJ],[50,MAJ],[47,MAJ]],layers:['BASS','DRUMS','LEAD']}
+};
+var LEADS={stage:[0,-1,1,-1,2,-1,1,2,3,-1,2,-1,1,-1,2,-1],boss:[0,1,2,1,3,2,1,0,2,1,2,3,2,1,0,1]};
+function playStep(name,step,t,layers,d){
+  var S=SONGS[name],s=step%16,ch=S.chords[Math.floor(step/16)%4],root=ch[0],tones=ch[1],sp=60/S.bpm/4;
+  function on(l){return layers.indexOf(l)>=0;}
+  if(name==='menu'){
+    if(on('PAD')&&s===0)tones.slice(0,3).forEach(function(iv){voice(d,'triangle',mtof(root+iv),0,t,sp*16,0.035,0.4);});
+    if(on('ARP')&&s%2===0)voice(d,'sine',mtof(root+12+tones[[0,1,2,3,2,1,2,1][s/2]]),0,t,sp*1.8,0.045);
+    return;
+  }
+  var boss=name==='boss';
+  if(on('BASS')&&(boss||s%2===0))voice(d,boss?'sawtooth':'triangle',mtof(root-24+(boss&&s%4===2?12:0)),0,t,sp*(boss?0.9:1.8),boss?0.035:0.1);
+  if(on('DRUMS')){
+    if(s%8===0||(boss&&s%4===0))voice(d,'sine',150,40,t,0.14,0.3);
+    if(s%8===4)noiseHit(d,'bandpass',1800,t,0.12,0.18);
+    if(boss||s%2===0)noiseHit(d,'highpass',7000,t,0.04,0.06);
+  }
+  if(on('LEAD')){var li=LEADS[name][s];if(li>=0)voice(d,'square',mtof(root+12+tones[li]),0,t,sp*(boss?0.9:1.6),0.03);}
+}
+// one song at a time, picked by whichever visible demo asks for it (only one section is visible)
+var Music={name:null,next:null,step:0,song:null,vol:-1,
+  tick:function(){
+    if(!AC||AC.state!=='running'){this.next=null;this.name=null;return;}
+    Mix.build();
+    var want=null,amb=null,i,d,now=AC.currentTime;
+    for(i=0;i<demos.length;i++){d=demos[i];if(!d.visible)continue;if(d.musicWant&&!want)want=d.musicWant();if(d.ambWant&&!amb)amb=d.ambWant();}
+    if(document.hidden){want=null;amb=null;}
+    Mix.amb.gain.setTargetAtTime(amb?amb.gain:0,now,0.3);
+    if(amb)Mix.ambF.frequency.setTargetAtTime(amb.freq,now,0.3);
+    if(!want){if(this.name){this.fadeOut(now);this.name=null;}this.next=null;return;}
+    if(want.name!==this.name){
+      if(this.song)this.fadeOut(now);
+      this.song=AC.createGain();this.song.connect(Mix.duck);this.name=want.name;this.step=0;this.next=now+0.08;
+    }
+    if(want.vol!==this.vol){this.vol=want.vol;Mix.musicOut.gain.setTargetAtTime(want.vol,now,0.05);}
+    var sp=60/SONGS[this.name].bpm/4;
+    while(this.next<now+0.12){playStep(this.name,this.step,this.next,want.layers,this.song);this.next+=sp;this.step=(this.step+1)%64;}
+  },
+  fadeOut:function(now){var g=this.song;if(!g)return;g.gain.setTargetAtTime(0,now,0.06);setTimeout(function(){try{g.disconnect();}catch(e){}},600);this.song=null;}
+};
+setInterval(function(){Music.tick();},25);
+
+/* ---------- Sound: level 3 ---------- */
+function Sound(cv,fx,onScene){
+  this.cv=cv;this.W=640;this.H=400;this.c=setup(cv,640,400);this.fx=fx;this.onScene=onScene||function(){};
+  this.floor=250;this.parts=[];this.shake=0;this.blink=0;this.t=0;this.cursor=0;this.bins=new Uint8Array(32);
+  this.stars=[];for(var i=0;i<30;i++)this.stars.push({x:Math.random()*640,y:Math.random()*240});
+  this.bind();this.setScene('menu');
+}
+Sound.prototype.setScene=function(s){
+  this.scene=s;this.p={x:120,y:0,vy:0,ground:true,flash:0};this.coins=[];this.shots=[];this.coinT=0.6;this.combo=0;this.comboT=0;this.got=0;
+  this.boss={t:1.6,tele:0};this.streak=0;this.dodges=0;this.hits=0;this.birdT=2;this.onScene(s);
+};
+Sound.prototype.layers=function(){
+  var all=SONGS[this.scene].layers.slice();
+  if(!this.fx.adaptive||this.scene==='menu')return all;
+  if(this.scene==='stage'){var l=['BASS'];if(this.combo>=2)l.push('DRUMS');if(this.combo>=5)l.push('LEAD');return l;}
+  return this.streak>=3?all:['BASS','DRUMS'];
+};
+Sound.prototype.musicWant=function(){return this.fx.music?{name:this.scene,layers:this.layers(),vol:Mix.musicVol}:null;};
+Sound.prototype.ambWant=function(){
+  if(!this.fx.amb)return null;var w=1+0.35*Math.sin(this.t*0.6);
+  return this.scene==='boss'?{gain:0.45,freq:150}:this.scene==='stage'?{gain:0.14,freq:650*w}:{gain:0.07,freq:420*w};
+};
+Sound.prototype.sfx=function(kind){
+  if(!this.fx.sfx||!AC||AC.state!=='running')return;Mix.build();
+  var t=AC.currentTime,d=Mix.sfx,r=this.fx.vary?Math.pow(2,rand(-2,2)/12):1;
+  if(kind==='jump')voice(d,'square',300*r,620*r,t,0.13,0.07);
+  else if(kind==='coin'){voice(d,'square',988*r,0,t,0.07,0.06);voice(d,'square',1319*r,0,t+0.07,0.22,0.06);}
+  else if(kind==='hurt'){voice(d,'sawtooth',480*r,70*r,t,0.35,0.11);noiseHit(d,'lowpass',900,t,0.2,0.14);}
+  else if(kind==='move')voice(d,'square',660*r,0,t,0.05,0.05);
+  else if(kind==='select')[523,659,784,1047].forEach(function(f,i){voice(d,'square',f*r,0,t+i*0.06,0.1,0.05);});
+  else if(kind==='charge')voice(d,'sawtooth',120*r,600*r,t,0.5,0.04);
+  else if(kind==='shot'){voice(d,'square',900*r,150*r,t,0.2,0.06);noiseHit(d,'highpass',2000,t,0.1,0.06);}
+};
+Sound.prototype.jump=function(){var P=this.p;if(!P.ground)return;P.vy=-620;P.ground=false;this.sfx('jump');};
+Sound.prototype.pick=function(i){this.cursor=i;this.sfx('select');this.setScene(i?'boss':'stage');};
+Sound.prototype.bind=function(){
+  var self=this,cv=this.cv;
+  cv.addEventListener('keydown',function(e){
+    var k=e.key;
+    if(self.scene==='menu'){
+      if(k==='ArrowUp'||k==='ArrowDown'||k==='w'||k==='s'||k==='W'||k==='S'){e.preventDefault();self.cursor=1-self.cursor;self.sfx('move');}
+      else if(k===' '||k==='Enter'){e.preventDefault();self.pick(self.cursor);}
+    }else if(k===' '||k==='ArrowUp'||k==='w'||k==='W'){e.preventDefault();self.jump();}
+    else if(k==='Escape'){e.preventDefault();self.sfx('move');self.setScene('menu');}
+  });
+  cv.addEventListener('pointerdown',function(e){
+    try{cv.focus({preventScroll:true});}catch(_){cv.focus();}
+    if(self.scene!=='menu'){self.jump();return;}
+    var y=local(cv,e,self.W,self.H).y;
+    if(Math.abs(y-170)<16)self.pick(0);else if(Math.abs(y-204)<16)self.pick(1);else self.pick(self.cursor);
+  });
+};
+Sound.prototype.update=function(dt){
+  var P=this.p,f=this.floor,i,self=this;
+  this.t+=dt;this.blink+=dt;this.shake=Math.max(0,this.shake-dt*40);if(P.flash>0)P.flash-=dt;
+  stepParts(this.parts,dt,600);
+  if(this.scene==='menu')return;
+  if(!P.ground){P.vy+=1800*dt;P.y+=P.vy*dt;if(P.y>=0){P.y=0;P.vy=0;P.ground=true;}}
+  var py=f+P.y-15;
+  if(this.fx.amb&&AC&&AC.state==='running'&&Mix.ready){
+    this.birdT-=dt;
+    if(this.birdT<=0){
+      var t=AC.currentTime;
+      if(this.scene==='stage'){this.birdT=rand(2,5);voice(Mix.amb,'sine',2400,3300,t,0.09,0.5);voice(Mix.amb,'sine',2600,3500,t+0.13,0.08,0.4);}
+      else{this.birdT=rand(5,9);noiseHit(Mix.amb,'lowpass',180,t,1.6,0.9);}
+    }
+  }
+  if(this.scene==='stage'){
+    this.coinT-=dt;if(this.coinT<=0){this.coinT=rand(0.7,1.2);this.coins.push({x:660,y:f-rand(60,95)});}
+    if(this.comboT>0){this.comboT-=dt;if(this.comboT<=0)this.combo=0;}
+    for(i=this.coins.length-1;i>=0;i--){
+      var c=this.coins[i];c.x-=220*dt;
+      if(Math.abs(c.x-P.x)<24&&Math.abs(c.y-py)<28){this.coins.splice(i,1);this.got++;this.combo++;this.comboT=2.5;this.sfx('coin');burst(this.parts,c.x,c.y,10,[C.gold,C.white],200,40);}
+      else if(c.x<-20)this.coins.splice(i,1);
+    }
+  }else{
+    var B=this.boss;
+    if(B.tele>0){B.tele-=dt;if(B.tele<=0){this.shots.push({x:500,y:f-14});this.sfx('shot');}}
+    else{B.t-=dt;if(B.t<=0){B.t=2.2;B.tele=0.5;this.sfx('charge');}}
+    for(i=this.shots.length-1;i>=0;i--){
+      var s=this.shots[i];s.x-=380*dt;
+      if(!s.hit&&Math.abs(s.x-P.x)<23&&Math.abs(s.y-py)<23){
+        s.hit=true;this.hits++;this.streak=0;P.flash=0.4;this.shake=reduceMotion?3:9;this.sfx('hurt');
+        if(this.fx.duck&&this.fx.music&&Mix.ready)Mix.duckNow();
+        burst(this.parts,P.x,py,20,[C.coral,C.white],300,60);
+      }
+      if(s.x<-20){if(!s.hit){this.streak++;this.dodges++;}this.shots.splice(i,1);}
+    }
+  }
+};
+Sound.prototype.meter=function(an,x,label,col,on){
+  var c=this.c,b=this.bins,i,h;
+  c.fillStyle=on?col:C.line;c.font='8px '+PIX;c.textAlign='left';c.textBaseline='top';c.fillText(label+(on?'':' · OFF'),x,312);
+  if(an)an.getByteFrequencyData(b);
+  for(i=0;i<12;i++){h=an?Math.max(2,b[i+1]/255*58):2;c.fillStyle=on?col:C.line;c.fillRect(x+i*15,390-h,11,h);}
+};
+Sound.prototype.draw=function(){
+  var c=this.c,W=this.W,f=this.floor,P=this.p,i,sc=this.scene;
+  c.save();shakeBy(c,this.shake);
+  c.fillStyle=sc==='boss'?'#2A0F1F':sc==='stage'?'#2E2C8F':C.night;c.fillRect(-20,-20,W+40,330);
+  if(sc==='menu'){
+    c.fillStyle='#2A2750';for(i=0;i<this.stars.length;i++)c.fillRect(this.stars[i].x,this.stars[i].y,2,2);
+    c.textAlign='center';c.textBaseline='middle';c.fillStyle=C.gold;c.font='24px '+PIX;c.fillText('SUPER SQUARE',W/2,100);
+    c.font='12px '+PIX;['START STAGE','BOSS FIGHT'].forEach(function(l,j){c.fillStyle=j===this.cursor?C.white:C.muted;c.fillText((j===this.cursor?'▶ ':'  ')+l,W/2,170+j*34);},this);
+    if(reduceMotion||Math.floor(this.blink*2)%2===0){c.font='9px '+PIX;c.fillStyle=C.lavSoft;c.fillText('ARROWS + ENTER, OR CLICK',W/2,256);}
+  }else{
+    if(sc==='stage'){c.fillStyle='#3B39A6';c.fillRect(80,60,90,14);c.fillRect(100,48,50,12);c.fillRect(420,90,110,14);c.fillRect(445,78,60,12);}
+    c.fillStyle=sc==='boss'?'#5A2238':C.grass;c.fillRect(-20,f,W+40,8);c.fillStyle=sc==='boss'?'#3A1424':C.dirt;c.fillRect(-20,f+8,W+40,52);
+    for(i=0;i<this.coins.length;i++){var cn=this.coins[i];c.fillStyle=C.gold;c.fillRect(cn.x-8,cn.y-8,16,16);c.fillStyle=C.orange;c.fillRect(cn.x-3,cn.y-5,6,10);}
+    if(sc==='boss'){
+      var B=this.boss,bx=540,by=f-80,tele=B.tele>0;
+      c.fillStyle=tele&&Math.floor(this.t*16)%2?C.white:C.coral;c.fillRect(bx-40,by,80,80);
+      c.fillStyle=C.ink;c.fillRect(bx-26,by+22,14,10);c.fillRect(bx+6,by+22,14,10);c.fillRect(bx-20,by+54,40,6);
+      for(i=0;i<this.shots.length;i++){var s=this.shots[i];if(s.hit)continue;c.fillStyle=C.gold;c.fillRect(s.x-9,s.y-9,18,18);c.fillStyle=C.coral;c.fillRect(s.x-4,s.y-4,8,8);}
+    }
+    var py=f+P.y;c.fillStyle=P.flash>0&&Math.floor(P.flash*30)%2===0?C.white:C.mint;c.fillRect(P.x-15,py-30,30,30);
+    c.fillStyle=C.ink;c.fillRect(P.x-7,py-21,4,6);c.fillRect(P.x+3,py-21,4,6);
+    c.font='10px '+PIX;c.textBaseline='top';c.textAlign='left';c.fillStyle=C.lavSoft;
+    c.fillText(sc==='stage'?'COINS '+this.got+'   STREAK '+this.combo:'DODGES '+this.dodges+'   STREAK '+this.streak+'   HITS '+this.hits,14,14);
+    c.textAlign='right';c.fillStyle=C.muted;c.fillText('ESC: MENU',W-14,14);
+  }
+  drawParts(c,this.parts);c.restore();
+  c.fillStyle='#100E24';c.fillRect(0,300,W,100);
+  var r=Mix.ready,fx=this.fx;
+  this.meter(r?Mix.musicAn:null,24,'MUSIC',C.lav,fx.music);
+  this.meter(r?Mix.sfxAn:null,232,'SFX',C.gold,fx.sfx);
+  this.meter(r?Mix.ambAn:null,440,'AMBIENCE',C.mint,fx.amb);
+  if(!AC||AC.state!=='running'){c.fillStyle='rgba(16,14,36,0.85)';c.fillRect(0,300,W,100);c.fillStyle=C.lavSoft;c.font='10px '+PIX;c.textAlign='center';c.textBaseline='middle';c.fillText('CLICK ANYWHERE TO ENABLE SOUND',W/2,350);}
+};
+
 /* ---------- wiring ---------- */
 function wireToggles(root,obj,after){
   $$('.tog[data-k]',root).forEach(function(b){
@@ -1039,14 +1312,31 @@ $('#juiceAll').addEventListener('click',function(){['shake','hitpause','particle
 $('#juiceNone').addEventListener('click',function(){['shake','hitpause','particles','flash','squash','sound'].forEach(function(k){fx[k]=false;});syncToggles(juiceTogs,fx);});
 $('#juiceI').addEventListener('input',function(e){fx.intensity=parseFloat(e.target.value)||1;});
 
-// Level 3
+// Level 3 (sound)
+var afx={music:false,sfx:false,amb:false,adaptive:false,vary:false,duck:false};
+var sceneBtns=$$('#audio [data-scene]'),chipBox=$('#layerChips'),chipKey='';
+var sd=new Sound($('#cvAudio'),afx,function(s){sceneBtns.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-scene')===s));});});
+register(sd);wireToggles($('#audioTogs'),afx);
+sceneBtns.forEach(function(b){b.addEventListener('click',function(){sd.setScene(b.getAttribute('data-scene'));});});
+$('#volMusic').addEventListener('input',function(e){Mix.musicVol=parseFloat(e.target.value);});
+$('#volSfx').addEventListener('input',function(e){Mix.sfxVol=parseFloat(e.target.value);if(Mix.ready)Mix.sfx.gain.setTargetAtTime(Mix.sfxVol,AC.currentTime,0.03);});
+// chips show the song's layers; lit ones are playing right now
+setInterval(function(){
+  if(!sd.visible)return;
+  var all=SONGS[sd.scene].layers,on=afx.music?sd.layers():[],key=sd.scene+on.join();
+  if(key===chipKey)return;chipKey=key;chipBox.textContent='';
+  var head=document.createElement('li');head.className='arrow';head.textContent=afx.music?'MUSIC LAYERS':'MUSIC OFF';chipBox.appendChild(head);
+  all.forEach(function(l){var li=document.createElement('li');li.textContent=l;if(on.indexOf(l)>=0)li.className='on';chipBox.appendChild(li);});
+},120);
+
+// Level 4
 var efx={telegraph:false,recovery:false};
 var chips=$$('#enemies .states li[data-s]');
 var gd=new Guard($('#cvEnemy'),efx,function(s){chips.forEach(function(li){li.classList.toggle('on',li.getAttribute('data-s')===s);});});
 register(gd);wireToggles($('#enemyTogs'),efx);
 $('#resetEnemy').addEventListener('click',function(){gd.hits=0;gd.counters=0;});
 
-// Level 4
+// Level 5
 var stProg=$('#stProg');
 var gProg=new Dodge($('#cvProgress'),'progress',{frame:true,telegraph:true,score:true,waves:true,save:true},function(g){
   stProg.innerHTML='';var t=g.o.waves?'WAVE ':'WAVES OFF · FLAT SPEED';stProg.appendChild(document.createTextNode(t));
@@ -1057,7 +1347,7 @@ register(gProg);register(new Chart($('#cvChart'),gProg));
 wireToggles($('#progTogs'),gProg.o,function(){gProg.reset();});
 $('#resetProg').addEventListener('click',function(){gProg.reset();});
 
-// Level 5
+// Level 6
 var bugFields=['bugDid','bugExpected','bugHappened','bugConsole','bugLast'];
 function buildBug(){
   var v={};bugFields.forEach(function(id){v[id]=($('#'+id).value||'').trim();});
@@ -1083,9 +1373,14 @@ function renderTries(){
 $('#tryAdd').addEventListener('click',function(){tries++;renderTries();});
 $('#tryReset').addEventListener('click',function(){tries=0;renderTries();});
 
-// Level 6
+// Level 7
 var baItems=$$('#baList li');
 var gBA=new Dodge($('#cvBA'),'ba',{},function(){});
+// game mode gets music too: menu theme on title/pause, stage music while playing, silence on game over
+gBA.musicWant=function(){
+  if(!gBA.o.juice||gBA.state==='over')return null;
+  return gBA.state==='play'?{name:'stage',layers:SONGS.stage.layers,vol:0.7}:{name:'menu',layers:SONGS.menu.layers,vol:0.7};
+};
 register(gBA);
 function setMode(game){
   ['frame','juice','telegraph','waves','save','score'].forEach(function(k){gBA.o[k]=game;});
@@ -1108,7 +1403,7 @@ $$('.copy[data-copy]').forEach(function(btn){
 
 // one section at a time: the URL hash picks the section, the rest are hidden
 var slides=$$('section[data-slide]'),navLinks=$$('.lvnav a'),lvnav=$('.lvnav');
-var NAMES={start:'Start',prologue:'Prologue',frame:'The Frame',juice:'Juice',enemies:'Fair Enemies',progress:'Progress',boss:'Boss Fight','before-after':'Before & After','cheat-codes':'Cheat Codes'};
+var NAMES={start:'Start',prologue:'Prologue',frame:'The Frame',juice:'Juice',audio:'Sound & Music',enemies:'Fair Enemies',progress:'Progress',boss:'Boss Fight','before-after':'Before & After','cheat-codes':'Cheat Codes'};
 var cur=0,pgPrev=$('#pgPrev'),pgNext=$('#pgNext'),pgCount=$('#pgCount');
 function indexOfId(id){for(var i=0;i<slides.length;i++)if(slides[i].id===id)return i;return -1;}
 function pagerLink(a,s){a.style.visibility=s?'visible':'hidden';if(s){a.href='#'+s.id;a.querySelector('b').textContent=NAMES[s.id]||s.id;}}
