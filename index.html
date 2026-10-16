@@ -88,7 +88,8 @@ section[data-slide]{scroll-margin-top:64px}
 .ingredients li{background:var(--night-2);border:2px solid #6E6DD6;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
 .ingredients b{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.1}
 .ingredients span{color:var(--night-text);font-size:16px}
-.ingredients a{font-family:var(--pixel);font-size:9px;color:var(--lav);text-decoration:none;margin-top:auto}
+.ing-links{display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:4px}
+.ingredients a{font-family:var(--pixel);font-size:9px;line-height:1.6;color:var(--lav);text-decoration:none;padding-left:18px;text-indent:-18px}
 .ingredients a:hover{color:var(--gold)}
 .howto{margin-top:18px;border:2px dashed #FF8A4C;border-radius:12px;padding:14px 18px;color:var(--night-text);font-size:16px}
 .howto .px{font-size:9px;color:#FF8A4C;display:block;margin-bottom:4px}
@@ -361,10 +362,10 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <div>
         <div class="px" style="font-size:11px;color:#FFD84D;margin-bottom:14px">THE FOUR INGREDIENTS</div>
         <ul class="ingredients">
-          <li><b>Feedback</b><span>The game answers everything you do with something you can see and hear.</span><a href="#juice">LEVEL 02 ▶</a></li>
-          <li><b>Challenge</b><span>Something gets in your way, and getting past it takes practice.</span><a href="#enemies">LEVEL 04 ▶</a></li>
-          <li><b>Progress</b><span>You can feel yourself getting better and getting somewhere.</span><a href="#progress">LEVEL 05 ▶</a></li>
-          <li><b>Ritual</b><span>A clear start, a clear ending, and a quick way to try again.</span><a href="#frame">LEVEL 01 ▶</a></li>
+          <li><b>Start &amp; Finish</b><span>A clear start, a clear ending, and a quick way to try again.</span><div class="ing-links"><a href="#frame">▶ 01 · START, PAUSE &amp; GAME OVER</a></div></li>
+          <li><b>Feedback</b><span>The game answers everything you do with something you can see and hear.</span><div class="ing-links"><a href="#juice">▶ 02 · HIT EFFECTS</a><a href="#audio">▶ 03 · SOUND &amp; MUSIC</a></div></li>
+          <li><b>Challenge</b><span>Something gets in your way, and getting past it takes practice.</span><div class="ing-links"><a href="#enemies">▶ 04 · ENEMY ATTACKS &amp; WARNINGS</a></div></li>
+          <li><b>Progress</b><span>You can feel yourself getting better and getting somewhere.</span><div class="ing-links"><a href="#progress">▶ 05 · DIFFICULTY &amp; HIGH SCORE</a></div></li>
         </ul>
         <div class="howto"><span class="px">HOW TO USE THIS PAGE</span>Every demo starts as the plain "before" version. Click a demo so it listens to your keyboard, then turn the switches on one at a time and notice what changes.</div>
       </div>
