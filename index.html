@@ -216,8 +216,18 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;justify-content:spac
 .pbar[hidden]{display:none}
 .pbar button{font-family:var(--pixel);font-size:10px;min-height:44px;min-width:44px;padding:0 12px;background:var(--gold);color:var(--ink);border:0;cursor:pointer}
 .pbar button.exit{background:transparent;color:var(--gold);border:2px solid var(--gold)}
-html.present{scroll-snap-type:y proximity}
-html.present section[data-slide]{min-height:calc(100svh - 64px);scroll-snap-align:start}
+html.present section[data-slide]{min-height:calc(100svh - 64px)}
+
+/* pager: one section per screen, prev / next between them */
+.pager-band{background:var(--indigo-deep);border-top:4px solid var(--gold)}
+.pager{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding-block:16px}
+.pg{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--white);min-height:44px;justify-content:center;min-width:0}
+.pg .px{font-size:9px;color:var(--gold)}
+.pg b{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.1;overflow-wrap:anywhere}
+.pg:hover b{color:var(--gold)}
+.pg.next{text-align:right;align-items:flex-end}
+.pg-count{font-size:10px;color:var(--lav)}
+@media (max-width:520px){.pg b{font-size:16px}}
 
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
 </style>
@@ -601,6 +611,14 @@ html.present section[data-slide]{min-height:calc(100svh - 64px);scroll-snap-alig
   <div class="ground" aria-hidden="true"></div>
 </section>
 </main>
+
+<div class="pager-band">
+  <nav class="wrap pager" aria-label="Section navigation">
+    <a class="pg prev" id="pgPrev" href="#start"><span class="px">◀ PREV</span><b></b></a>
+    <span class="px pg-count" id="pgCount"></span>
+    <a class="pg next" id="pgNext" href="#prologue"><span class="px">NEXT ▶</span><b></b></a>
+  </nav>
+</div>
 
 <footer><div class="wrap"><span>From Prompt to Play · Part 2 of How AI Has Disrupted Game Development</span><span>Every demo on this page runs in your browser.</span></div></footer>
 
@@ -1071,15 +1089,29 @@ $$('.copy[data-copy]').forEach(function(btn){
   });
 });
 
-// nav highlight + presenter mode
-var slides=$$('section[data-slide]'),navLinks=$$('.lvnav a');
-function currentIndex(){var y=window.scrollY+90,idx=0;slides.forEach(function(s,i){if(s.offsetTop<=y)idx=i;});return idx;}
-var ticking=false;
-function markNav(){ticking=false;var id=slides[currentIndex()].id;navLinks.forEach(function(a){a.setAttribute('aria-current',String(a.getAttribute('href')==='#'+id));});}
-window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(markNav);}},{passive:true});
-markNav();
+// one section at a time: the URL hash picks the section, the rest are hidden
+var slides=$$('section[data-slide]'),navLinks=$$('.lvnav a'),lvnav=$('.lvnav');
+var NAMES={start:'Start',prologue:'Prologue',frame:'The Frame',juice:'Juice',enemies:'Fair Enemies',progress:'Progress',boss:'Boss Fight','before-after':'Before & After','cheat-codes':'Cheat Codes'};
+var cur=0,pgPrev=$('#pgPrev'),pgNext=$('#pgNext'),pgCount=$('#pgCount');
+function indexOfId(id){for(var i=0;i<slides.length;i++)if(slides[i].id===id)return i;return -1;}
+function pagerLink(a,s){a.style.visibility=s?'visible':'hidden';if(s){a.href='#'+s.id;a.querySelector('b').textContent=NAMES[s.id]||s.id;}}
+function show(i){
+  cur=i;slides.forEach(function(s,j){s.hidden=j!==i;});
+  var id=slides[i].id;
+  navLinks.forEach(function(a){
+    var on=a.getAttribute('href')==='#'+id;a.setAttribute('aria-current',String(on));
+    if(on){var r=a.getBoundingClientRect(),nr=lvnav.getBoundingClientRect();lvnav.scrollLeft+=r.left-nr.left-(nr.width-r.width)/2;}
+  });
+  pagerLink(pgPrev,slides[i-1]);pagerLink(pgNext,slides[i+1]);
+  pgCount.textContent=(i+1)+' / '+slides.length;
+  document.title=(i?NAMES[id]+' · ':'')+'From Prompt to Play';
+  window.scrollTo(0,0);
+}
+function route(){var i=indexOfId(location.hash.slice(1));show(i<0?0:i);}
+window.addEventListener('hashchange',route);
+route();
 var presenting=false,pbar=$('#pbar'),pbtn=$('#presentBtn');
-function go(d){var i=clamp(currentIndex()+d,0,slides.length-1);slides[i].scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});}
+function go(d){var i=clamp(cur+d,0,slides.length-1);if(i!==cur)location.hash=slides[i].id;}
 function setPresent(on){
   presenting=on;document.documentElement.classList.toggle('present',on);pbtn.setAttribute('aria-pressed',String(on));pbar.hidden=!on;
   try{
