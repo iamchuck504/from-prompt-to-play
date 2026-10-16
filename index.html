@@ -779,7 +779,7 @@ var SFX={
 };
 
 /* ---------- particles ---------- */
-function burst(arr,x,y,n,colors,spd,up){for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,s=rand(spd*0.3,spd);arr.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-(up||0),life:rand(0.35,0.8),size:rand(2,5),color:colors[i%colors.length]});}}
+function burst(arr,x,y,n,colors,spd,up,big){for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,s=rand(spd*0.3,spd);arr.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-(up||0),life:rand(0.35,0.8),size:rand(2,5)*(big||1),color:colors[i%colors.length]});}}
 function stepParts(arr,dt,g){for(var i=arr.length-1;i>=0;i--){var p=arr[i];p.life-=dt;if(p.life<=0){arr.splice(i,1);continue;}p.vy+=g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=0.98;}}
 function drawParts(c,arr){for(var i=0;i<arr.length;i++){var p=arr[i];c.globalAlpha=clamp(p.life/0.5,0,1);c.fillStyle=p.color;c.fillRect(p.x-p.size/2,p.y-p.size/2,p.size,p.size);}c.globalAlpha=1;}
 function shakeBy(c,s){if(s>0)c.translate(rand(-s,s),rand(-s,s));}
@@ -926,7 +926,8 @@ Dodge.prototype.draw=function(){
   c.save();shakeBy(c,this.shake);
   if(art){
     Art.sky(c,W,g,'#110E2C','#3B2C7A');Art.stars(c,this.stars,t);Art.moon(c,520,72,22);
-    Art.hills(c,W,g-58,38,'#241E55',1,t*4,g);Art.hills(c,W,g-20,24,'#30286B',4,t*9,g);
+    // hills drift with game time, so they stop when the game is paused or over
+    Art.hills(c,W,g-58,38,'#241E55',1,this.t*4,g);Art.hills(c,W,g-20,24,'#30286B',4,this.t*9,g);
     Art.ground(c,W,g,H,[C.grass,'#9BEA78',C.dirt,'#6B4220']);
   }else{
     c.fillStyle=C.night;c.fillRect(-20,-20,W+40,H+40);
@@ -987,20 +988,21 @@ Juice.prototype.jump=function(){var h=this.hero,f=this.fx;if(!h.ground)return;h.
 Juice.prototype.hitT=function(t){
   var f=this.fx,I=f.intensity,kill;t.hp--;this.hits++;kill=t.hp<=0;
   if(f.flash)t.fl=0.1;if(f.squash)t.sq=1;
-  if(f.particles){burst(this.parts,t.x,t.y,kill?40:12,kill?[C.gold,C.orange,C.coral,C.white]:[C.white,C.gold],kill?420:260,60);this.texts.push({x:t.x,y:t.y-34,v:kill?'BOOM':'-1',life:0.7});}
+  if(f.particles){burst(this.parts,t.x,t.y,kill?44:22,kill?[C.gold,C.orange,C.coral,C.white]:[C.white,C.gold,C.orange],kill?440:340,60,1.5);this.texts.push({x:t.x,y:t.y-34,v:kill?'BOOM':'-1',life:0.7});}
   if(f.shake)this.shake=Math.max(this.shake,(kill?13:5)*I*(reduceMotion?0.4:1));
-  if(f.hitpause)this.stop=Math.max(this.stop,(kill?0.12:0.05)*I);
+  // hit pause: freeze the whole scene; the crate that got hit trembles in place while frozen
+  if(f.hitpause){this.stop=Math.max(this.stop,(kill?0.28:0.14)*I);this.frozen=t;}
   if(f.sound){if(kill)SFX.boom();else SFX.hit();}
   if(kill)t.dead=1.1;
 };
 Juice.prototype.update=function(dt){
   var f=this.fx,h=this.hero,i;
   this.t=(this.t||0)+dt;this.shake=Math.max(0,this.shake-dt*45);
+  if(this.stop>0){this.stop-=dt;if(this.stop<=0)this.frozen=null;return;}
   this.targets.forEach(function(t){if(t.fl>0)t.fl-=dt;t.sq=Math.max(0,t.sq-dt*6);});
-  if(this.stop>0){this.stop-=dt;return;}
   stepParts(this.parts,dt,700);
   for(i=this.texts.length-1;i>=0;i--){var x=this.texts[i];x.life-=dt;x.y-=40*dt;if(x.life<=0)this.texts.splice(i,1);}
-  this.targets.forEach(function(t){t.ph+=dt*2;t.y=t.by+Math.sin(t.ph)*10;if(t.dead>0){t.dead-=dt;if(t.dead<=0){t.dead=0;t.hp=3;if(f.squash)t.sq=1;}}});
+  this.targets.forEach(function(t){t.ph+=dt*2.6;t.y=t.by+Math.sin(t.ph)*16;if(t.dead>0){t.dead-=dt;if(t.dead<=0){t.dead=0;t.hp=3;if(f.squash)t.sq=1;}}});
   if(!h.ground){
     h.vy+=1800*dt;h.y+=h.vy*dt;
     if(h.y>=0){h.y=0;h.vy=0;h.ground=true;if(f.squash){h.sx=1.4;h.sy=0.62;}if(f.sound)SFX.land();if(f.particles)burst(this.parts,h.x,this.floor,10,[C.lavSoft,C.white],160,40);if(f.shake)this.shake=Math.max(this.shake,2*f.intensity);}
@@ -1019,10 +1021,13 @@ Juice.prototype.draw=function(){
   Art.cloud(c,90,70,8,'rgba(255,200,170,0.25)');Art.cloud(c,330,46,6,'rgba(255,200,170,0.2)');
   Art.hills(c,W,fl-46,30,'#4A1C30',2,0,fl);Art.hills(c,W,fl-14,18,'#5E2626',5,0,fl);
   Art.ground(c,W,fl,H,[C.grass,'#9BEA78',C.dirt,'#6B4220']);
+  var self=this;
   this.targets.forEach(function(t){
-    if(t.dead)return;
+    if(t.dead&&self.frozen!==t)return;
     var k=t.sq,wob=Math.sin(k*Math.PI),w=t.s*(1+0.35*k*wob),h=t.s*(1-0.3*k*wob),x0=t.x-w/2,y0=t.y-h/2,white=t.fl>0;
     Art.shadow(c,t.x,fl+4,t.s*0.7,0.22);
+    var shiver=self.stop>0&&self.frozen===t;
+    c.save();if(shiver)c.translate(rand(-4,4)*self.fx.intensity,rand(-2,2)*self.fx.intensity);
     // wooden crate: bevel, planks, bolts, face
     Art.block(c,x0,y0,w,h,white?C.white:C.orange,white?null:C.rust,white?null:'#FFD9A8');
     if(!white){
@@ -1031,6 +1036,7 @@ Juice.prototype.draw=function(){
       c.fillStyle=C.ink;c.fillRect(t.x-11,t.y-8,6,7);c.fillRect(t.x+5,t.y-8,6,7);c.fillStyle=C.white;c.fillRect(t.x-10,t.y-8,2,2);c.fillRect(t.x+6,t.y-8,2,2);
     }
     for(var j=0;j<3;j++){c.fillStyle=C.ink;c.fillRect(t.x-15+j*10,y0-14,9,7);c.fillStyle=j<t.hp?C.gold:C.line;c.fillRect(t.x-14+j*10,y0-13,7,5);}
+    c.restore();
   });
   var hh=this.hero,hw=34*hh.sx,hht=34*hh.sy,hy=fl+hh.y;
   Art.shadow(c,hh.x,fl+3,hw*clamp(1+hh.y/300,0.4,1.1));
@@ -1453,7 +1459,8 @@ var sd=new Sound($('#cvAudio'),afx,function(s){sceneBtns.forEach(function(b){b.s
 register(sd);wireToggles($('#audioTogs'),afx);
 sceneBtns.forEach(function(b){b.addEventListener('click',function(){sd.setScene(b.getAttribute('data-scene'));});});
 $('#volMusic').addEventListener('input',function(e){Mix.musicVol=parseFloat(e.target.value);});
-$('#volSfx').addEventListener('input',function(e){Mix.sfxVol=parseFloat(e.target.value);if(Mix.ready)Mix.sfx.gain.setTargetAtTime(Mix.sfxVol,AC.currentTime,0.03);});
+// set directly: a gradual ramp on the idle SFX bus may never apply in Chromium, leaving effects at full volume
+$('#volSfx').addEventListener('input',function(e){Mix.sfxVol=parseFloat(e.target.value);if(Mix.ready){var g=Mix.sfx.gain;g.cancelScheduledValues(AC.currentTime);g.setValueAtTime(Mix.sfxVol,AC.currentTime);g.value=Mix.sfxVol;}});
 // chips show the song's layers; lit ones are playing right now
 setInterval(function(){
   if(!sd.visible)return;
