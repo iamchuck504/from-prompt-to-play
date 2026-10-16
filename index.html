@@ -469,14 +469,12 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <li><b>Music sets the mood</b><span>Calm music on the menu, upbeat music while you play, scary music for the boss. Each place gets its own song.</span></li>
         <li><b>A sound for every action</b><span>Jump, coin, hit, menu click. If the player did something, they should hear it.</span></li>
         <li><b>Background sounds</b><span>Wind, birds, a low rumble. Quiet sounds in the background (ambience) make the world feel real.</span></li>
-        <li><b>Adaptive music</b><span>Music that changes with the action: more instruments join in when things get exciting.</span></li>
         <li><b>Ducking</b><span>The music gets quieter for a moment so an important sound is heard. Also give players separate volume for music and effects.</span></li>
-        <li><b>Variation</b><span>Play each sound a tiny bit higher or lower every time, so one you hear 100 times doesn't get annoying.</span></li>
       </ul>
       <div class="why"><span class="px">WHY IT WORKS</span><p>Players notice sound most when it is missing. Music tells them how to feel, sound effects confirm what they did, and background sounds make the place feel alive. You can make all of it with code, no audio files needed.</p></div>
       <div class="prompt">
         <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p7">COPY PROMPT</button></div>
-        <p class="ptext" id="p7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt, each played at a slightly different pitch every time. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p>
+        <p class="ptext" id="p7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p>
       </div>
       <div class="refs"><div class="label">REFERENCES</div><ul>
         <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">MDN: Web Audio API</a><small>developer.mozilla.org</small></li>
@@ -500,15 +498,13 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <button class="tog" type="button" data-k="music">MUSIC</button>
         <button class="tog" type="button" data-k="sfx">SFX</button>
         <button class="tog" type="button" data-k="amb">AMBIENCE</button>
-        <button class="tog" type="button" data-k="adaptive">ADAPTIVE MUSIC</button>
-        <button class="tog" type="button" data-k="vary">PITCH VARIATION</button>
         <button class="tog" type="button" data-k="duck">DUCKING</button>
       </div>
       <div class="controls">
         <label class="range" for="volMusic">MUSIC VOL <input type="range" id="volMusic" min="0" max="1" step="0.05" value="0.8"></label>
         <label class="range" for="volSfx">SFX VOL <input type="range" id="volSfx" min="0" max="1" step="0.05" value="0.8"></label>
       </div>
-      <p class="hint">Turn the room's sound up. Everything starts silent: turn on music, then SFX (sound effects), then ambience. In STAGE, jump to grab coins: with adaptive music on, every few coins in a row adds an instrument. In BOSS, jump over the shots: with ducking on, the music drops so you clearly hear the hit.</p>
+      <p class="hint">Turn the room's sound up. Everything starts silent: turn on music, then SFX (sound effects), then ambience. In STAGE, jump to grab coins and listen for each sound. Switch to BOSS to hear the music change, then jump over the shots: with ducking on, the music drops so you clearly hear the hit.</p>
     </div>
   </div>
 </section>
@@ -701,7 +697,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <ul class="code-grid">
       <li><div class="prompt-head"><span class="px">01 · THE FRAME</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and starts again with one button. Don't change how the game plays.</p></li>
       <li><div class="prompt-head"><span class="px">02 · JUICE</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a tiny freeze, a small screen shake, a white flash on the enemy and a burst of sparks. Put the strength of each effect in one settings list so I can adjust them.</p></li>
-      <li><div class="prompt-head"><span class="px">03 · SOUND &amp; MUSIC</span><button class="copy" type="button" data-copy="c7">COPY</button></div><p class="ptext" id="c7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt, each played at a slightly different pitch every time. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p></li>
+      <li><div class="prompt-head"><span class="px">03 · SOUND &amp; MUSIC</span><button class="copy" type="button" data-copy="c7">COPY</button></div><p class="ptext" id="c7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p></li>
       <li><div class="prompt-head"><span class="px">04 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy three modes: walk around, chase the player when they get close, then attack. Before each attack, add a half-second warning where it flashes and makes a sound, and after attacking, a short break where the player can hit it.</p></li>
       <li><div class="prompt-head"><span class="px">05 · PROGRESS</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds make the enemies a little faster, with a short calm break between waves. Show the score on screen and save the best score in the browser (localStorage) so it is still there after reloading the page.</p></li>
       <li><div class="prompt-head"><span class="px">06 · BOSS FIGHT</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First, explain what is most likely causing this bug and how we can check. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
@@ -1269,10 +1265,7 @@ Sound.prototype.setScene=function(s){
   this.boss={t:1.6,tele:0};this.streak=0;this.dodges=0;this.hits=0;this.birdT=2;this.onScene(s);
 };
 Sound.prototype.layers=function(){
-  var all=SONGS[this.scene].layers.slice();
-  if(!this.fx.adaptive||this.scene==='menu')return all;
-  if(this.scene==='stage'){var l=['BASS'];if(this.combo>=2)l.push('DRUMS');if(this.combo>=5)l.push('LEAD');return l;}
-  return this.streak>=3?all:['BASS','DRUMS'];
+  return SONGS[this.scene].layers.slice();
 };
 Sound.prototype.musicWant=function(){return this.fx.music?{name:this.scene,layers:this.layers(),vol:Mix.musicVol}:null;};
 Sound.prototype.ambWant=function(){
@@ -1281,14 +1274,14 @@ Sound.prototype.ambWant=function(){
 };
 Sound.prototype.sfx=function(kind){
   if(!this.fx.sfx||!AC||AC.state!=='running')return;Mix.build();
-  var t=AC.currentTime,d=Mix.sfx,r=this.fx.vary?Math.pow(2,rand(-2,2)/12):1;
-  if(kind==='jump')voice(d,'square',300*r,620*r,t,0.13,0.07);
-  else if(kind==='coin'){voice(d,'square',988*r,0,t,0.07,0.06);voice(d,'square',1319*r,0,t+0.07,0.22,0.06);}
-  else if(kind==='hurt'){voice(d,'sawtooth',480*r,70*r,t,0.35,0.11);noiseHit(d,'lowpass',900,t,0.2,0.14);}
-  else if(kind==='move')voice(d,'square',660*r,0,t,0.05,0.05);
-  else if(kind==='select')[523,659,784,1047].forEach(function(f,i){voice(d,'square',f*r,0,t+i*0.06,0.1,0.05);});
-  else if(kind==='charge')voice(d,'sawtooth',120*r,600*r,t,0.5,0.04);
-  else if(kind==='shot'){voice(d,'square',900*r,150*r,t,0.2,0.06);noiseHit(d,'highpass',2000,t,0.1,0.06);}
+  var t=AC.currentTime,d=Mix.sfx;
+  if(kind==='jump')voice(d,'square',300,620,t,0.13,0.07);
+  else if(kind==='coin'){voice(d,'square',988,0,t,0.07,0.06);voice(d,'square',1319,0,t+0.07,0.22,0.06);}
+  else if(kind==='hurt'){voice(d,'sawtooth',480,70,t,0.35,0.11);noiseHit(d,'lowpass',900,t,0.2,0.14);}
+  else if(kind==='move')voice(d,'square',660,0,t,0.05,0.05);
+  else if(kind==='select')[523,659,784,1047].forEach(function(f,i){voice(d,'square',f,0,t+i*0.06,0.1,0.05);});
+  else if(kind==='charge')voice(d,'sawtooth',120,600,t,0.5,0.04);
+  else if(kind==='shot'){voice(d,'square',900,150,t,0.2,0.06);noiseHit(d,'highpass',2000,t,0.1,0.06);}
 };
 Sound.prototype.jump=function(){var P=this.p;if(!P.ground)return;P.vy=-620;P.ground=false;this.sfx('jump');};
 Sound.prototype.pick=function(i){this.cursor=i;this.sfx('select');this.setScene(i?'boss':'stage');};
@@ -1437,7 +1430,7 @@ $('#juiceNone').addEventListener('click',function(){['shake','hitpause','particl
 $('#juiceI').addEventListener('input',function(e){fx.intensity=parseFloat(e.target.value)||1;});
 
 // Level 3 (sound)
-var afx={music:false,sfx:false,amb:false,adaptive:false,vary:false,duck:false};
+var afx={music:false,sfx:false,amb:false,duck:false};
 var sceneBtns=$$('#audio [data-scene]'),chipBox=$('#layerChips'),chipKey='';
 var sd=new Sound($('#cvAudio'),afx,function(s){sceneBtns.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-scene')===s));});});
 register(sd);wireToggles($('#audioTogs'),afx);
