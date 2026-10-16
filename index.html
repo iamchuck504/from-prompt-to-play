@@ -110,6 +110,8 @@ section[data-slide]{scroll-margin-top:64px}
 .keyterm{border:2px solid var(--gold);padding:12px 16px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
 .keyterm .px{font-size:9px;color:var(--gold)}
 .keyterm b{font-size:20px}
+.keyterm{max-width:400px}
+.keyterm small{flex-basis:100%;font-size:15px;line-height:1.4;color:var(--lv-text)}
 .lv-body{padding-block:40px 60px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:40px;align-items:start}
 @media (max-width:960px){.lv-body{grid-template-columns:minmax(0,1fr)}}
 .lesson{display:flex;flex-direction:column;gap:22px;min-width:0}
@@ -245,6 +247,9 @@ html.wide .lesson>*{break-inside:avoid;margin:0 0 22px}
 html.wide .lesson>.prompt{margin:4px 4px 26px}
 html.wide #boss .lv-body{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
 html.wide #boss .lesson{columns:1}
+html.wide #cheat-codes .wrap{max-width:1680px}
+html.wide .code-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+html.wide .code-grid .ptext{font-size:14px}
 html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 /* header, pager and footer line up with the zoomed content (JS sets --chrome-w) */
 .top .wrap,.pager-band .wrap,footer .wrap{max-width:var(--chrome-w,1180px)}
@@ -302,7 +307,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       </div>
       <h1>From Prompt to Play</h1>
       <p class="sub">How to make your game feel like a game.</p>
-      <p class="lede">Your prototype works. Now we make it fun. Every level teaches one concept, shows it running in a live demo you can switch on and off, and gives you a prompt to paste into your own game.</p>
+      <p class="lede">Your prototype works. Now let's make it fun. Each level explains one idea in plain words, lets you try it in a live demo with on/off switches, and gives you a prompt to paste into your AI tool so you can add it to your own game.</p>
       <div class="hero-actions">
         <a class="cta" href="#prologue">▶ CONTINUE</a>
         <span class="cleared"><svg width="16" height="14" viewBox="0 0 8 7" aria-hidden="true"><path fill="#8FE36B" d="M7 0h1v2H7zM6 2h1v1H6zM5 3h1v1H5zM4 4h1v1H4zM3 5h1v1H3zM2 4h1v1H2zM1 3h1v1H1zM0 2h1v1H0z"></path></svg>PART 1 CLEARED</span>
@@ -331,7 +336,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <div>
         <div class="px" style="font-size:11px;color:#FFD84D">PROLOGUE</div>
         <h2>It Moves. Is It a Game?</h2>
-        <p>AI gets you a working prototype fast. What makes people want to keep playing is a different set of skills, and you can learn them.</p>
+        <p>AI can build a working prototype in minutes. Making people want to keep playing it is a different skill, and it is one you can learn.</p>
         <div class="vs">
           <div class="a"><span class="px">PROTOTYPE</span>A square that moves when you press a key.</div>
           <div class="b"><span class="px" style="color:#6B4A00">GAME</span><b>Something you want to play again.</b></div>
@@ -340,12 +345,12 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <div>
         <div class="px" style="font-size:11px;color:#FFD84D;margin-bottom:14px">THE FOUR INGREDIENTS</div>
         <ul class="ingredients">
-          <li><b>Feedback</b><span>Every action gets an answer you can see and hear.</span><a href="#juice">LEVEL 02 ▶</a></li>
-          <li><b>Challenge</b><span>Something pushes back, and beating it takes skill.</span><a href="#enemies">LEVEL 04 ▶</a></li>
-          <li><b>Progress</b><span>You are getting better and moving toward something.</span><a href="#progress">LEVEL 05 ▶</a></li>
-          <li><b>Ritual</b><span>A clear start, a clear end, and one button to try again.</span><a href="#frame">LEVEL 01 ▶</a></li>
+          <li><b>Feedback</b><span>The game answers everything you do with something you can see and hear.</span><a href="#juice">LEVEL 02 ▶</a></li>
+          <li><b>Challenge</b><span>Something gets in your way, and getting past it takes practice.</span><a href="#enemies">LEVEL 04 ▶</a></li>
+          <li><b>Progress</b><span>You can feel yourself getting better and getting somewhere.</span><a href="#progress">LEVEL 05 ▶</a></li>
+          <li><b>Ritual</b><span>A clear start, a clear ending, and a quick way to try again.</span><a href="#frame">LEVEL 01 ▶</a></li>
         </ul>
-        <div class="howto"><span class="px">HOW TO USE THIS PAGE</span>Every demo starts in its "before" state. Click a demo to give it the keyboard, then switch effects on one at a time and feel the difference.</div>
+        <div class="howto"><span class="px">HOW TO USE THIS PAGE</span>Every demo starts as the plain "before" version. Click a demo so it listens to your keyboard, then turn the switches on one at a time and notice what changes.</div>
       </div>
     </div>
   </div>
@@ -357,23 +362,23 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <div>
       <div class="eyebrow"><span>LEVEL 1 OF 8</span><span>5 MIN</span></div>
       <h2>The Frame</h2>
-      <p>Every game needs a beginning, a pause and an end.</p>
+      <p>Every game needs a beginning, a pause and an ending.</p>
     </div>
-    <div class="keyterm"><span class="px">KEY TERM</span><b>Game states</b></div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Game states</b><small>The different screens your game can be on: title, playing, paused, game over.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
-      <div><div class="label">SCREEN FLOW</div><h3>Wrap your gameplay in a frame.</h3></div>
+      <div><div class="label">SCREEN FLOW</div><h3>Put your game inside a frame.</h3></div>
       <ul class="concepts">
-        <li><b>Title screen</b><span>Sets the mood and lets the player get ready before anything can hurt them.</span></li>
-        <li><b>Pause</b><span>Real life interrupts. Freeze everything, including timers and spawns.</span></li>
-        <li><b>Game over</b><span>Losing needs a moment and a result, not a frozen screen.</span></li>
-        <li><b>One-button restart</b><span>The faster they can try again, the more they keep playing.</span></li>
+        <li><b>Title screen</b><span>Gives the player a moment to get ready before anything can hurt them.</span></li>
+        <li><b>Pause</b><span>Real life interrupts. Pausing should freeze everything, including timers and enemies.</span></li>
+        <li><b>Game over</b><span>When you lose, show what happened and your score, instead of just freezing.</span></li>
+        <li><b>One-button restart</b><span>The faster you can try again, the more you keep playing.</span></li>
       </ul>
-      <div class="why"><span class="px">WHY IT WORKS</span><p>The game always knows which state it is in, so a clear start and end turns a toy into a session.</p></div>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>The game always knows which screen it is on. A clear start and a clear ending turn a toy into something you sit down and play.</p></div>
       <div class="prompt">
         <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p1">COPY PROMPT</button></div>
-        <p class="ptext" id="p1">Add game states: a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and restarts with one button. Keep the gameplay exactly as it is.</p>
+        <p class="ptext" id="p1">Add a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and starts again with one button. Don't change how the game plays.</p>
       </div>
       <div class="refs"><div class="label">REFERENCES</div><ul>
         <li><a href="https://gameprogrammingpatterns.com/state.html">Game Programming Patterns: State</a><small>gameprogrammingpatterns.com</small></li>
@@ -387,8 +392,8 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <button class="tog" type="button" data-k="frame" id="togFrame">THE FRAME</button>
         <button class="dbtn" type="button" id="resetFrame">RESET DEMO</button>
       </div>
-      <p class="status">CURRENT STATE: <b id="stFrame">NONE</b></p>
-      <p class="hint">With the frame off, the game starts the moment it loads and simply stops when you get hit. Turn it on to get a title screen, pause (P or Esc) and a game over screen with a one-button retry.</p>
+      <p class="status">CURRENT SCREEN: <b id="stFrame">NONE</b></p>
+      <p class="hint">With the switch off, the game starts the second the page loads and simply stops when you get hit. Turn it on to get a title screen, a pause (P or Esc) and a game over screen where one button lets you try again.</p>
     </div>
   </div>
 </section>
@@ -399,25 +404,25 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <div>
       <div class="eyebrow"><span>LEVEL 2 OF 8</span><span>9 MIN</span></div>
       <h2>Juice</h2>
-      <p>Feedback you can see and hear.</p>
+      <p>Small effects that make every action feel good.</p>
     </div>
-    <div class="keyterm"><span class="px">KEY TERM</span><b>Game feel</b></div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Game feel</b><small>How good it feels to press a button and watch the game react.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
       <div><div class="label">POWER-UPS</div><h3>Same rules. Way more satisfying.</h3></div>
       <ul class="concepts">
-        <li><b>Screen shake</b><span>A short, small shake makes hits and explosions feel heavy.</span></li>
-        <li><b>Hit pause</b><span>Freeze for a few frames on impact so the hit lands.</span></li>
-        <li><b>Particles</b><span>Sparks, dust and debris confirm what just happened.</span></li>
+        <li><b>Screen shake</b><span>The screen shakes for a split second, so hits feel heavy.</span></li>
+        <li><b>Hit pause</b><span>The game freezes for a tiny moment when something gets hit, so you feel the impact.</span></li>
+        <li><b>Particles</b><span>Little sparks and bits fly out and show exactly what just happened.</span></li>
         <li><b>Hit flash</b><span>Whatever gets hit blinks white for a moment.</span></li>
-        <li><b>Squash &amp; stretch</b><span>Things stretch when they jump and squash when they land.</span></li>
-        <li><b>A sound for everything</b><span>Jump, hit, pickup, hurt. Sound is half of game feel.</span></li>
+        <li><b>Squash &amp; stretch</b><span>Things stretch when they jump and squash when they land, like rubber.</span></li>
+        <li><b>A sound for everything</b><span>Jumping, hitting, picking things up. You should hear every action.</span></li>
       </ul>
-      <div class="why"><span class="px">WHY IT WORKS</span><p>Nothing about the rules changes, but every action now answers back, so the player feels it. Too much hides what is happening, so add one effect at a time.</p></div>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>The rules don't change at all, but now every action gets a reaction, and that is what players feel. Too many effects at once gets confusing, so add one at a time.</p></div>
       <div class="prompt">
         <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p2">COPY PROMPT</button></div>
-        <p class="ptext" id="p2">When the player hits an enemy, add a short hit pause, a small screen shake, a white flash on the enemy and a burst of particles. Put the strength of each effect in one settings object so I can tune them.</p>
+        <p class="ptext" id="p2">When the player hits an enemy, add a tiny freeze, a small screen shake, a white flash on the enemy and a burst of sparks. Put the strength of each effect in one settings list so I can adjust them.</p>
       </div>
       <div class="refs"><div class="label">REFERENCES</div><ul>
         <li><b>Juice it or Lose it</b><small>Martin Jonasson &amp; Petri Purho, GDC talk (search it on YouTube)</small></li>
@@ -442,7 +447,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <button class="dbtn" type="button" id="juiceNone">ALL OFF</button>
         <label class="range" for="juiceI">STRENGTH <input type="range" id="juiceI" min="0.4" max="2" step="0.1" value="1"></label>
       </div>
-      <p class="hint">Hit the blocks with everything off first. Then switch on one effect at a time. Sound starts after your first click.</p>
+      <p class="hint">Hit the blocks with everything off first. Then turn on one effect at a time. Sound starts after your first click.</p>
     </div>
   </div>
 </section>
@@ -455,23 +460,23 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <h2>Sound &amp; Music</h2>
       <p>Half of what players feel, they hear.</p>
     </div>
-    <div class="keyterm"><span class="px">KEY TERM</span><b>Soundscape</b></div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Soundscape</b><small>Everything the player hears: music, sound effects and background sounds.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
       <div><div class="label">SOUND TEST</div><h3>Close your eyes. Can you still tell what is happening?</h3></div>
       <ul class="concepts">
-        <li><b>Music sets the mood</b><span>Menu music invites, stage music drives, boss music warns. Each place gets its own track.</span></li>
-        <li><b>A sound for every action</b><span>Jump, coin, hit, menu move. If the player did it, they should hear it.</span></li>
-        <li><b>Ambience</b><span>Wind, birds, a low rumble. Quiet background sound makes the world feel bigger than the screen.</span></li>
-        <li><b>Adaptive music</b><span>The music reacts to play: new layers join as the action heats up.</span></li>
-        <li><b>Mixing &amp; ducking</b><span>Music dips under important sounds, and players get separate music and SFX volume.</span></li>
-        <li><b>Variation</b><span>A tiny random pitch shift stops a sound you hear 100 times from getting annoying.</span></li>
+        <li><b>Music sets the mood</b><span>Calm music on the menu, upbeat music while you play, scary music for the boss. Each place gets its own song.</span></li>
+        <li><b>A sound for every action</b><span>Jump, coin, hit, menu click. If the player did something, they should hear it.</span></li>
+        <li><b>Background sounds</b><span>Wind, birds, a low rumble. Quiet sounds in the background (ambience) make the world feel real.</span></li>
+        <li><b>Adaptive music</b><span>Music that changes with the action: more instruments join in when things get exciting.</span></li>
+        <li><b>Ducking</b><span>The music gets quieter for a moment so an important sound is heard. Also give players separate volume for music and effects.</span></li>
+        <li><b>Variation</b><span>Play each sound a tiny bit higher or lower every time, so one you hear 100 times doesn't get annoying.</span></li>
       </ul>
-      <div class="why"><span class="px">WHY IT WORKS</span><p>Players notice sound most when it is missing. Music tells them how to feel, sound effects confirm every action, and ambience makes the place feel real. All of it can be made in code, with no audio files.</p></div>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Players notice sound most when it is missing. Music tells them how to feel, sound effects confirm what they did, and background sounds make the place feel alive. You can make all of it with code, no audio files needed.</p></div>
       <div class="prompt">
         <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p7">COPY PROMPT</button></div>
-        <p class="ptext" id="p7">Add audio with the Web Audio API: background music that changes between the menu, the stage and the boss, and a short sound effect for jumping, collecting and getting hit, with a small random pitch change so repeats never sound identical. Add separate music and SFX volume sliders plus a mute button, and lower the music for a moment when the player gets hit.</p>
+        <p class="ptext" id="p7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt, each played at a slightly different pitch every time. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p>
       </div>
       <div class="refs"><div class="label">REFERENCES</div><ul>
         <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">MDN: Web Audio API</a><small>developer.mozilla.org</small></li>
@@ -503,7 +508,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <label class="range" for="volMusic">MUSIC VOL <input type="range" id="volMusic" min="0" max="1" step="0.05" value="0.8"></label>
         <label class="range" for="volSfx">SFX VOL <input type="range" id="volSfx" min="0" max="1" step="0.05" value="0.8"></label>
       </div>
-      <p class="hint">Turn the room's sound up. Everything starts silent: switch on music, then SFX, then ambience. In STAGE, jump for coins: with adaptive music on, each coin streak adds a layer. In BOSS, jump the shots: with ducking on, the music dips so the hit cuts through.</p>
+      <p class="hint">Turn the room's sound up. Everything starts silent: turn on music, then SFX (sound effects), then ambience. In STAGE, jump to grab coins: with adaptive music on, every few coins in a row adds an instrument. In BOSS, jump over the shots: with ducking on, the music drops so you clearly hear the hit.</p>
     </div>
   </div>
 </section>
@@ -514,23 +519,23 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <div>
       <div class="eyebrow"><span>LEVEL 4 OF 8</span><span>6 MIN</span></div>
       <h2>Fair Enemies</h2>
-      <p>Losing should feel like your fault, not the game's.</p>
+      <p>When you lose, it should feel like your mistake, not the game cheating.</p>
     </div>
-    <div class="keyterm"><span class="px">KEY TERM</span><b>Telegraphing</b></div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Telegraphing</b><small>Warning the player just before an attack, so they have time to react.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
-      <div><div class="label">ENEMY AI</div><h3>Give every enemy a readable brain.</h3></div>
+      <div><div class="label">ENEMY AI</div><h3>Give every enemy simple behavior you can learn.</h3></div>
       <ul class="concepts">
-        <li><b>State machine</b><span>One state at a time: patrol, chase, wind-up, attack, recover.</span></li>
-        <li><b>Patterns</b><span>Patrol, chase, flee. Players can only beat what they can learn.</span></li>
-        <li><b>Telegraph</b><span>A wind-up before every attack: a flash, a sound or a pose.</span></li>
-        <li><b>Recovery window</b><span>After attacking, a short moment where it can be hit back.</span></li>
+        <li><b>One mode at a time</b><span>The enemy is always in one clear mode: walking around, chasing, getting ready, attacking, resting. Programmers call this a state machine.</span></li>
+        <li><b>Patterns</b><span>Walk around, chase, run away. Players can only beat what they can learn.</span></li>
+        <li><b>Telegraph</b><span>A warning before every attack: a flash, a sound or a pose.</span></li>
+        <li><b>Recovery window</b><span>After attacking, the enemy rests for a moment. That is your chance to hit back.</span></li>
       </ul>
-      <div class="why"><span class="px">WHY IT WORKS</span><p>Players accept losing when they could see it coming. A warning turns a cheap hit into a lesson.</p></div>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Players are fine with losing when they could have seen it coming. A warning turns a cheap hit into a lesson.</p></div>
       <div class="prompt">
         <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p3">COPY PROMPT</button></div>
-        <p class="ptext" id="p3">Give the enemy a state machine: patrol, chase when the player is close, then attack. Before each attack add a half-second wind-up where it flashes and plays a sound, and after it a short pause where it can be hit.</p>
+        <p class="ptext" id="p3">Give the enemy three modes: walk around, chase the player when they get close, then attack. Before each attack, add a half-second warning where it flashes and makes a sound, and after attacking, a short break where the player can hit it.</p>
       </div>
       <div class="refs"><div class="label">REFERENCES</div><ul>
         <li><a href="https://gameprogrammingpatterns.com/state.html">Game Programming Patterns: State</a><small>gameprogrammingpatterns.com</small></li>
@@ -552,7 +557,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <button class="tog" type="button" data-k="recovery">RECOVERY WINDOW</button>
         <button class="dbtn" type="button" id="resetEnemy">RESET SCORE</button>
       </div>
-      <p class="hint">Walk close to the guard. With both off it strikes with no warning and you can never hit back. Turn on the telegraph to see the attack coming, and the recovery window to punish it: click the guard (or press Space next to it) while it is dizzy.</p>
+      <p class="hint">Walk close to the guard. With both switches off, it attacks with no warning and you can never hit back. Turn on the telegraph to see attacks coming, and the recovery window to fight back: click the guard (or press Space next to it) while it is dizzy.</p>
     </div>
   </div>
 </section>
@@ -563,23 +568,23 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <div>
       <div class="eyebrow"><span>LEVEL 5 OF 8</span><span>7 MIN</span></div>
       <h2>Progress</h2>
-      <p>A reason to keep going, and a reason to come back.</p>
+      <p>A reason to keep playing, and a reason to come back.</p>
     </div>
-    <div class="keyterm"><span class="px">KEY TERM</span><b>Difficulty curve</b></div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Difficulty curve</b><small>How quickly the game gets harder as you play.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
       <div><div class="label">EXPERIENCE POINTS</div><h3>Let players feel themselves getting better.</h3></div>
       <ul class="concepts">
-        <li><b>Teach without text</b><span>Introduce each mechanic somewhere safe before it really matters.</span></li>
-        <li><b>Ramp, then breathe</b><span>Raise the challenge in waves with calm moments between them.</span></li>
-        <li><b>Score and rewards</b><span>Reward skill, not just time. Numbers going up feel good.</span></li>
-        <li><b>Save the high score</b><span>A best score that survives a reload is a reason to come back.</span></li>
+        <li><b>Teach without text</b><span>Show each new thing somewhere safe first, before it really matters.</span></li>
+        <li><b>Harder, then a break</b><span>Make it harder in steps (waves), with calm moments in between.</span></li>
+        <li><b>Score and rewards</b><span>Reward skill, not just time. Watching a number go up feels good.</span></li>
+        <li><b>Save the high score</b><span>A best score that is still there tomorrow is a reason to come back.</span></li>
       </ul>
-      <div class="why"><span class="px">WHY IT WORKS</span><p>Too easy gets boring, too hard gets frustrating. Waves keep players in the zone between the two, and the calm moments let them notice they are improving.</p></div>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Too easy is boring and too hard is frustrating. Getting harder in waves keeps players between the two, and the calm moments let them notice they are improving.</p></div>
       <div class="prompt">
         <div class="prompt-head"><span class="px">TRY THIS PROMPT</span><button class="copy" type="button" data-copy="p4">COPY PROMPT</button></div>
-        <p class="ptext" id="p4">Make the game harder in waves: every 30 seconds raise enemy speed a little, with a short calm moment between waves. Show the score on screen and save the high score with localStorage so it is still there after a reload.</p>
+        <p class="ptext" id="p4">Make the game harder in waves: every 30 seconds make the enemies a little faster, with a short calm break between waves. Show the score on screen and save the best score in the browser (localStorage) so it is still there after reloading the page.</p>
       </div>
       <div class="refs"><div class="label">REFERENCES</div><ul>
         <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">MDN: localStorage</a><small>developer.mozilla.org</small></li>
@@ -597,7 +602,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         <button class="dbtn" type="button" id="resetProg">RESET DEMO</button>
       </div>
       <p class="status" id="stProg">WAVE <b>1</b></p>
-      <p class="hint">Waves here last 10 seconds so you can watch the curve during the talk. With waves off, the speed is flat forever. Turn on "save high score", set a best, then reload the page: it is still there.</p>
+      <p class="hint">Here each wave lasts only 10 seconds, so you can watch the curve during the talk. With waves off, the speed never changes. Turn on "save high score", set a best score, then reload the page: it is still there.</p>
     </div>
   </div>
 </section>
@@ -608,20 +613,20 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <div>
       <div class="eyebrow"><span>LEVEL 6 OF 8</span><span>6 MIN</span></div>
       <h2>Boss Fight</h2>
-      <p>When you add all of this, something will break. Here is how to win.</p>
+      <p>When you add all of this, something will break. Here is how to fix it.</p>
     </div>
-    <div class="keyterm"><span class="px">KEY TERM</span><b>Debugging</b></div>
+    <div class="keyterm"><span class="px">KEY TERM</span><b>Debugging</b><small>Finding out why something is broken, then fixing it.</small></div>
   </div></div>
   <div class="wrap lv-body paper">
     <div class="lesson">
       <div><div class="label">BOSS STRATEGY</div><h3>The AI can only fix what it can see.</h3></div>
       <ul class="concepts">
-        <li><b>1. Describe the bug</b><span>What you did, what you expected, and what happened instead.</span></li>
-        <li><b>2. Bring evidence</b><span>Open the console (F12) and paste the red errors. Add a screenshot.</span></li>
-        <li><b>3. Shrink the problem</b><span>One change at a time. Find the last version that worked.</span></li>
-        <li><b>4. Know when to retreat</b><span>Two or three failed fixes? Go back to your save and ask differently.</span></li>
+        <li><b>1. Describe the bug</b><span>Say what you did, what you expected, and what happened instead.</span></li>
+        <li><b>2. Bring evidence</b><span>Press F12, open the Console tab and copy any red error text. A screenshot helps too.</span></li>
+        <li><b>3. Shrink the problem</b><span>Change one thing at a time, and find the last version that worked.</span></li>
+        <li><b>4. Know when to go back</b><span>If two or three fixes don't work, go back to your last working version and ask in a different way.</span></li>
       </ul>
-      <div class="why"><span class="px">WHY IT WORKS</span><p>Asking for a diagnosis first stops the AI from guessing and piling new bugs on top of the old one.</p></div>
+      <div class="why"><span class="px">WHY IT WORKS</span><p>Asking the AI to explain the problem before it changes any code stops it from guessing and adding new bugs on top of the old one.</p></div>
       <div class="refs"><div class="label">REFERENCES</div><ul>
         <li><a href="https://developer.chrome.com/docs/devtools/console">Chrome DevTools: Console</a><small>developer.chrome.com</small></li>
         <li><a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">Git: About version control</a><small>git-scm.com/book</small></li>
@@ -691,16 +696,16 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
     <div>
       <div class="px" style="font-size:11px;color:#FFD84D">LEVEL 8 OF 8 · 6 MIN</div>
       <h2>Questions &amp; Cheat Codes</h2>
-      <p class="lede">Ask anything about today's levels, or about your own game. Every prompt from the session is here, ready to copy.</p>
+      <p class="lede">Ask anything about today's levels or about your own game. Every prompt from today is here, ready to copy.</p>
     </div>
     <ul class="code-grid">
-      <li><div class="prompt-head"><span class="px">01 · THE FRAME</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add game states: a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and restarts with one button. Keep the gameplay exactly as it is.</p></li>
-      <li><div class="prompt-head"><span class="px">02 · JUICE</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a short hit pause, a small screen shake, a white flash on the enemy and a burst of particles. Put the strength of each effect in one settings object so I can tune them.</p></li>
-      <li><div class="prompt-head"><span class="px">03 · SOUND &amp; MUSIC</span><button class="copy" type="button" data-copy="c7">COPY</button></div><p class="ptext" id="c7">Add audio with the Web Audio API: background music that changes between the menu, the stage and the boss, and a short sound effect for jumping, collecting and getting hit, with a small random pitch change so repeats never sound identical. Add separate music and SFX volume sliders plus a mute button, and lower the music for a moment when the player gets hit.</p></li>
-      <li><div class="prompt-head"><span class="px">04 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy a state machine: patrol, chase when the player is close, then attack. Before each attack add a half-second wind-up where it flashes and plays a sound, and after it a short pause where it can be hit.</p></li>
-      <li><div class="prompt-head"><span class="px">05 · PROGRESS</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds raise enemy speed a little, with a short calm moment between waves. Show the score on screen and save the high score with localStorage so it is still there after a reload.</p></li>
-      <li><div class="prompt-head"><span class="px">06 · BOSS FIGHT</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First explain what is most likely causing this bug and how we can confirm it. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
-      <li><div class="prompt-head"><span class="px">BONUS · TUNING</span><button class="copy" type="button" data-copy="c6">COPY</button></div><p class="ptext" id="c6">Move every number that controls how the game feels (speeds, timings, effect strengths) into one settings object at the top of the file, with a short comment on each, so I can tune the game without digging through the code.</p></li>
+      <li><div class="prompt-head"><span class="px">01 · THE FRAME</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and starts again with one button. Don't change how the game plays.</p></li>
+      <li><div class="prompt-head"><span class="px">02 · JUICE</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a tiny freeze, a small screen shake, a white flash on the enemy and a burst of sparks. Put the strength of each effect in one settings list so I can adjust them.</p></li>
+      <li><div class="prompt-head"><span class="px">03 · SOUND &amp; MUSIC</span><button class="copy" type="button" data-copy="c7">COPY</button></div><p class="ptext" id="c7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt, each played at a slightly different pitch every time. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p></li>
+      <li><div class="prompt-head"><span class="px">04 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy three modes: walk around, chase the player when they get close, then attack. Before each attack, add a half-second warning where it flashes and makes a sound, and after attacking, a short break where the player can hit it.</p></li>
+      <li><div class="prompt-head"><span class="px">05 · PROGRESS</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds make the enemies a little faster, with a short calm break between waves. Show the score on screen and save the best score in the browser (localStorage) so it is still there after reloading the page.</p></li>
+      <li><div class="prompt-head"><span class="px">06 · BOSS FIGHT</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First, explain what is most likely causing this bug and how we can check. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
+      <li><div class="prompt-head"><span class="px">BONUS · TUNING</span><button class="copy" type="button" data-copy="c6">COPY</button></div><p class="ptext" id="c6">Move every number that controls how the game feels (speeds, timings, effect strengths) into one settings list at the top of the file, with a short note on each, so I can adjust the game without digging through the code.</p></li>
     </ul>
     <div class="quest"><span class="px">SIDE QUEST</span><p><b>Pick one level and add it to your game tonight.</b> Then share your before and after.</p></div>
   </div>
@@ -1470,7 +1475,7 @@ $('#resetProg').addEventListener('click',function(){gProg.reset();});
 var bugFields=['bugDid','bugExpected','bugHappened','bugConsole','bugLast'];
 function buildBug(){
   var v={};bugFields.forEach(function(id){v[id]=($('#'+id).value||'').trim();});
-  var lines=["Don't change any code yet. First explain what is most likely causing this bug and how we can confirm it.",''];
+  var lines=["Don't change any code yet. First, explain what is most likely causing this bug and how we can check.",''];
   lines.push('What I did: '+(v.bugDid||'[...]'));
   lines.push('What I expected: '+(v.bugExpected||'[...]'));
   lines.push('What happened instead: '+(v.bugHappened||'[...]'));
@@ -1588,7 +1593,7 @@ function fit(){
   if(bigDemo)return;
   var s=slides[cur],cw=document.documentElement.clientWidth,wide=cw>=1500;s.style.zoom='';s.style.minHeight='';
   document.documentElement.classList.toggle('wide',wide);
-  var designW=(wide&&s.querySelector('.lv-body'))?1712:FIT_W;
+  var designW=(wide&&(s.querySelector('.lv-body')||s.id==='cheat-codes'))?1712:FIT_W;
   var avail=window.innerHeight-topBar.offsetHeight-pagerBand.offsetHeight-foot.offsetHeight;
   // on wide screens a level may shrink a little (to 85%) so it fits without scrolling
   var k=clamp(Math.min(cw/designW,avail/s.offsetHeight),wide?0.85:1,FIT_MAX);
