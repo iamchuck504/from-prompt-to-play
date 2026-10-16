@@ -335,7 +335,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <a href="#frame"><span class="n">01</span><span class="t">Start, Pause &amp; Game Over</span><span class="m">5M</span></a>
       <a href="#juice"><span class="n">02</span><span class="t">Hit Effects</span><span class="m">9M</span></a>
       <a href="#audio"><span class="n">03</span><span class="t">Sound &amp; Music</span><span class="m">6M</span></a>
-      <a href="#enemies"><span class="n">04</span><span class="t">Fair Enemies</span><span class="m">6M</span></a>
+      <a href="#enemies"><span class="n">04</span><span class="t">Enemy Attacks &amp; Warnings</span><span class="m">6M</span></a>
       <a href="#progress"><span class="n">05</span><span class="t">Difficulty &amp; High Score</span><span class="m">7M</span></a>
       <a href="#boss"><span class="n">06</span><span class="t">Fixing Bugs</span><span class="m">6M</span></a>
       <a href="#before-after"><span class="n">07</span><span class="t">Before &amp; After</span><span class="m">3M</span></a>
@@ -552,7 +552,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   <div class="lv-head"><div class="wrap">
     <div>
       <div class="eyebrow"><span>LEVEL 4 OF 8</span><span>6 MIN</span></div>
-      <h2>Fair Enemies</h2>
+      <h2>Enemy Attacks &amp; Warnings</h2>
       <p>When you lose, it should feel like your mistake, not the game cheating.</p>
     </div>
     <div class="keyterm"><span class="px">KEY TERM</span><b>Telegraphing</b><small>Warning the player just before an attack, so they have time to react.</small></div>
@@ -738,7 +738,7 @@ html.wide .bug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
       <li><div class="prompt-head"><span class="px">01 · START, PAUSE &amp; GAME OVER</span><button class="copy" type="button" data-copy="c1">COPY</button></div><p class="ptext" id="c1">Add a title screen that waits for Space or a tap, a pause menu on Esc that freezes everything, and a game over screen that shows the score and starts again with one button. Don't change how the game plays.</p></li>
       <li><div class="prompt-head"><span class="px">02 · HIT EFFECTS</span><button class="copy" type="button" data-copy="c2">COPY</button></div><p class="ptext" id="c2">When the player hits an enemy, add a tiny freeze, a small screen shake, a white flash on the enemy and a burst of sparks. Put the strength of each effect in one settings list so I can adjust them.</p></li>
       <li><div class="prompt-head"><span class="px">03 · SOUND &amp; MUSIC</span><button class="copy" type="button" data-copy="c7">COPY</button></div><p class="ptext" id="c7">Add sound using the Web Audio API (the browser's built-in sound tools): different background music for the menu, the level and the boss, and short sound effects for jumping, collecting and getting hurt. Add separate volume sliders for music and effects, a mute button, and make the music quieter for a moment when the player gets hurt.</p></li>
-      <li><div class="prompt-head"><span class="px">04 · FAIR ENEMIES</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy three modes: walk around, chase the player when they get close, then attack. Before each attack, add a half-second warning where it flashes and makes a sound, and after attacking, a short break where the player can hit it.</p></li>
+      <li><div class="prompt-head"><span class="px">04 · ENEMY ATTACKS &amp; WARNINGS</span><button class="copy" type="button" data-copy="c3">COPY</button></div><p class="ptext" id="c3">Give the enemy three modes: walk around, chase the player when they get close, then attack. Before each attack, add a half-second warning where it flashes and makes a sound, and after attacking, a short break where the player can hit it.</p></li>
       <li><div class="prompt-head"><span class="px">05 · DIFFICULTY &amp; HIGH SCORE</span><button class="copy" type="button" data-copy="c4">COPY</button></div><p class="ptext" id="c4">Make the game harder in waves: every 30 seconds make the enemies a little faster, with a short calm break between waves. Show the score on screen and save the best score in the browser (localStorage) so it is still there after reloading the page.</p></li>
       <li><div class="prompt-head"><span class="px">06 · FIXING BUGS</span><button class="copy" type="button" data-copy="c5">COPY</button></div><p class="ptext" id="c5">Don't change any code yet. First, explain what is most likely causing this bug and how we can check. What I did: [...] What I expected: [...] What happened instead: [...] Console error: [...]</p></li>
       <li><div class="prompt-head"><span class="px">BONUS · TUNING</span><button class="copy" type="button" data-copy="c6">COPY</button></div><p class="ptext" id="c6">Move every number that controls how the game feels (speeds, timings, effect strengths) into one settings list at the top of the file, with a short note on each, so I can adjust the game without digging through the code.</p></li>
@@ -1649,7 +1649,7 @@ $$('.copy[data-copy]').forEach(function(btn){
 
 // one section at a time: the URL hash picks the section, the rest are hidden
 var slides=$$('section[data-slide]'),navLinks=$$('.lvnav a'),lvnav=$('.lvnav');
-var NAMES={start:'Start',prologue:'Prologue',frame:'Start, Pause & Game Over',juice:'Hit Effects',audio:'Sound & Music',enemies:'Fair Enemies',progress:'Difficulty & High Score',boss:'Fixing Bugs','before-after':'Before & After','cheat-codes':'Questions & Prompts'};
+var NAMES={start:'Start',prologue:'Prologue',frame:'Start, Pause & Game Over',juice:'Hit Effects',audio:'Sound & Music',enemies:'Enemy Attacks & Warnings',progress:'Difficulty & High Score',boss:'Fixing Bugs','before-after':'Before & After','cheat-codes':'Questions & Prompts'};
 var cur=0,pgPrev=$('#pgPrev'),pgNext=$('#pgNext'),pgCount=$('#pgCount');
 function indexOfId(id){for(var i=0;i<slides.length;i++)if(slides[i].id===id)return i;return -1;}
 function pagerLink(a,s){a.style.visibility=s?'visible':'hidden';if(s){a.href='#'+s.id;a.querySelector('b').textContent=NAMES[s.id]||s.id;}}
